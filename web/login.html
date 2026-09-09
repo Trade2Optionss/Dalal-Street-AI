@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRADE2OPTIONS — Institutional Terminal Login & License Activation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/auth_gate.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #06080c;
+      color: #f8fafc;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Orbs & Grid -->
+  <div class="auth-ambient-glow gold"></div>
+  <div class="auth-ambient-glow cyan"></div>
+  <div class="auth-grid-overlay"></div>
+
+  <!-- Main Login Card Container -->
+  <main class="t2o-login-card" id="loginCard">
+    
+    <!-- Brand Header -->
+    <header class="auth-brand-header">
+      <div class="auth-shield-beacon">
+        <div class="auth-radar-ring"></div>
+        <i data-lucide="shield-check"></i>
+      </div>
+      <h1 class="auth-brand-title">TRADE<span class="brand-accent">2</span>OPTIONS</h1>
+      <div class="auth-gateway-badge">
+        <i data-lucide="lock" style="width:12px;height:12px;"></i>
+        Institutional Terminal Gateway
+      </div>
+      <p class="auth-subtitle">
+        Enter your authorized cryptographic license key to access the Dalal Street Multi-Agent Intelligence Command Center.
+      </p>
+    </header>
+
+    <!-- Detected Machine HWID Fingerprint -->
+    <section class="auth-hwid-box" aria-label="Machine Fingerprint">
+      <div class="auth-hwid-info">
+        <span class="auth-hwid-label">
+          <i data-lucide="cpu" style="width:12px;height:12px;"></i> Your Machine Hardware ID (HWID)
+        </span>
+        <span class="auth-hwid-value" id="authHwidVal">DETECTING HARDWARE...</span>
+      </div>
+      <button type="button" class="auth-copy-btn" id="authCopyHwidBtn" title="Copy HWID to clipboard">
+        <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy HWID
+      </button>
+    </section>
+
+    <!-- Interactive License Key Form -->
+    <div id="authFormCard" style="display: flex; flex-direction: column; gap: 16px;">
+      <form id="authLoginForm">
+        <div class="auth-form-group">
+          <label for="authLicenseKeyInput" class="auth-label">
+            <span>LICENSE KEY</span>
+            <span style="font-size: 0.7rem; color: #64748b; font-weight: 500;">Format: T2O-XXX-XXXX-XXXX-XXXX</span>
+          </label>
+          <div class="auth-input-wrap">
+            <i data-lucide="key" class="input-icon"></i>
+            <input 
+              type="text" 
+              id="authLicenseKeyInput" 
+              class="auth-input" 
+              placeholder="T2O-PRO-8F29-A4C1-7290" 
+              autocomplete="off" 
+              spellcheck="false" 
+              required
+              autofocus
+            />
+            <button type="button" class="auth-paste-btn" id="authPasteKeyBtn" title="Paste from clipboard">
+              <i data-lucide="clipboard-paste" style="width:18px;height:18px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="authSubmitBtn">
+          <span id="authBtnText">Authenticate & Launch Terminal</span>
+          <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+          <span id="authSpinner" style="display:none; width:16px; height:16px; border: 2px solid rgba(0,0,0,0.3); border-top-color: #000; border-radius:50%; animation: spin 0.8s linear infinite;"></span>
+        </button>
+      </form>
+
+      <!-- Real-time Alert Notification Box -->
+      <div id="authAlert" class="auth-alert"></div>
+
+      <!-- Quick Demo Keys Helper -->
+      <div class="auth-demo-hint">
+        <button type="button" class="auth-demo-toggle" id="authDemoToggle">
+          <i data-lucide="help-circle" style="width:13px;height:13px;"></i> Quick-fill Authorized Keys (Demo)
+        </button>
+        <div class="auth-demo-chips" id="authDemoChips" style="display:none;">
+          <button type="button" class="auth-chip" data-key="T2O-PRO-8F29-A4C1-7290">Enterprise: Ankit Kumar</button>
+          <button type="button" class="auth-chip" data-key="T2O-MST-41B9-72E0-9941">Mastery: Vikram Malhotra</button>
+          <button type="button" class="auth-chip" data-key="T2O-TRL-10A2-54D8-3318">Trial: Siddharth Verma</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unlocked State Animation -->
+    <div id="authUnlockedCard" class="auth-unlocked-card">
+      <div class="auth-success-beacon">
+        <i data-lucide="check" style="width:36px;height:36px;"></i>
+      </div>
+      <h2 style="font-family:'Outfit',sans-serif; font-size:1.4rem; font-weight:800; color:#10b981;">
+        ACCESS AUTHORIZED
+      </h2>
+      <div class="auth-client-pill">
+        <span class="auth-client-name" id="authClientName">Client Name</span>
+        <span class="auth-client-tier" id="authClientTier">Tier</span>
+      </div>
+      <p style="font-size:0.8rem; color:#94a3b8;">
+        Connecting to Dalal Street Multi-Agent Matrix...
+      </p>
+      <div class="auth-progress-bar">
+        <div class="auth-progress-fill" id="authProgressFill"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <script>
+    (async function() {
+      if (window.lucide) lucide.createIcons();
+
+      const STORAGE_KEY = "t2o_license_session";
+      let systemHwid = "";
+
+      // 1. Detect HWID
+      try {
+        const res = await fetch("/api/licenses/my-hwid");
+        if (res.ok) {
+          const data = await res.json();
+          systemHwid = data.hwid || "";
+          document.getElementById("authHwidVal").textContent = systemHwid;
+        }
+      } catch(e) {
+        console.warn("HWID fetch error", e);
+      }
+
+      // Check if already authenticated
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.license_key) {
+            // Quick verify
+            const verifyRes = await fetch("/api/licenses/validate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ license_key: parsed.license_key, hwid: systemHwid })
+            });
+            const vData = await verifyRes.json();
+            if (vData.valid) {
+              window.location.href = "/";
+              return;
+            } else {
+              localStorage.removeItem(STORAGE_KEY);
+            }
+          }
+        }
+      } catch(e) {}
+
+      // Setup inputs
+      const form = document.getElementById("authLoginForm");
+      const keyInput = document.getElementById("authLicenseKeyInput");
+      const pasteBtn = document.getElementById("authPasteKeyBtn");
+      const copyHwidBtn = document.getElementById("authCopyHwidBtn");
+      const alertBox = document.getElementById("authAlert");
+      const submitBtn = document.getElementById("authSubmitBtn");
+      const spinner = document.getElementById("authSpinner");
+      const btnText = document.getElementById("authBtnText");
+
+      keyInput.addEventListener("input", () => {
+        keyInput.value = keyInput.value.toUpperCase();
+        alertBox.className = "auth-alert";
+        alertBox.innerHTML = "";
+      });
+
+      pasteBtn.addEventListener("click", async () => {
+        try {
+          const clipText = await navigator.clipboard.readText();
+          if (clipText) {
+            keyInput.value = clipText.trim().toUpperCase();
+            alertBox.className = "auth-alert";
+          }
+        } catch(e) {
+          showAlert("Clipboard access unavailable. Please paste manually.", "error");
+        }
+      });
+
+      copyHwidBtn.addEventListener("click", () => {
+        if (!systemHwid) return;
+        navigator.clipboard.writeText(systemHwid).then(() => {
+          const orig = copyHwidBtn.innerHTML;
+          copyHwidBtn.innerHTML = `<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!`;
+          if (window.lucide) lucide.createIcons();
+          setTimeout(() => {
+            copyHwidBtn.innerHTML = orig;
+            if (window.lucide) lucide.createIcons();
+          }, 2000);
+        });
+      });
+
+      // Quick chips
+      document.getElementById("authDemoToggle").addEventListener("click", () => {
+        const chips = document.getElementById("authDemoChips");
+        chips.style.display = chips.style.display === "none" ? "flex" : "none";
+      });
+
+      document.querySelectorAll(".auth-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          keyInput.value = chip.getAttribute("data-key");
+          alertBox.className = "auth-alert";
+        });
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const key = keyInput.value.trim().toUpperCase();
+        if (!key) {
+          showAlert("Please enter your Trade2Options license key.", "error");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        spinner.style.display = "inline-block";
+        btnText.textContent = "Verifying Binding...";
+
+        try {
+          const res = await fetch("/api/licenses/validate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ license_key: key, hwid: systemHwid })
+          });
+          const data = await res.json();
+
+          if (data.valid) {
+            const payload = {
+              license_key: key,
+              client_name: data.client_name,
+              tier: data.tier,
+              expires_at: data.expires_at,
+              modules: data.modules || [],
+              hwid: systemHwid,
+              authenticated_at: new Date().toISOString()
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+
+            // Success unlock animation
+            document.getElementById("authFormCard").style.display = "none";
+            const unlocked = document.getElementById("authUnlockedCard");
+            unlocked.classList.add("show");
+            document.getElementById("authClientName").textContent = data.client_name;
+            document.getElementById("authClientTier").textContent = data.tier;
+            if (window.lucide) lucide.createIcons();
+
+            setTimeout(() => {
+              document.getElementById("authProgressFill").style.width = "100%";
+            }, 100);
+
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 1300);
+
+          } else {
+            showAlert(data.message || "Invalid or unauthorized license key.", "error");
+          }
+        } catch(err) {
+          showAlert("Server connection failed. Ensure web_server.py is running.", "error");
+        } finally {
+          submitBtn.disabled = false;
+          spinner.style.display = "none";
+          btnText.textContent = "Authenticate & Launch Terminal";
+        }
+      });
+
+      function showAlert(msg, type = "error") {
+        alertBox.className = `auth-alert show ${type}`;
+        alertBox.innerHTML = `
+          <i data-lucide="${type === 'error' ? 'alert-circle' : 'check-circle'}" style="width:18px;height:18px;flex-shrink:0;"></i>
+          <span>${msg}</span>
+        `;
+        if (window.lucide) lucide.createIcons();
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1595,6 +1595,106 @@ async def grade_student_trade(req: TradeGradeRequest):
     }
 
 # ---------------------------------------------------------------------------
+# LICENSE VALIDATION GATEWAY (Client Authentication)
+# ---------------------------------------------------------------------------
+import hashlib
+import platform
+import uuid
+
+LICENSES_FILE = WORKSPACE_ROOT / "data_cache" / "licenses.json"
+
+class ValidateLicenseRequest(BaseModel):
+    license_key: str
+    hwid: Optional[str] = None
+
+def get_system_hwid() -> str:
+    """Computes a deterministic machine Hardware ID (HWID/HUID) fingerprint."""
+    try:
+        mac = uuid.getnode()
+        raw = f"{platform.node()}-{platform.machine()}-{mac}"
+        h = hashlib.sha256(raw.encode()).hexdigest().upper()
+        return f"HWID-{h[:4]}-{h[4:8]}-{h[8:12]}-{h[12:16]}"
+    except Exception:
+        return "HWID-UNKNOWN"
+
+def load_licenses_db() -> List[Dict[str, Any]]:
+    if not LICENSES_FILE.exists():
+        return []
+    try:
+        with open(LICENSES_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data.get("licenses", [])
+    except Exception as e:
+        print(f"Error reading licenses DB: {e}")
+        return []
+
+@app.get("/api/licenses/my-hwid")
+async def get_client_hwid():
+    """Returns detected system Hardware ID for 1-click binding."""
+    return {
+        "hwid": get_system_hwid(),
+        "platform": platform.platform(),
+        "node": platform.node(),
+        "machine": platform.machine()
+    }
+
+@app.post("/api/licenses/validate")
+async def validate_client_license(req: ValidateLicenseRequest):
+    """Validates license key and HWID binding for entering the terminal."""
+    licenses = load_licenses_db()
+    key_clean = req.license_key.strip().upper()
+
+    match = next((l for l in licenses if l["key"].upper() == key_clean), None)
+    if not match:
+        return {
+            "valid": False,
+            "status": "NOT_FOUND",
+            "message": "Invalid license key. Please verify characters or request an authorized key."
+        }
+
+    if match.get("status") != "ACTIVE":
+        return {
+            "valid": False,
+            "status": match.get("status", "REVOKED"),
+            "message": f"License key has been {match.get('status')}."
+        }
+
+    # Expiry Check
+    try:
+        exp = datetime.fromisoformat(match["expires_at"])
+        if datetime.now() > exp:
+            return {
+                "valid": False,
+                "status": "EXPIRED",
+                "message": f"License expired on {exp.strftime('%d %b %Y')}."
+            }
+    except Exception:
+        pass
+
+    # HWID Hardware ID Verification
+    if req.hwid:
+        req_hwid_clean = req.hwid.strip().upper()
+        lic_hwid = (match.get("hwid") or "").strip().upper()
+        if lic_hwid and lic_hwid != req_hwid_clean and lic_hwid != "ANY":
+            return {
+                "valid": False,
+                "status": "HWID_MISMATCH",
+                "message": f"License is bound to Hardware ID {lic_hwid}. Contact admin to authorize this machine.",
+                "bound_hwid": lic_hwid,
+                "request_hwid": req_hwid_clean
+            }
+
+    return {
+        "valid": True,
+        "status": "ACTIVE",
+        "client_name": match["client_name"],
+        "tier": match["tier"],
+        "expires_at": match["expires_at"],
+        "modules": match.get("modules", []),
+        "message": f"Welcome, {match['client_name']}! Access authorized for {match['tier']}."
+    }
+
+# ---------------------------------------------------------------------------
 @app.get("/api/open_obsidian")
 @app.post("/api/open_obsidian")
 async def open_obsidian_vault(file: Optional[str] = None, node: Optional[str] = None):
