@@ -1603,6 +1603,116 @@ import uuid
 
 LICENSES_FILE = WORKSPACE_ROOT / "data_cache" / "licenses.json"
 
+DEFAULT_SEEDED_LICENSES = [
+    {
+        "key": "T2O-ENT-DCC9-75C6-2E46",
+        "client_name": "Ankit",
+        "email": "mohanan3kit77@gmail.com",
+        "tier": "Enterprise Lifetime",
+        "hwid": "ANY",
+        "status": "ACTIVE",
+        "created_at": "2026-09-09T19:09:17",
+        "expires_at": "2035-12-31T23:59:59",
+        "max_seats": 5,
+        "active_seats": 1,
+        "modules": [
+            "NSE/BSE Indian Live Terminal",
+            "Multi-Agent AI Debate Arena",
+            "Discord Webhook Broadcast",
+            "MT5 TrendPullback EA Bot",
+            "Options Chain PCR Radar"
+        ]
+    },
+    {
+        "key": "T2O-PRO-6C43-F252-C7B0",
+        "client_name": "sourabh",
+        "email": "saurabh@gmail.com",
+        "tier": "Trader Pro (Quarterly)",
+        "hwid": "ANY",
+        "status": "ACTIVE",
+        "created_at": "2026-09-09T19:12:07",
+        "expires_at": "2030-12-31T23:59:59",
+        "max_seats": 2,
+        "active_seats": 1,
+        "modules": [
+            "NSE/BSE Indian Live Terminal",
+            "Multi-Agent AI Debate Arena",
+            "Discord Webhook Broadcast"
+        ]
+    },
+    {
+        "key": "T2O-PRO-8F29-A4C1-7290",
+        "client_name": "Ankit Kumar",
+        "email": "ankit.trader@gmail.com",
+        "tier": "Enterprise Lifetime",
+        "hwid": "ANY",
+        "status": "ACTIVE",
+        "created_at": "2026-09-01T09:15:00",
+        "expires_at": "2035-12-31T23:59:59",
+        "max_seats": 5,
+        "active_seats": 1,
+        "modules": [
+            "NSE/BSE Indian Live Terminal",
+            "Multi-Agent AI Debate Arena",
+            "Discord Webhook Broadcast",
+            "MT5 TrendPullback EA Bot",
+            "Options Chain PCR Radar"
+        ]
+    },
+    {
+        "key": "T2O-MST-41B9-72E0-9941",
+        "client_name": "Vikram Malhotra",
+        "email": "vikram.m@dalalstreet.in",
+        "tier": "Mastery Annual",
+        "hwid": "ANY",
+        "status": "ACTIVE",
+        "created_at": "2026-08-15T11:30:00",
+        "expires_at": "2027-08-15T23:59:59",
+        "max_seats": 2,
+        "active_seats": 1,
+        "modules": [
+            "NSE/BSE Indian Live Terminal",
+            "Multi-Agent AI Debate Arena",
+            "Discord Webhook Broadcast"
+        ]
+    },
+    {
+        "key": "T2O-TRL-10A2-54D8-3318",
+        "client_name": "Siddharth Verma",
+        "email": "siddharth.v@outlook.com",
+        "tier": "7-Day Free Trial",
+        "hwid": "ANY",
+        "status": "ACTIVE",
+        "created_at": "2026-09-05T14:00:00",
+        "expires_at": "2026-12-31T23:59:59",
+        "max_seats": 1,
+        "active_seats": 1,
+        "modules": [
+            "NSE/BSE Indian Live Terminal",
+            "Options Chain PCR Radar"
+        ]
+    },
+    {
+        "key": "T2O-ENT-6E9D-0D48-AC8F",
+        "client_name": "Rohan Gupta",
+        "email": "rohan@trade2options.com",
+        "tier": "Enterprise Lifetime",
+        "hwid": "ANY",
+        "status": "ACTIVE",
+        "created_at": "2026-09-07T15:17:19",
+        "expires_at": "2035-12-31T23:59:59",
+        "max_seats": 1,
+        "active_seats": 1,
+        "modules": [
+            "NSE/BSE Indian Live Terminal",
+            "Multi-Agent AI Debate Arena",
+            "Discord Webhook Broadcast",
+            "MT5 TrendPullback EA Bot",
+            "Options Chain PCR Radar"
+        ]
+    }
+]
+
 class ValidateLicenseRequest(BaseModel):
     license_key: str
     hwid: Optional[str] = None
@@ -1619,14 +1729,24 @@ def get_system_hwid() -> str:
 
 def load_licenses_db() -> List[Dict[str, Any]]:
     if not LICENSES_FILE.exists():
-        return []
+        try:
+            LICENSES_FILE.parent.mkdir(parents=True, exist_ok=True)
+            with open(LICENSES_FILE, "w", encoding="utf-8") as f:
+                json.dump({"licenses": DEFAULT_SEEDED_LICENSES}, f, indent=2)
+        except Exception as e:
+            print(f"Notice: Could not write default licenses file: {e}")
+        return DEFAULT_SEEDED_LICENSES
+
     try:
         with open(LICENSES_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
-            return data.get("licenses", [])
+            licenses = data.get("licenses", [])
+            if not licenses:
+                return DEFAULT_SEEDED_LICENSES
+            return licenses
     except Exception as e:
         print(f"Error reading licenses DB: {e}")
-        return []
+        return DEFAULT_SEEDED_LICENSES
 
 @app.get("/api/licenses/my-hwid")
 async def get_client_hwid():
@@ -1672,10 +1792,13 @@ async def validate_client_license(req: ValidateLicenseRequest):
         pass
 
     # HWID Hardware ID Verification
-    if req.hwid:
+    # In cloud environments (Render, Railway, etc.) or when key is set to ANY, permit access across client browsers
+    is_cloud_env = bool(os.getenv("RENDER") or os.getenv("PORT") or os.getenv("DYNO") or os.getenv("RAILWAY_ENVIRONMENT"))
+    lic_hwid = (match.get("hwid") or "").strip().upper()
+
+    if req.hwid and lic_hwid and lic_hwid not in ["ANY", "CLOUD", "*", ""] and not is_cloud_env:
         req_hwid_clean = req.hwid.strip().upper()
-        lic_hwid = (match.get("hwid") or "").strip().upper()
-        if lic_hwid and lic_hwid != req_hwid_clean and lic_hwid != "ANY":
+        if lic_hwid != req_hwid_clean and req_hwid_clean != "ANY":
             return {
                 "valid": False,
                 "status": "HWID_MISMATCH",
