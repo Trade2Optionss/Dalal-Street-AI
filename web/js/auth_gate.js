@@ -71,7 +71,9 @@
 
     if (keyInput) {
       keyInput.addEventListener("input", (e) => {
-        keyInput.value = keyInput.value.toUpperCase();
+        if (!keyInput.value.startsWith("T2O-SIG") && !keyInput.value.includes(".")) {
+          keyInput.value = keyInput.value.toUpperCase();
+        }
         hideAlert();
       });
     }
@@ -81,7 +83,8 @@
         try {
           const text = await navigator.clipboard.readText();
           if (text) {
-            keyInput.value = text.trim().toUpperCase();
+            const cleanText = text.trim();
+            keyInput.value = (!cleanText.startsWith("T2O-SIG") && !cleanText.includes(".")) ? cleanText.toUpperCase() : cleanText;
             hideAlert();
           }
         } catch (err) {
@@ -124,10 +127,13 @@
     if (form) {
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const key = keyInput ? keyInput.value.trim().toUpperCase() : "";
+        let key = keyInput ? keyInput.value.trim() : "";
         if (!key) {
           showAlert("Please enter your Trade2Options license key.", "error");
           return;
+        }
+        if (!key.startsWith("T2O-SIG") && !key.includes(".")) {
+          key = key.toUpperCase();
         }
         await verifyKey(key, true);
       });

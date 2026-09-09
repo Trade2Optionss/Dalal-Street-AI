@@ -216,44 +216,32 @@ async def list_licenses():
 
 @app.post("/api/licenses/generate")
 async def generate_license(req: GenerateLicenseRequest):
-    """Generates and registers a new cryptographically formatted license key bound to HWID."""
-    tier_prefix = "PRO"
-    if "trial" in req.tier.lower():
-        tier_prefix = "TRL"
-    elif "mastery" in req.tier.lower() or "annual" in req.tier.lower():
-        tier_prefix = "MST"
-    elif "enterprise" in req.tier.lower() or "lifetime" in req.tier.lower():
-        tier_prefix = "ENT"
+    """Generates and registers a new cryptographically signed, tamper-proof license key."""
+    from crypto_licensing import generate_signed_license
 
-    token = secrets.token_hex(6).upper()
-    license_key = f"T2O-{tier_prefix}-{token[:4]}-{token[4:8]}-{token[8:12]}"
+    hwid_target = (req.hwid.strip().upper() if req.hwid else "ANY")
+    signed_data = generate_signed_license(
+        client_name=req.client_name,
+        tier=req.tier,
+        duration_days=req.duration_days,
+        email=req.email,
+        hwid=hwid_target,
+        custom_modules=req.modules
+    )
 
-    now = datetime.now()
-    if req.duration_days >= 3650:
-        expires_at = datetime(2035, 12, 31, 23, 59, 59).isoformat()
-    else:
-        expires_at = (now + dt.timedelta(days=req.duration_days)).isoformat()
-
-    default_modules = [
-        "NSE/BSE Indian Live Terminal",
-        "Multi-Agent AI Debate Arena",
-        "Discord Webhook Broadcast"
-    ]
-    if tier_prefix in ["ENT", "MST"]:
-        default_modules.extend(["MT5 TrendPullback EA Bot", "Options Chain PCR Radar"])
-
+    license_key = signed_data["license_key"]
     new_lic = {
         "key": license_key,
-        "client_name": req.client_name.strip(),
+        "client_name": signed_data["client_name"],
         "email": req.email.strip().lower(),
-        "tier": req.tier,
-        "hwid": (req.hwid.strip().upper() if req.hwid else get_system_hwid()),
+        "tier": signed_data["tier"],
+        "hwid": signed_data["hwid"],
         "status": "ACTIVE",
-        "created_at": now.isoformat(),
-        "expires_at": expires_at,
+        "created_at": signed_data["created_at"],
+        "expires_at": signed_data["expires_at"],
         "max_seats": req.max_seats,
         "active_seats": 1,
-        "modules": req.modules or default_modules
+        "modules": signed_data["modules"]
     }
 
     licenses = load_licenses_db()
@@ -263,16 +251,40 @@ async def generate_license(req: GenerateLicenseRequest):
     return {
         "success": True,
         "license": new_lic,
-        "message": f"License key {license_key} successfully generated and bound to HWID {new_lic['hwid']}."
+        "message": f"Cryptographic license key successfully generated and signed for {new_lic['client_name']}."
     }
 
 @app.post("/api/licenses/validate")
 async def validate_license(req: ValidateLicenseRequest):
     """Validates license key and HWID / HUID binding for client authentication."""
-    licenses = load_licenses_db()
-    key_clean = req.license_key.strip().upper()
+    key_clean = req.license_key.strip()
 
-    match = next((l for l in licenses if l["key"].upper() == key_clean), None)
+    # 1. Cryptographic token check
+    if key_clean.startswith("T2O-SIG") or ("." in key_clean and key_clean.startswith("T2O")):
+        from crypto_licensing import verify_signed_license
+        is_valid, info = verify_signed_license(key_clean, req.hwid)
+        if is_valid:
+            return {
+                "valid": True,
+                "status": "ACTIVE",
+                "client_name": info["client_name"],
+                "tier": info["tier"],
+                "expires_at": info["expires_at"],
+                "modules": info["modules"],
+                "message": info["message"]
+            }
+        else:
+            return {
+                "valid": False,
+                "status": info.get("status", "INVALID"),
+                "message": info.get("message", "Invalid cryptographic signature.")
+            }
+
+    # 2. Database check fallback
+    licenses = load_licenses_db()
+    key_upper = key_clean.upper()
+
+    match = next((l for l in licenses if l["key"].upper() == key_upper), None)
     if not match:
         return {
             "valid": False,

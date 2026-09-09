@@ -1760,11 +1760,39 @@ async def get_client_hwid():
 
 @app.post("/api/licenses/validate")
 async def validate_client_license(req: ValidateLicenseRequest):
-    """Validates license key and HWID binding for entering the terminal."""
-    licenses = load_licenses_db()
-    key_clean = req.license_key.strip().upper()
+    """Validates license key using cryptographic signatures (Strategy 1)
+       with fallback to database/seeded records."""
+    key_clean = req.license_key.strip()
 
-    match = next((l for l in licenses if l["key"].upper() == key_clean), None)
+    # 1. Check if key is a Production Cryptographic Signed Token (Zero-DB / Render Immune)
+    if key_clean.startswith("T2O-SIG") or ("." in key_clean and key_clean.startswith("T2O")):
+        try:
+            from crypto_licensing import verify_signed_license
+            is_valid, info = verify_signed_license(key_clean, req.hwid)
+            if is_valid:
+                return {
+                    "valid": True,
+                    "status": "ACTIVE",
+                    "client_name": info["client_name"],
+                    "tier": info["tier"],
+                    "expires_at": info["expires_at"],
+                    "modules": info["modules"],
+                    "message": info["message"]
+                }
+            else:
+                return {
+                    "valid": False,
+                    "status": info.get("status", "INVALID"),
+                    "message": info.get("message", "Invalid cryptographic license key.")
+                }
+        except Exception as e:
+            print(f"Error during cryptographic key verification: {e}")
+
+    # 2. Check Database / Seeded Keys (Legacy & Backward Compatibility)
+    licenses = load_licenses_db()
+    key_upper = key_clean.upper()
+
+    match = next((l for l in licenses if l["key"].upper() == key_upper), None)
     if not match:
         return {
             "valid": False,
@@ -1792,7 +1820,6 @@ async def validate_client_license(req: ValidateLicenseRequest):
         pass
 
     # HWID Hardware ID Verification
-    # In cloud environments (Render, Railway, etc.) or when key is set to ANY, permit access across client browsers
     is_cloud_env = bool(os.getenv("RENDER") or os.getenv("PORT") or os.getenv("DYNO") or os.getenv("RAILWAY_ENVIRONMENT"))
     lic_hwid = (match.get("hwid") or "").strip().upper()
 

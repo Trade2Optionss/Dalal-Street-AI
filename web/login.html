@@ -199,7 +199,9 @@
       const btnText = document.getElementById("authBtnText");
 
       keyInput.addEventListener("input", () => {
-        keyInput.value = keyInput.value.toUpperCase();
+        if (!keyInput.value.startsWith("T2O-SIG") && !keyInput.value.includes(".")) {
+          keyInput.value = keyInput.value.toUpperCase();
+        }
         alertBox.className = "auth-alert";
         alertBox.innerHTML = "";
       });
@@ -208,7 +210,8 @@
         try {
           const clipText = await navigator.clipboard.readText();
           if (clipText) {
-            keyInput.value = clipText.trim().toUpperCase();
+            const cleanText = clipText.trim();
+            keyInput.value = (!cleanText.startsWith("T2O-SIG") && !cleanText.includes(".")) ? cleanText.toUpperCase() : cleanText;
             alertBox.className = "auth-alert";
           }
         } catch(e) {
@@ -244,10 +247,13 @@
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const key = keyInput.value.trim().toUpperCase();
+        let key = keyInput.value.trim();
         if (!key) {
           showAlert("Please enter your Trade2Options license key.", "error");
           return;
+        }
+        if (!key.startsWith("T2O-SIG") && !key.includes(".")) {
+          key = key.toUpperCase();
         }
 
         submitBtn.disabled = true;
