@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRADE2OPTIONS — Indian Stock Market (NSE/BSE) Multi-Agent Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=3.4">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Motion (WAAPI & Spring Physics Engine) -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
+</head>
+<body class="dark-theme">
+  <!-- Uplinq Reference Background System (Fluted Slats, Volumetric Spotlights & Neon Stepped Geometric Shapes) -->
+  <div class="uplinq-bg-container" aria-hidden="true">
+    <!-- Live Animated Japanese Candlestick & Spline Trading Wave Canvas -->
+    <canvas id="tradingWaveCanvas" class="trading-wave-canvas"></canvas>
+
+    <!-- Vertical 3D Architectural Fluted Slats Texture -->
+    <div class="bg-slats-layer"></div>
+    
+    <!-- Volumetric Light Burst / Spotlights (Top Left, Top Center, Mid Center) -->
+    <div class="bg-spotlight-top-left"></div>
+    <div class="bg-spotlight-top-center"></div>
+    <div class="bg-spotlight-mid-center"></div>
+    
+    <!-- Neon Stepped Geometric Contour Outline Elements (Left & Right) -->
+    <div class="bg-geometric-decor decor-left">
+      <svg viewBox="0 0 320 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="neon-geom-svg">
+        <!-- Outer Stepped Contour -->
+        <path d="M 20 600 L 20 380 Q 20 340 60 340 L 90 340 Q 130 340 130 300 L 130 180 Q 130 140 170 140 L 220 140 Q 260 140 260 180 L 260 280 Q 260 320 220 320 L 180 320 Q 140 320 140 360 L 140 600" 
+              stroke="url(#tealGlowGradLeft1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Inner Stepped Accent Contour -->
+        <path d="M 45 600 L 45 420 Q 45 385 80 385 L 110 385 Q 145 385 145 350 L 145 260 Q 145 225 180 225 L 210 225 Q 240 225 240 255 L 240 600" 
+              stroke="url(#tealGlowGradLeft2)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+        <defs>
+          <linearGradient id="tealGlowGradLeft1" x1="20" y1="140" x2="260" y2="600" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.9"/>
+            <stop offset="50%" stop-color="#14b8a6" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="#0d9488" stop-opacity="0.05"/>
+          </linearGradient>
+          <linearGradient id="tealGlowGradLeft2" x1="45" y1="225" x2="240" y2="600" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#5eead4" stop-opacity="0.8"/>
+            <stop offset="60%" stop-color="#2dd4bf" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#0f766e" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="bg-geometric-decor decor-right">
+      <svg viewBox="0 0 320 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="neon-geom-svg">
+        <!-- Right Stepped Geometric Contour -->
+        <path d="M 300 600 L 300 340 Q 300 290 250 290 L 210 290 Q 160 290 160 240 L 160 140 Q 160 90 110 90 L 70 90 Q 20 90 20 140 L 20 600" 
+              stroke="url(#tealGlowGradRight1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Inner Right Accent Contour -->
+        <path d="M 270 600 L 270 380 Q 270 335 225 335 L 185 335 Q 140 335 140 290 L 140 210 Q 140 165 95 165 L 55 165 Q 10 165 10 210 L 10 600" 
+              stroke="url(#tealGlowGradRight2)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+        <defs>
+          <linearGradient id="tealGlowGradRight1" x1="300" y1="90" x2="20" y2="600" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.95"/>
+            <stop offset="50%" stop-color="#14b8a6" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="#0d9488" stop-opacity="0.05"/>
+          </linearGradient>
+          <linearGradient id="tealGlowGradRight2" x1="270" y1="165" x2="10" y2="600" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#5eead4" stop-opacity="0.75"/>
+            <stop offset="60%" stop-color="#2dd4bf" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#0f766e" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Top Navigation & Live Dalal Street Market Tape -->
+  <header class="app-header">
+    <div class="header-wrapper">
+      <!-- Left Brand Logo -->
+      <div class="brand-container" id="navBrand">
+        <div class="brand-logo">
+          <div class="brand-crystal-wrapper">
+            <svg class="brand-crystal-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2L30 9V23L16 30L2 23V9L16 2Z" fill="url(#brandGrad1)" stroke="url(#brandStroke1)" stroke-width="1.6"/>
+              <path d="M16 2V30M30 9L2 23M2 9L30 23" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <circle cx="16" cy="16" r="4.5" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+              <path d="M8 17L13 12L17 15L23 9" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="brandGrad1" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#0d9488" stop-opacity="0.85"/>
+                  <stop offset="50%" stop-color="#0284c7" stop-opacity="0.5"/>
+                  <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0.9"/>
+                </linearGradient>
+                <linearGradient id="brandStroke1" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#2dd4bf"/>
+                  <stop offset="50%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#818cf8"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="crystal-glow-fx"></div>
+          </div>
+          <div class="brand-text-col">
+            <div class="logo-title-row">
+              <span class="logo-text">TRADE<span class="highlight">2</span>OPTIONS</span>
+              <span class="logo-badge"><span class="badge-pulse-dot"></span> NSE / BSE AI</span>
+            </div>
+            <span class="logo-subline">Autonomous Multi-Agent Intelligence Suite</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Floating Liquid Glass Capsule Navigation Bar -->
+      <nav class="nav-tabs" id="mainNavTabs">
+        <button class="nav-tab active" data-target="view-launchpad" aria-label="Launchpad">
+          <i data-lucide="layout-grid"></i>
+          <span class="tab-label">Launchpad</span>
+        </button>
+        <button class="nav-tab" data-target="view-results" aria-label="Track Record">
+          <i data-lucide="award"></i>
+          <span class="tab-label">Track Record</span>
+        </button>
+        <button class="nav-tab" data-target="view-research" aria-label="Research Terminal">
+          <i data-lucide="file-search"></i>
+          <span class="tab-label">Research</span>
+        </button>
+        <button class="nav-tab" data-target="view-comparison" aria-label="Stock Comparison">
+          <i data-lucide="split"></i>
+          <span class="tab-label">Comparison</span>
+        </button>
+        <button class="nav-tab" data-target="view-newsletter" aria-label="20-Stock Matrix">
+          <i data-lucide="newspaper"></i>
+          <span class="tab-label">20-Stock Matrix</span>
+        </button>
+        <button class="nav-tab" data-target="view-arena" aria-label="Debate Arena">
+          <i data-lucide="swords"></i>
+          <span class="tab-label">Debate Arena</span>
+        </button>
+        <button class="nav-tab obsidian-graph-tab" id="openObsidianGraphBtn" aria-label="Obsidian Agent Graph">
+          <i data-lucide="git-fork"></i>
+          <span class="tab-label">Obsidian Graph</span>
+        </button>
+        <a href="/licenses.html" class="nav-tab license-tab" style="text-decoration: none;" aria-label="Licenses">
+          <i data-lucide="key"></i>
+          <span class="tab-label">Licenses</span>
+        </a>
+      </nav>
+
+      <!-- Right Floating Action Pod -->
+      <div class="header-actions">
+        <div class="status-chip online" id="pipelineLiveBadge">
+          <span class="radar-beacon">
+            <span class="radar-ring"></span>
+            <span class="status-dot"></span>
+          </span>
+          <div class="chip-text-wrap">
+            <span class="chip-status-text" id="pipelineLatencyText">PRE-MARKET SYNC • 58ms</span>
+            <span class="chip-feed-meta">TRADINGVIEW LIVE SCANNER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Dalal Street Ticker Ribbon -->
+    <div class="ticker-ribbon">
+      <div class="ticker-ribbon-badge">
+        <span class="live-dot-pulse"></span>
+        <span>DALAL STREET LIVE</span>
+      </div>
+      <div class="ticker-scroll-wrapper">
+        <div class="ticker-track" id="tickerTape">
+          <div class="tape-item index-chip"><span class="sym">NIFTY 50</span> <span class="val">24,850.30</span> <span class="delta-badge up">▲ +0.45%</span></div>
+          <div class="tape-item index-chip"><span class="sym">BANK NIFTY</span> <span class="val">51,320.80</span> <span class="delta-badge up">▲ +0.62%</span></div>
+          <div class="tape-item index-chip"><span class="sym">SENSEX</span> <span class="val">81,420.15</span> <span class="delta-badge up">▲ +0.38%</span></div>
+          <div class="tape-item index-chip"><span class="sym">INDIA VIX</span> <span class="val">13.45</span> <span class="delta-badge down">▼ -2.10%</span></div>
+          <div class="tape-item stock-chip"><span class="sym">RELIANCE</span> <span class="val">₹2,945.00</span> <span class="delta-badge up">▲ +1.25%</span></div>
+          <div class="tape-item stock-chip"><span class="sym">TCS</span> <span class="val">₹4,250.80</span> <span class="delta-badge up">▲ +0.85%</span></div>
+          <div class="tape-item stock-chip"><span class="sym">HDFCBANK</span> <span class="val">₹1,640.20</span> <span class="delta-badge up">▲ +0.42%</span></div>
+          <div class="tape-item stock-chip"><span class="sym">INFY</span> <span class="val">₹1,820.50</span> <span class="delta-badge down">▼ -0.30%</span></div>
+          <div class="tape-item stock-chip"><span class="sym">ICICIBANK</span> <span class="val">₹1,210.00</span> <span class="delta-badge up">▲ +1.15%</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="main-content">
+
+    <!-- ================================================================= -->
+    <!-- VIEW 0: LAUNCHPAD HUB (5 DISTINCT ANIMATED CLICKABLE PORTALS)     -->
+    <!-- ================================================================= -->
+    <section id="view-launchpad" class="page-view active">
+      <div class="launchpad-hero">
+        <div class="hero-tag">
+          <span class="hero-tag-pulse"></span>
+          <span class="tag-sparkle">✦</span>
+          <span class="tag-label">INSTITUTIONAL QUANT ENGINE</span>
+          <span class="tag-divider">•</span>
+          <span class="tag-sub">NSE / BSE REALTIME</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="hero-title-top">Dalal Street</span>
+          <span class="hero-title-gradient">Multi-Agent Command Center</span>
+        </h1>
+        <p class="hero-subtitle">
+          Select any institutional workspace below. Audit past <span class="hero-hl">Verifiable Performance</span>, run deep-dive <span class="hero-hl">Stock Dossiers</span> on any NSE/BSE equity, gauge daily <span class="hero-hl">Bull vs Bear Momentum</span>, or dispatch live signals directly to <span class="hero-hl">Discord</span>.
+        </p>
+        
+        <!-- Live Quant Telemetry Mini-Ribbon -->
+        <div class="hero-stats-ribbon">
+          <div class="stat-pill"><span class="pill-dot green"></span> 48 Equities Monitored</div>
+          <div class="stat-pill"><span class="pill-dot cyan"></span> 58ms Live Telemetry</div>
+          <div class="stat-pill"><span class="pill-dot purple"></span> 16 Quant Agents</div>
+          <div class="stat-pill"><span class="pill-dot gold"></span> 86.4% Verified Accuracy</div>
+        </div>
+
+        <!-- Hero Action Buttons (Glowing Liquid CTA + Glass Action) -->
+        <div class="hero-cta-group">
+          <button class="hero-cta-btn cta-glow" id="heroExploreAllBtn">
+            <i data-lucide="layout-grid"></i>
+            <span>Explore 5 Workspaces</span>
+          </button>
+          <button class="hero-cta-btn cta-glass" id="heroOpenGraphBtn">
+            <i data-lucide="git-fork"></i>
+            <span>Agent Graph</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5 Interactive Closify-Style Emerald Glowing Squircle Portal Cards Grid -->
+      <div class="portal-grid" id="portalCardsGrid">
+        
+        <!-- Portal Card 01: Option Results -->
+        <div class="portal-card closify-card" data-launch="view-results">
+          <div class="card-glow-reflection"></div>
+          
+          <!-- Top 3D Visual Gauge Stage -->
+          <div class="card-visual-stage">
+            <div class="closify-dial-wrapper">
+              <div class="closify-dial-ring">
+                <div class="closify-dial-core">
+                  <span class="closify-dial-pct">86.4%</span>
+                </div>
+              </div>
+              <div class="closify-floating-input">
+                <i data-lucide="award"></i>
+                <span>Verified 8/8 Past Signals</span>
+                <i data-lucide="arrow-up-right" class="mini-arr"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card Content Area -->
+          <div class="card-content-area">
+            <div class="card-meta-row">
+              <span class="closify-badge">OPTION 01 • PROVEN TRACK RECORD</span>
+            </div>
+            <h2 class="card-title">Our Results & Daily Performance Ledger</h2>
+            <p class="card-desc">Verifiable on-screen past records tracking every stock call, entry price, EOD close, ₹ movement, and accuracy rate.</p>
+            
+            <div class="card-action-row">
+              <span class="closify-action-btn">
+                <span>View Past Records & Results</span>
+                <i data-lucide="arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal Card 02: Research Terminal -->
+        <div class="portal-card closify-card" data-launch="view-research">
+          <div class="card-glow-reflection"></div>
+          
+          <!-- Top 3D Visual Light Pyramid Stage -->
+          <div class="card-visual-stage">
+            <div class="closify-pyramid-wrapper">
+              <div class="closify-apex-beacon">
+                <i data-lucide="trending-up"></i>
+              </div>
+              <div class="closify-pyramid-beam"></div>
+              <div class="closify-chips-row">
+                <span class="c-chip"><i data-lucide="search"></i></span>
+                <span class="c-chip"><i data-lucide="sparkles"></i></span>
+                <span class="c-chip"><i data-lucide="file-text"></i></span>
+                <span class="c-chip"><i data-lucide="refresh-cw"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card Content Area -->
+          <div class="card-content-area">
+            <div class="card-meta-row">
+              <span class="closify-badge">OPTION 02 • NSE/BSE DOSSIER</span>
+            </div>
+            <h2 class="card-title">Universal Stock Research Terminal</h2>
+            <p class="card-desc">Deep-dive financial and market structure audits for ANY NSE & BSE stock with 100% real live TradingView market quotes.</p>
+            
+            <div class="card-action-row">
+              <span class="closify-action-btn">
+                <span>Launch Research Terminal</span>
+                <i data-lucide="arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal Card 03: Stock Comparison -->
+        <div class="portal-card closify-card" data-launch="view-comparison">
+          <div class="card-glow-reflection"></div>
+          
+          <!-- Top 3D Visual Circuit Stage -->
+          <div class="card-visual-stage">
+            <div class="closify-circuit-wrapper">
+              <div class="circuit-nodes-layer">
+                <div class="c-node node-left"><i data-lucide="split"></i></div>
+                <div class="c-node node-mid"><i data-lucide="bar-chart-2"></i></div>
+                <div class="c-node node-right"><i data-lucide="activity"></i></div>
+              </div>
+              <div class="closify-priority-bar-box">
+                <div class="priority-label-row">
+                  <span>Market Breadth Pulse</span>
+                  <span class="p-num">04</span>
+                </div>
+                <div class="priority-segments-track">
+                  <div class="seg-fill seg-bull"></div>
+                  <div class="seg-fill seg-bear"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card Content Area -->
+          <div class="card-content-area">
+            <div class="card-meta-row">
+              <span class="closify-badge">OPTION 03 • BULL VS BEAR RADAR</span>
+            </div>
+            <h2 class="card-title">Stock Comparison & Sentiment Radar</h2>
+            <p class="card-desc">Daily market breadth pulse separating top Bull-Side momentum stocks from Bear-Side drag stocks with Head-to-Head Matrix.</p>
+            
+            <div class="card-action-row">
+              <span class="closify-action-btn">
+                <span>Open Stock Comparison</span>
+                <i data-lucide="arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal Card 04: 20-Stock Matrix -->
+        <div class="portal-card closify-card" data-launch="view-newsletter">
+          <div class="card-glow-reflection"></div>
+          
+          <!-- Top 3D Visual Radar Stage -->
+          <div class="card-visual-stage">
+            <div class="closify-radar-wrapper">
+              <div class="radar-scan-circle">
+                <div class="radar-sweep-beam"></div>
+                <div class="radar-dot dot-1"></div>
+                <div class="radar-dot dot-2"></div>
+                <div class="radar-dot dot-3"></div>
+              </div>
+              <div class="closify-floating-input">
+                <i data-lucide="newspaper"></i>
+                <span>20 NSE Bluechips Conviction</span>
+                <i data-lucide="arrow-up-right" class="mini-arr"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card Content Area -->
+          <div class="card-content-area">
+            <div class="card-meta-row">
+              <span class="closify-badge">OPTION 04 • 20-STOCK MATRIX</span>
+            </div>
+            <h2 class="card-title">20-Stock Conviction Hub & Publishing</h2>
+            <p class="card-desc">Real-time conviction matrix tracking 20 top NSE bluechips with live market quotes, RBI cues, and 1-click Markdown export.</p>
+            
+            <div class="card-action-row">
+              <span class="closify-action-btn">
+                <span>Open 20-Stock Hub</span>
+                <i data-lucide="arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal Card 05: Debate Arena -->
+        <div class="portal-card closify-card" data-launch="view-arena">
+          <div class="card-glow-reflection"></div>
+          
+          <!-- Top 3D Visual Arena Clash Stage -->
+          <div class="card-visual-stage">
+            <div class="closify-arena-wrapper">
+              <div class="arena-clash-icons">
+                <div class="c-fighter bull-glow">🐂</div>
+                <div class="clash-spark-badge">VS</div>
+                <div class="c-fighter bear-glow">🐻</div>
+              </div>
+              <div class="closify-floating-input">
+                <i data-lucide="swords"></i>
+                <span>Nifty PCR 1.18 • Live F&O</span>
+                <i data-lucide="arrow-up-right" class="mini-arr"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card Content Area -->
+          <div class="card-content-area">
+            <div class="card-meta-row">
+              <span class="closify-badge">OPTION 05 • ARENA & WIDGETS</span>
+            </div>
+            <h2 class="card-title">Indian Debate Arena & Live F&O Widgets</h2>
+            <p class="card-desc">Animated Bull vs. Bear clashes on major Indian stocks, Nifty PCR gauges, FII/DII flow tracker, and LMS Trade Grader.</p>
+            
+            <div class="card-action-row">
+              <span class="closify-action-btn">
+                <span>Enter Arena & Widgets</span>
+                <i data-lucide="arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 5: OUR RESULTS & TRACK RECORD (PAST RECORDS & TOMORROW EDGE) -->
+    <!-- ================================================================= -->
+    <section id="view-results" class="page-view">
+      <div class="view-header">
+        <div class="view-title-wrap">
+          <button class="back-to-hub-btn" data-target="view-launchpad"><i data-lucide="arrow-left"></i> Hub</button>
+          <div>
+            <h1 class="view-title">Our Results & Past Performance Ledger</h1>
+            <p class="view-sub">Verifiable on-screen past records, daily EOD reconciliation against live TradingView prices, and tomorrow's institutional catalysts.</p>
+          </div>
+        </div>
+
+        <div class="results-session-badge" id="resultsDateBadge">
+          Monday, 31 Aug 2026 • LIVE EOD RECONCILIATION
+        </div>
+      </div>
+
+      <!-- 4 Glowing Achievement KPI Cards -->
+      <div class="results-kpi-grid">
+        <div class="res-kpi-card gold-glow">
+          <div class="kpi-top">
+            <span class="kpi-label"><i data-lucide="trophy"></i> Multi-Agent Accuracy</span>
+            <span class="kpi-badge-pill green">VERIFIED</span>
+          </div>
+          <div class="kpi-main-val" id="kpiWinRate">86.4%</div>
+          <div class="kpi-sub-text" id="kpiWinCount">19 / 22 Calls On Target</div>
+        </div>
+
+        <div class="res-kpi-card blue-glow">
+          <div class="kpi-top">
+            <span class="kpi-label"><i data-lucide="trending-up"></i> Cumulative Net Move</span>
+            <span class="kpi-badge-pill blue">ALPHA</span>
+          </div>
+          <div class="kpi-main-val green" id="kpiTotalPoints">+₹482.40</div>
+          <div class="kpi-sub-text">Total Per-Share Movement Captured</div>
+        </div>
+
+        <div class="res-kpi-card green-glow">
+          <div class="kpi-top">
+            <span class="kpi-label"><i data-lucide="sparkles"></i> Top Long Outperformer</span>
+            <span class="kpi-badge-pill green">MAX GAIN</span>
+          </div>
+          <div class="kpi-main-val" id="kpiTopBull" style="font-size: 1.25rem;">TCS (+4.16% / +₹93.50)</div>
+          <div class="kpi-sub-text">AI Deal Pipeline & Volume Surges</div>
+        </div>
+
+        <div class="res-kpi-card red-glow">
+          <div class="kpi-top">
+            <span class="kpi-label"><i data-lucide="shield-check"></i> Top Capital Defense</span>
+            <span class="kpi-badge-pill red">SHORT ALPHA</span>
+          </div>
+          <div class="kpi-main-val" id="kpiTopBear" style="font-size: 1.25rem;">GROWW (-2.73% Short)</div>
+          <div class="kpi-sub-text">Accurate Breakdown / Saved Drawdown</div>
+        </div>
+      </div>
+
+      <!-- Discord Webhook Live Dispatcher & Broadcast Controls -->
+      <div class="discord-dispatcher-card">
+        <div class="discord-card-left">
+          <div class="discord-brand">
+            <i data-lucide="message-square" style="color: #5865F2;"></i>
+            <span>Discord Institutional Webhook Dispatcher</span>
+            <span class="status-pill-green">🟢 CONNECTED</span>
+          </div>
+          <p class="discord-sub">Broadcast verified live signals, daily EOD performance summaries, and tomorrow's high-conviction catalysts directly to your personal Discord channel.</p>
+        </div>
+        <div class="discord-actions-wrap">
+          <button class="btn btn-discord" id="btnBroadcastSignalDiscord">
+            <i data-lucide="bell-ring"></i>
+            <span>Broadcast Signal Alert (TCS)</span>
+          </button>
+          <button class="btn btn-discord" id="btnBroadcastEodDiscord">
+            <i data-lucide="send"></i>
+            <span>Broadcast Daily EOD to Discord</span>
+          </button>
+          <button class="btn btn-discord" id="btnBroadcastTomorrowDiscord">
+            <i data-lucide="sparkles"></i>
+            <span>Broadcast Tomorrow's Catalysts</span>
+          </button>
+          <button class="btn btn-discord-subtle" id="btnPingDiscord">
+            <i data-lucide="radio"></i>
+            <span>Ping Webhook Test</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Past Records & Daily Ledger Table -->
+      <div class="ledger-table-card">
+        <div class="ledger-header">
+          <div class="ledger-title-wrap">
+            <span class="ledger-title"><i data-lucide="table"></i> Verifiable Past Records & Daily Results Ledger</span>
+            <span class="ledger-sub-tag">100% RECONCILED WITH TRADINGVIEW LIVE PRICES</span>
+          </div>
+          <div class="ledger-filter-group">
+            <button class="ledger-filter-btn active" data-filter="all">All Records (Today + Past Sessions)</button>
+            <button class="ledger-filter-btn" data-filter="today">Today's Pre-Market Setups (Monday, 31 Aug)</button>
+            <button class="ledger-filter-btn" data-filter="past">Verified Past Sessions (Closed)</button>
+            <button class="ledger-filter-btn" data-filter="wins">Verified Target Hits (🎯 Past Wins)</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="ledger-table">
+            <thead>
+              <tr>
+                <th>Date & Day</th>
+                <th>Stock / Sector</th>
+                <th>Signal Given</th>
+                <th>Trigger (₹)</th>
+                <th>Live / EOD (₹)</th>
+                <th>Net Move (₹ / %)</th>
+                <th>Outcome Status</th>
+                <th>Key Catalyst & Reasoning</th>
+              </tr>
+            </thead>
+            <tbody id="resultsLedgerBody">
+              <!-- Populated via results.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Smart Tomorrow Radar: Next-Day Edge & Big Money Flow -->
+      <div class="tomorrow-radar-section">
+        <div class="tomorrow-header">
+          <div class="tomorrow-title-wrap">
+            <span class="tomorrow-title"><i data-lucide="compass"></i> Smart Tomorrow Radar: Institutional Edge & Catalysts</span>
+            <span class="tomorrow-badge" id="tomorrowDateBadge">TARGET SESSION: TUESDAY, 1 SEPTEMBER 2026</span>
+          </div>
+          <p class="tomorrow-sub">Forward-looking multi-agent intelligence on upcoming earnings dates, FII/DII block money inflows, and top 3 pre-market watchlist picks.</p>
+        </div>
+
+        <div class="tomorrow-grid">
+          <!-- Column 1: Next-Day Macro & Sector Catalysts -->
+          <div class="tomorrow-col">
+            <h3 class="col-title"><i data-lucide="newspaper"></i> Key Catalysts & Macro Drivers</h3>
+            <div class="macro-cues-list" id="tomorrowMacroCues">
+              <!-- Populated via results.js -->
+            </div>
+          </div>
+
+          <!-- Column 2: Big Money / Institutional Block Buys -->
+          <div class="tomorrow-col">
+            <h3 class="col-title"><i data-lucide="landmark"></i> Big Money Institutional Inflows</h3>
+            <div class="big-money-list" id="tomorrowBigMoneyGrid">
+              <!-- Populated via results.js -->
+            </div>
+          </div>
+
+          <!-- Column 3: Top 3 Pre-Market Watchlist Picks -->
+          <div class="tomorrow-col">
+            <h3 class="col-title"><i data-lucide="flame"></i> Top 3 Pre-Market Watchlist</h3>
+            <div class="watchlist-list" id="tomorrowWatchlistGrid">
+              <!-- Populated via results.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 1: AI INSTITUTIONAL RESEARCH TERMINAL (OPTION A)             -->
+    <!-- ================================================================= -->
+    <section id="view-research" class="page-view">
+      <div class="view-header">
+        <div class="view-title-wrap">
+          <button class="back-to-hub-btn" data-target="view-launchpad"><i data-lucide="arrow-left"></i> Hub</button>
+          <div>
+            <h1 class="view-title">NSE & BSE Institutional Research Terminal</h1>
+            <p class="view-sub">Universal stock search across all Indian equities, ROCE / PAT scorecards, and institutional PDF audit reports in INR (₹).</p>
+          </div>
+        </div>
+        
+        <!-- Universal Search & Exchange Selector Bar -->
+        <div class="universal-search-container">
+          <div class="exchange-toggle-wrap">
+            <button class="exch-btn active" id="toggleNSE">NSE (.NS)</button>
+            <button class="exch-btn" id="toggleBSE">BSE (.BO)</button>
+          </div>
+          
+          <div class="search-input-wrapper">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="researchStockSearch" placeholder="Search ANY Indian Stock (e.g. GROWW, TCS, INFY, ZOMATO, TRENT, BEL, HAL, IRFC, RELIANCE)..." autocomplete="off" value="RELIANCE">
+            <button class="btn btn-primary" id="runResearchBtn">
+              <i data-lucide="play"></i>
+              <span>Run Indian Audit</span>
+            </button>
+
+            <!-- Autocomplete Suggestions Dropdown -->
+            <div class="autocomplete-dropdown" id="searchSuggestionsDropdown">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Trending Indian Stock Chips -->
+        <div class="popular-chips-bar">
+          <span class="chips-label"><i data-lucide="flame"></i> Quick Select:</span>
+          <div class="ticker-chips" id="popularChipsContainer">
+            <button class="chip active" data-symbol="RELIANCE">RELIANCE</button>
+            <button class="chip" data-symbol="TCS">TCS</button>
+            <button class="chip" data-symbol="INFY">INFOSYS</button>
+            <button class="chip" data-symbol="GROWW">GROWW</button>
+            <button class="chip" data-symbol="HDFCBANK">HDFC BANK</button>
+            <button class="chip" data-symbol="TATAMOTORS">TATA MOTORS</button>
+            <button class="chip" data-symbol="ZOMATO">ZOMATO</button>
+            <button class="chip" data-symbol="TRENT">TRENT</button>
+            <button class="chip" data-symbol="BEL">BEL</button>
+            <button class="chip" data-symbol="HAL">HAL</button>
+            <button class="chip" data-symbol="TITAN">TITAN</button>
+            <button class="chip" data-symbol="ICICIBANK">ICICI BANK</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Loading Agent Pipeline Status -->
+      <div class="pipeline-card" id="agentPipelineCard">
+        <div class="pipeline-header">
+          <span><i data-lucide="network"></i> MULTI-AGENT REASONING PIPELINE (DALAL STREET)</span>
+          <span class="pipeline-status" id="pipelineStatusText">READY</span>
+        </div>
+        <div class="agent-nodes-grid">
+          <div class="agent-node" id="node-fundamentals">
+            <div class="node-icon"><i data-lucide="landmark"></i></div>
+            <div class="node-info">
+              <div class="node-name">Financial Health</div>
+              <div class="node-state">Standing By</div>
+            </div>
+          </div>
+          <div class="agent-node" id="node-technicals">
+            <div class="node-icon"><i data-lucide="trending-up"></i></div>
+            <div class="node-info">
+              <div class="node-name">Delivery Vol</div>
+              <div class="node-state">Standing By</div>
+            </div>
+          </div>
+          <div class="agent-node" id="node-sentiment">
+            <div class="node-icon"><i data-lucide="message-square"></i></div>
+            <div class="node-info">
+              <div class="node-name">FII/DII Sentiment</div>
+              <div class="node-state">Standing By</div>
+            </div>
+          </div>
+          <div class="agent-node" id="node-news">
+            <div class="node-icon"><i data-lucide="globe"></i></div>
+            <div class="node-info">
+              <div class="node-name">RBI & Macro</div>
+              <div class="node-state">Standing By</div>
+            </div>
+          </div>
+          <div class="agent-node" id="node-debate">
+            <div class="node-icon"><i data-lucide="scale"></i></div>
+            <div class="node-info">
+              <div class="node-name">Bull vs Bear Duel</div>
+              <div class="node-state">Standing By</div>
+            </div>
+          </div>
+          <div class="agent-node" id="node-risk">
+            <div class="node-icon"><i data-lucide="shield-alert"></i></div>
+            <div class="node-info">
+              <div class="node-name">Risk Committee</div>
+              <div class="node-state">Standing By</div>
+            </div>
+          </div>
+          <div class="agent-node" id="node-portfolio">
+            <div class="node-icon"><i data-lucide="check-circle"></i></div>
+            <div class="node-info">
+              <div class="node-name">Portfolio Manager</div>
+              <div class="node-state">Standing By</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="research-results-grid">
+        
+        <!-- Left Column: KPI Cards & Scorecard -->
+        <div class="results-sidebar">
+          
+          <!-- Ticker Dossier Summary -->
+          <div class="dossier-card">
+            <div class="dossier-top">
+              <div>
+                <div class="dossier-ticker" id="resTicker">RELIANCE</div>
+                <div class="dossier-name" id="resName">Reliance Industries Ltd</div>
+                <div class="dossier-sector" id="resSector">Energy, Retail & Telecom (Jio)</div>
+              </div>
+              <div class="dossier-price-wrap">
+                <div class="dossier-price" id="resPrice">₹1,287.00</div>
+                <div class="dossier-change up" id="resChange">+0.37%</div>
+              </div>
+            </div>
+
+            <div class="conviction-meter-box">
+              <div class="conviction-header">
+                <span>INSTITUTIONAL CONVICTION</span>
+                <span class="conviction-rating" id="resRating">STRONG BUY</span>
+              </div>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="resProgressBar" style="width: 93%;"></div>
+              </div>
+              <div class="conviction-score-sub" id="resScoreSub">Consensus Score: 9.3 / 10.0</div>
+            </div>
+
+            <!-- PDF Download Trigger -->
+            <button class="btn btn-pdf-export" id="downloadPdfBtn">
+              <i data-lucide="file-down"></i>
+              <span>Download Executive PDF Audit (₹ INR)</span>
+            </button>
+          </div>
+
+          <!-- Multi-Factor Radar Matrix -->
+          <div class="scorecard-card">
+            <h3 class="card-subtitle"><i data-lucide="gauge"></i> Factor Scorecard</h3>
+            <div class="score-metric-row">
+              <span class="metric-label">Fundamental & PAT Quality</span>
+              <span class="metric-value green" id="scoreFund">90 / 100</span>
+            </div>
+            <div class="score-metric-row">
+              <span class="metric-label">Delivery Volume Momentum</span>
+              <span class="metric-value green" id="scoreTech">84 / 100</span>
+            </div>
+            <div class="score-metric-row">
+              <span class="metric-label">FII / DII Sentiment Score</span>
+              <span class="metric-value green" id="scoreSent">86 / 100</span>
+            </div>
+            <div class="score-metric-row">
+              <span class="metric-label">Risk-to-Reward Ratio</span>
+              <span class="metric-value blue" id="scoreRR">1 : 2.90</span>
+            </div>
+            <div class="score-metric-row">
+              <span class="metric-label">RBI Macro Alignment</span>
+              <span class="metric-value purple" id="scoreMacro">86 / 100</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Institutional Report Tree Viewer -->
+        <div class="results-main">
+          <div class="report-viewer-card">
+            <div class="report-nav-tabs">
+              <button class="report-tab active" data-tab="tab-overview">Executive Summary</button>
+              <button class="report-tab" data-tab="tab-analysts">Analyst Team</button>
+              <button class="report-tab" data-tab="tab-debate">Bull/Bear Debate</button>
+              <button class="report-tab" data-tab="tab-trader">Trading Blueprint</button>
+              <button class="report-tab" data-tab="tab-risk">Risk & PM Verdict</button>
+            </div>
+
+            <!-- Tab 1: Executive Overview -->
+            <div class="report-content-body active" id="tab-overview">
+              <div class="report-section">
+                <h3 class="section-title"><i data-lucide="shield-check"></i> TRADE2OPTIONS Committee Verdict</h3>
+                <div class="verdict-banner" id="repVerdictBanner">
+                  APPROVED FOR EXECUTION: Strong multi-agent conviction with favorable risk-to-reward dynamics. Target allocation established at 4.5% portfolio equity.
+                </div>
+              </div>
+              <div class="report-section">
+                <h3 class="section-title"><i data-lucide="crosshair"></i> Key Catalysts & Technical Levels</h3>
+                <div class="markdown-preview-box" id="repExecutiveMarkdown">
+                  Loading analysis dossier...
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 2: Analysts -->
+            <div class="report-content-body" id="tab-analysts">
+              <div class="analyst-report-grid">
+                <div class="analyst-card">
+                  <h4><i data-lucide="landmark"></i> Fundamentals Analyst</h4>
+                  <p id="repFundText">Loading...</p>
+                </div>
+                <div class="analyst-card">
+                  <h4><i data-lucide="trending-up"></i> Technical Analyst</h4>
+                  <p id="repTechText">Loading...</p>
+                </div>
+                <div class="analyst-card">
+                  <h4><i data-lucide="message-square"></i> Sentiment Analyst</h4>
+                  <p id="repSentText">Loading...</p>
+                </div>
+                <div class="analyst-card">
+                  <h4><i data-lucide="globe"></i> News & Macro Analyst</h4>
+                  <p id="repNewsText">Loading...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 3: Debate -->
+            <div class="report-content-body" id="tab-debate">
+              <div class="debate-summary-grid">
+                <div class="debate-box bull-box">
+                  <h4><i data-lucide="trending-up"></i> Bull Researcher Thesis</h4>
+                  <div id="repBullThesis">Loading...</div>
+                </div>
+                <div class="debate-box bear-box">
+                  <h4><i data-lucide="trending-down"></i> Bear Researcher Risks</h4>
+                  <div id="repBearThesis">Loading...</div>
+                </div>
+              </div>
+              <div class="manager-synthesis-box">
+                <h4><i data-lucide="award"></i> Research Manager Ruling</h4>
+                <p id="repManagerText">Loading...</p>
+              </div>
+            </div>
+
+            <!-- Tab 4: Trader Plan -->
+            <div class="report-content-body" id="tab-trader">
+              <div class="trader-plan-card">
+                <h3><i data-lucide="compass"></i> Tactical Execution Blueprint (₹ INR)</h3>
+                <div class="plan-details" id="repTraderPlan">Loading...</div>
+              </div>
+            </div>
+
+            <!-- Tab 5: Risk & PM -->
+            <div class="report-content-body" id="tab-risk">
+              <div class="risk-pm-grid">
+                <div class="risk-card">
+                  <h4><i data-lucide="shield-alert"></i> Risk Management Committee</h4>
+                  <p id="repRiskText">Loading...</p>
+                </div>
+                <div class="pm-card">
+                  <h4><i data-lucide="check-check"></i> Portfolio Manager Final Order</h4>
+                  <p id="repPMText">Loading...</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 4: DAILY SENTIMENT RADAR & STOCK COMPARISON (OPTION 03)      -->
+    <!-- ================================================================= -->
+    <section id="view-comparison" class="page-view">
+      <div class="view-header">
+        <div class="view-title-wrap">
+          <button class="back-to-hub-btn" data-target="view-launchpad"><i data-lucide="arrow-left"></i> Hub</button>
+          <div>
+            <h1 class="view-title">Daily Stock Comparison & Sentiment Radar</h1>
+            <p class="view-sub">Real-time Dalal Street market breadth, Bull-side vs. Bear-side stock segmentation, and Head-to-Head stock battle comparator.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Market Breadth & Sentiment Pulse Banner -->
+      <div class="market-breadth-card">
+        <div class="breadth-top-row">
+          <div class="breadth-bias-wrap">
+            <span class="breadth-tag"><i data-lucide="activity"></i> DALAL STREET MARKET REGIME</span>
+            <h2 class="breadth-bias-title" id="compMarketBias">ACTIVE LIVE SESSION</h2>
+          </div>
+          <div class="breadth-stats-row">
+            <div class="b-stat"><span class="lbl">Advance / Decline</span><span class="val green" id="compAdvCount">21 Advances</span> / <span class="val red" id="compDecCount">22 Declines</span></div>
+            <div class="b-stat"><span class="lbl">FII Net Cash</span><span class="val green" id="compFiiFlow">+₹1,450 Cr</span></div>
+            <div class="b-stat"><span class="lbl">DII Net Cash</span><span class="val green" id="compDiiFlow">+₹2,890 Cr</span></div>
+            <div class="b-stat"><span class="lbl">Nifty PCR</span><span class="val cyan" id="compNiftyPcr">1.18 (Bullish)</span></div>
+            <div class="b-stat"><span class="lbl">India VIX</span><span class="val purple" id="compIndiaVix">13.20 (-3.4%)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side-by-Side Bull-Side vs Bear-Side Stocks Grid -->
+      <div class="bull-bear-split-grid">
+        
+        <!-- 🟢 Bull-Side Stocks Panel -->
+        <div class="split-panel bull-panel">
+          <div class="panel-header">
+            <span class="panel-title green"><i data-lucide="trending-up"></i> TOP BULL-SIDE STOCKS TODAY</span>
+            <span class="panel-badge badge-emerald">HIGH CONVICTION ACCUMULATION</span>
+          </div>
+          <div class="sentiment-cards-list" id="bullStocksGrid">
+            <!-- Populated via comparison.js -->
+          </div>
+        </div>
+
+        <!-- 🔴 Bear-Side Stocks Panel -->
+        <div class="split-panel bear-panel">
+          <div class="panel-header">
+            <span class="panel-title red"><i data-lucide="trending-down"></i> TOP BEAR-SIDE STOCKS TODAY</span>
+            <span class="panel-badge badge-red">DRAG / PROFIT BOOKING RISKS</span>
+          </div>
+          <div class="sentiment-cards-list" id="bearStocksGrid">
+            <!-- Populated via comparison.js -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Interactive Head-to-Head Stock Battle Comparator -->
+      <div class="head-to-head-container">
+        <div class="h2h-header">
+          <div>
+            <h2 class="h2h-title"><i data-lucide="swords"></i> Head-to-Head Stock Battle Comparator</h2>
+            <p class="h2h-sub">Select any two Indian stocks to compare their fundamentals, technical momentum, ROCE, and multi-agent verdict side-by-side.</p>
+          </div>
+          
+          <div class="h2h-selectors-wrap">
+            <div class="search-compare-wrap" id="compareWrapA">
+              <i data-lucide="search" class="search-icon-sm"></i>
+              <input type="text" id="compareSearchA" class="styled-search-input" value="HDFCBANK" placeholder="Search Stock A (e.g. GROWW, TCS, HDFCBANK)..." autocomplete="off">
+              <div class="autocomplete-dropdown" id="compareDropdownA"></div>
+            </div>
+
+            <span class="vs-pill">VS</span>
+
+            <div class="search-compare-wrap" id="compareWrapB">
+              <i data-lucide="search" class="search-icon-sm"></i>
+              <input type="text" id="compareSearchB" class="styled-search-input" value="ICICIBANK" placeholder="Search Stock B (e.g. CDSL, INFY, ICICIBANK)..." autocomplete="off">
+              <div class="autocomplete-dropdown" id="compareDropdownB"></div>
+            </div>
+
+            <button class="btn btn-primary" id="runCompareBtn">
+              <i data-lucide="swords"></i>
+              <span>Run Head-to-Head Comparison</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Battle Presets -->
+        <div class="battle-presets-bar">
+          <span class="chips-label"><i data-lucide="flame"></i> Quick Stock Battles:</span>
+          <div class="preset-pills-list">
+            <button class="battle-preset-pill active" data-stock-a="HDFCBANK" data-stock-b="ICICIBANK">HDFCBANK vs ICICIBANK</button>
+            <button class="battle-preset-pill" data-stock-a="TCS" data-stock-b="INFY">TCS vs INFY</button>
+            <button class="battle-preset-pill" data-stock-a="GROWW" data-stock-b="CDSL">GROWW vs CDSL</button>
+            <button class="battle-preset-pill" data-stock-a="ZOMATO" data-stock-b="SWIGGY">ZOMATO vs SWIGGY</button>
+            <button class="battle-preset-pill" data-stock-a="TRENT" data-stock-b="TITAN">TRENT vs TITAN</button>
+            <button class="battle-preset-pill" data-stock-a="BEL" data-stock-b="HAL">BEL vs HAL</button>
+            <button class="battle-preset-pill" data-stock-a="SUZLON" data-stock-b="IREDA">SUZLON vs IREDA</button>
+            <button class="battle-preset-pill" data-stock-a="TATAMOTORS" data-stock-b="MARUTI">TATAMOTORS vs MARUTI</button>
+          </div>
+        </div>
+
+        <!-- Comparison Results Card -->
+        <div class="compare-battle-output" id="compareResultsCard">
+          <!-- Populated via comparison.js -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 2: 20-STOCK CONVICTION MATRIX & NEWSLETTER HUB (OPTION B)    -->
+    <!-- ================================================================= -->
+    <section id="view-newsletter" class="page-view">
+      <div class="view-header">
+        <div class="view-title-wrap">
+          <button class="back-to-hub-btn" data-target="view-launchpad"><i data-lucide="arrow-left"></i> Hub</button>
+          <div>
+            <h1 class="view-title">20-Stock Conviction Matrix & Publishing Hub</h1>
+            <p class="view-sub">Real-time 20 NSE bluechip leaderboard, DII/FII flow tracking, and 1-click publishing suite.</p>
+          </div>
+        </div>
+        
+        <div class="newsletter-controls">
+          <input type="text" id="newsletterThemeInput" value="Nifty 50 Breakout & FII Institutional Inflows" placeholder="Briefing Focus Theme">
+          <button class="btn btn-purple" id="generateNewsletterBtn">
+            <i data-lucide="sparkles"></i>
+            <span>Generate Dalal Street Wrap</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sector & Conviction Heatmap Table (20 NSE STOCKS) -->
+      <div class="heatmap-card">
+        <div class="heatmap-header">
+          <span><i data-lucide="bar-chart-3"></i> REAL-TIME 20-STOCK CONVICTION MATRIX (LIVE TRADINGVIEW QUOTES)</span>
+          <span class="badge badge-purple">LIVE MULTI-AGENT SYNDICATION</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="newsletterTable">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Company Name</th>
+                <th>Live Price (₹)</th>
+                <th>24h Change</th>
+                <th>Institutional Rating</th>
+                <th>Sentiment Score</th>
+                <th>Bias</th>
+              </tr>
+            </thead>
+            <tbody id="newsletterTableBody">
+              <!-- Populated via API with 20 stocks -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dual-Pane Publisher Workspace -->
+      <div class="publisher-grid">
+        
+        <!-- Left Pane: Markdown Source & Export Tools -->
+        <div class="publisher-pane">
+          <div class="pane-header">
+            <span class="pane-title"><i data-lucide="code"></i> Markdown Source Editor</span>
+            <div class="pane-actions">
+              <button class="copy-btn" id="copyMarkdownBtn"><i data-lucide="copy"></i> Copy Markdown</button>
+              <button class="copy-btn" id="copyHtmlBtn"><i data-lucide="file-code"></i> Copy HTML</button>
+            </div>
+          </div>
+          <textarea class="markdown-editor" id="newsletterMarkdown" readonly></textarea>
+        </div>
+
+        <!-- Right Pane: Publication Preview -->
+        <div class="publisher-pane">
+          <div class="pane-header">
+            <span class="pane-title"><i data-lucide="eye"></i> Publication Preview (Substack / Ghost / WordPress)</span>
+            <span class="badge badge-blue">CMS READY</span>
+          </div>
+          <div class="html-preview-container" id="newsletterHtmlPreview">
+            <!-- Rendered visual preview -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 3: BULL VS. BEAR ARENA & INDIAN LIVE WIDGETS (OPTION E)      -->
+    <!-- ================================================================= -->
+    <section id="view-arena" class="page-view">
+      <div class="view-header">
+        <div class="view-title-wrap">
+          <button class="back-to-hub-btn" data-target="view-launchpad"><i data-lucide="arrow-left"></i> Hub</button>
+          <div>
+            <h1 class="view-title">Indian Debate Arena & Multi-Agent War Room</h1>
+            <p class="view-sub">Adversarial Bull vs. Bear debate clashes on ANY Indian stock with live TradingView quotes, Nifty PCR gauges, and LMS grader.</p>
+          </div>
+        </div>
+
+        <!-- Universal Stock Search in War Room / Debate Arena -->
+        <div class="arena-search-container" id="arenaSearchWrapper">
+          <div class="search-input-wrapper" style="min-width: 320px;">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="arenaStockSearch" placeholder="Search ANY Stock to Debate (e.g. GROWW, ZOMATO, TCS, RELIANCE, TRENT, BEL, SUZLON)..." autocomplete="off" value="GROWW">
+            <button class="btn btn-duel" id="startDebateDuelBtn">
+              <i data-lucide="swords"></i>
+              <span>Simulate Debate Duel</span>
+            </button>
+            <div class="autocomplete-dropdown" id="arenaSuggestionsDropdown"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Trending Arena Debate Chips -->
+      <div class="popular-chips-bar" style="margin-bottom: 20px;">
+        <span class="chips-label"><i data-lucide="flame"></i> Quick War Room Debates:</span>
+        <div class="ticker-chips">
+          <button class="chip arena-chip active" data-symbol="GROWW">GROWW</button>
+          <button class="chip arena-chip" data-symbol="ZOMATO">ZOMATO</button>
+          <button class="chip arena-chip" data-symbol="TCS">TCS</button>
+          <button class="chip arena-chip" data-symbol="INFY">INFOSYS</button>
+          <button class="chip arena-chip" data-symbol="RELIANCE">RELIANCE</button>
+          <button class="chip arena-chip" data-symbol="TRENT">TRENT</button>
+          <button class="chip arena-chip" data-symbol="BEL">BEL</button>
+          <button class="chip arena-chip" data-symbol="HAL">HAL</button>
+          <button class="chip arena-chip" data-symbol="SUZLON">SUZLON</button>
+          <button class="chip arena-chip" data-symbol="BSE">BSE</button>
+          <button class="chip arena-chip" data-symbol="CDSL">CDSL</button>
+          <button class="chip arena-chip" data-symbol="HDFCBANK">HDFC BANK</button>
+          <button class="chip arena-chip" data-symbol="TATAMOTORS">TATA MOTORS</button>
+          <button class="chip arena-chip" data-symbol="TITAN">TITAN</button>
+          <button class="chip arena-chip" data-symbol="ICICIBANK">ICICI BANK</button>
+        </div>
+      </div>
+
+      <!-- 🥊 THE ANIMATED ADVERSARIAL DEBATE ARENA (OPTION B - GLASSMORPHIC AI CARDS & CONSENSUS DIAL) -->
+      <div class="arena-card-option-b">
+        
+        <!-- Live Verified Arena Ticker Banner -->
+        <div class="arena-ticker-banner">
+          <div class="arena-ticker-info">
+            <div class="arena-sym-row">
+              <span class="arena-ticker-sym" id="arenaLiveSym">GROWW</span>
+              <span class="arena-exchange-tag" id="arenaLiveExch">NSE</span>
+            </div>
+            <span class="arena-ticker-name" id="arenaLiveName">Groww Invest Tech Limited</span>
+            <span class="arena-ticker-sector" id="arenaLiveSector">Financial Technology & Brokerage</span>
+          </div>
+          <div class="arena-live-metrics">
+            <div class="arena-m-item">
+              <span class="m-lbl">LIVE CMP</span>
+              <span class="m-val green" id="arenaLivePrice">₹168.45</span>
+            </div>
+            <div class="arena-m-item">
+              <span class="m-lbl">DAY CHG</span>
+              <span class="m-val green" id="arenaLiveChange">+2.40%</span>
+            </div>
+            <div class="arena-m-item">
+              <span class="m-lbl">RSI (14)</span>
+              <span class="m-val" id="arenaLiveRsi">56.8</span>
+            </div>
+            <div class="arena-m-item">
+              <span class="m-lbl">P/E MULTIPLE</span>
+              <span class="m-val" id="arenaLivePe">26.4</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3-Column Glassmorphic Arena Stage -->
+        <div class="arena-grid-option-b">
+          
+          <!-- Column 1: Bull Researcher Glass Card -->
+          <div class="agent-glass-card bull-glass-card" id="cardBullAgent">
+            <div class="agent-card-header">
+              <div class="agent-avatar-wrap bull-avatar-glow">
+                <i data-lucide="trending-up"></i>
+              </div>
+              <div class="agent-identity">
+                <h3 class="agent-title">BULL RESEARCHER</h3>
+                <span class="agent-tag">Aegis-7 • Institutional Growth</span>
+              </div>
+              <div class="agent-score-pill green" id="bullScoreBadge">9.2 / 10</div>
+            </div>
+
+            <!-- Bull Thesis Bullets -->
+            <div class="agent-thesis-box">
+              <div class="thesis-header"><i data-lucide="check-circle-2"></i> Key Institutional Catalysts</div>
+              <ul class="thesis-list" id="bullThesisList">
+                <li>Core structural market share expansion across Dalal Street retail & active SIP investors</li>
+                <li>Healthy volume accumulation with positive momentum above short-term EMAs</li>
+                <li>Favorable risk-reward upside towards primary institutional breakout target</li>
+              </ul>
+            </div>
+
+            <!-- Live Speech Bubble -->
+            <div class="agent-speech-container bull-speech-glow">
+              <div class="speech-tag"><i data-lucide="message-square"></i> Round Argument</div>
+              <p class="speech-text" id="bullSpeechText">Loading dynamic institutional debate argument...</p>
+            </div>
+          </div>
+
+          <!-- Column 2: Center Consensus Dial & Stepper -->
+          <div class="center-consensus-column">
+            
+            <div class="consensus-dial-card">
+              <h4 class="consensus-title">CONSENSUS CONVICTION</h4>
+              
+              <!-- Circular Animated SVG Radial Gauge -->
+              <div class="radial-gauge-container">
+                <svg class="radial-gauge-svg" viewBox="0 0 160 160" fill="none">
+                  <circle class="gauge-bg-circle" cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10" />
+                  <circle class="gauge-fill-circle" id="consensusGaugeCircle" cx="80" cy="80" r="68" fill="none" stroke="#2dd4bf" stroke-width="10" stroke-linecap="round" stroke-dasharray="427.26" stroke-dashoffset="120" />
+                </svg>
+                <div class="gauge-center-content">
+                  <span class="gauge-percent-val" id="arenaGaugePct">72%</span>
+                  <span class="gauge-status-lbl" id="arenaGaugeLabel">BULLISH</span>
+                </div>
+              </div>
+
+              <!-- Tug-of-war bar -->
+              <div class="tug-bar-wrap">
+                <div class="tug-labels">
+                  <span class="tug-bull-text" id="bullPctText">72% BULL</span>
+                  <span class="tug-bear-text" id="bearPctText">28% BEAR</span>
+                </div>
+                <div class="tug-track">
+                  <div class="tug-indicator" id="tugBarFill" style="width: 72%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Round Selector Navigation Pills -->
+            <div class="round-nav-pills">
+              <button class="round-pill active" data-round="0" id="pillRound1">
+                <i data-lucide="layers"></i>
+                <span>Round 1: Moat & P/E</span>
+              </button>
+              <button class="round-pill" data-round="1" id="pillRound2">
+                <i data-lucide="bar-chart-2"></i>
+                <span>Round 2: Volume & RSI</span>
+              </button>
+              <button class="round-pill" data-round="2" id="pillRound3">
+                <i data-lucide="landmark"></i>
+                <span>Round 3: Macro & Risk</span>
+              </button>
+              <button class="round-pill" data-round="3" id="pillVerdict">
+                <i data-lucide="shield-check"></i>
+                <span>Committee Verdict</span>
+              </button>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="duel-stepper-controls">
+              <button class="btn btn-step" id="prevRoundBtn"><i data-lucide="skip-back"></i> Prev</button>
+              <button class="btn btn-play" id="playPauseDuelBtn"><i data-lucide="play"></i> Auto Play</button>
+              <button class="btn btn-step" id="nextRoundBtn">Next <i data-lucide="skip-forward"></i></button>
+            </div>
+
+          </div>
+
+          <!-- Column 3: Bear Researcher Glass Card -->
+          <div class="agent-glass-card bear-glass-card" id="cardBearAgent">
+            <div class="agent-card-header">
+              <div class="agent-avatar-wrap bear-avatar-glow">
+                <i data-lucide="trending-down"></i>
+              </div>
+              <div class="agent-identity">
+                <h3 class="agent-title">BEAR RESEARCHER</h3>
+                <span class="agent-tag">Nyx-4 • Downside & Volatility</span>
+              </div>
+              <div class="agent-score-pill red" id="bearScoreBadge">7.9 / 10</div>
+            </div>
+
+            <!-- Bear Risk Bullets -->
+            <div class="agent-thesis-box">
+              <div class="thesis-header red-header"><i data-lucide="alert-triangle"></i> Key Downside Risks</div>
+              <ul class="thesis-list" id="bearThesisList">
+                <li>Elevated valuation multiple leaves low margin of safety for quarterly earnings misses</li>
+                <li>Overhead supply resistance creates potential rejection zone near key swings</li>
+                <li>Mandatory stop loss required to safeguard capital from broader market drawdowns</li>
+              </ul>
+            </div>
+
+            <!-- Live Speech Bubble -->
+            <div class="agent-speech-container bear-speech-glow">
+              <div class="speech-tag red-tag"><i data-lucide="message-square"></i> Round Counter-Thesis</div>
+              <p class="speech-text" id="bearSpeechText">Loading dynamic institutional debate counter-argument...</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom: Risk Committee Ruling & Strategic Blueprint -->
+        <div class="arena-decision-panel" id="arenaDecisionCard">
+          <div class="decision-panel-top">
+            <div class="decision-title-wrap">
+              <div class="decision-icon-badge"><i data-lucide="shield-check"></i></div>
+              <div>
+                <h3 class="decision-title">Institutional Scenario & Execution Playbook</h3>
+                <p class="decision-subtitle" id="arenaManagerSummary">Multi-agent consensus confirms institutional accumulate posture on confirmed pullbacks.</p>
+              </div>
+            </div>
+            <div class="decision-badge-container">
+              <span class="verdict-action-badge" id="arenaActionBadge">STRONG BUY</span>
+            </div>
+          </div>
+
+          <!-- Strategic Scenario & Execution Grid -->
+          <div class="blueprint-grid scenario-playbook-grid" id="blueprintGrid">
+            <div class="blueprint-item">
+              <span class="bp-lbl"><i data-lucide="trending-up"></i> BULLISH GROWTH SCENARIO</span>
+              <span class="bp-val green scenario-text" id="bpBullScenario">Consistent institutional accumulation and earnings expansion in high-volume delivery zone.</span>
+            </div>
+            <div class="blueprint-item">
+              <span class="bp-lbl"><i data-lucide="shield-alert"></i> BEARISH INVALIDATION TRIGGER</span>
+              <span class="bp-val red scenario-text" id="bpBearScenario">Loss of institutional delivery volume or sustained valuation de-rating below sector average.</span>
+            </div>
+            <div class="blueprint-item">
+              <span class="bp-lbl"><i data-lucide="newspaper"></i> LIVE BREAKING CATALYST</span>
+              <span class="bp-val amber scenario-text" id="bpCatalyst">Live exchange filings and market liquidity flow.</span>
+            </div>
+            <div class="blueprint-item">
+              <span class="bp-lbl"><i data-lucide="activity"></i> MOMENTUM & VOLUME PROFILE</span>
+              <span class="bp-val cyan" id="bpVolumeProfile">RSI 54.2 • Normal Institutional Flow</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- 5 INTERACTIVE INDIAN MARKET WIDGETS -->
+      <div class="widgets-section-title">
+        <i data-lucide="layout"></i> Embeddable Indian Market Widgets & LMS Suite
+      </div>
+
+      <div class="widgets-grid">
+        
+        <div class="widget-card">
+          <div class="widget-header">
+            <span class="widget-name"><i data-lucide="pie-chart"></i> Indian Sentiment Radar</span>
+            <button class="embed-code-btn" data-widget="sentiment"><i data-lucide="code"></i> Embed</button>
+          </div>
+          <div class="sentiment-widget-body">
+            <div class="gauge-display">
+              <div class="gauge-circle" id="sentimentGaugeCircle">
+                <span class="gauge-number" id="widgetSentScore">86</span>
+                <span class="gauge-text" id="widgetSentLabel">BULLISH</span>
+              </div>
+            </div>
+            <div class="sentiment-breakdown">
+              <div class="src-row">
+                <span>Dalal Street Retail:</span>
+                <span class="green" id="widgetSTVal">88% Bullish</span>
+              </div>
+              <div class="src-row">
+                <span>Institutional FII/DII:</span>
+                <span class="blue" id="widgetRedditVal">Net Buyers (+₹4,340 Cr)</span>
+              </div>
+              <div class="src-row">
+                <span>Brokerage Consensus:</span>
+                <span class="purple" id="widgetNewsVal">82% Buy / Accumulate</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="widget-card">
+          <div class="widget-header">
+            <span class="widget-name"><i data-lucide="activity"></i> India Macro & FII/DII Pulse</span>
+            <button class="embed-code-btn" data-widget="macro"><i data-lucide="code"></i> Embed</button>
+          </div>
+          <div class="macro-indicators-list" id="macroIndicatorsList">
+            <!-- Populated via API -->
+          </div>
+        </div>
+
+        <div class="widget-card">
+          <div class="widget-header">
+            <span class="widget-name"><i data-lucide="binary"></i> Nifty / BankNifty PCR Pulse</span>
+            <button class="embed-code-btn" data-widget="pcr"><i data-lucide="code"></i> Embed</button>
+          </div>
+          <div class="poly-markets-list" id="polyMarketsList">
+            <!-- Populated via API -->
+          </div>
+        </div>
+
+        <div class="widget-card widget-col-span">
+          <div class="widget-header">
+            <span class="widget-name"><i data-lucide="graduation-cap"></i> LMS "Challenge the Committee" Indian Trade Grader</span>
+            <button class="embed-code-btn" data-widget="grader"><i data-lucide="code"></i> Embed</button>
+          </div>
+          <div class="trade-grader-body">
+            <div class="grader-inputs">
+              <div class="form-group" id="gradeTickerWrap" style="position: relative;">
+                <label>Stock / Symbol (Search ANY Stock)</label>
+                <input type="text" id="gradeTicker" value="TATAMOTORS" autocomplete="off" placeholder="Search (e.g. GROWW, TCS, ZOMATO)...">
+                <div class="autocomplete-dropdown" id="gradeSuggestionsDropdown"></div>
+              </div>
+              <div class="form-group">
+                <label>Entry Price (₹)</label>
+                <input type="number" id="gradeEntry" value="988.00" step="1.0">
+              </div>
+              <div class="form-group">
+                <label>Stop Loss (₹)</label>
+                <input type="number" id="gradeStop" value="950.00" step="1.0">
+              </div>
+              <div class="form-group">
+                <label>Target Price (₹)</label>
+                <input type="number" id="gradeTarget" value="1080.00" step="1.0">
+              </div>
+              <div class="form-group full-width">
+                <label>Your Trade Thesis</label>
+                <textarea id="gradeThesis" rows="2">Breakout on high delivery volume above ₹980 resistance with strong EV volume growth and positive FII buying.</textarea>
+              </div>
+              <button class="btn btn-primary full-width" id="submitGradeTradeBtn">
+                <i data-lucide="check-circle-2"></i>
+                <span>Submit Trade Setup to Committee</span>
+              </button>
+            </div>
+
+            <div class="grader-output-card" id="graderOutputCard">
+              <div class="grade-badge-wrap">
+                <div class="grade-circle grade-a" id="gradeDisplayCircle">A</div>
+                <div>
+                  <div class="grade-title" id="gradeTitle">Setup Grade: Institutional Quality</div>
+                  <div class="grade-rr" id="gradeRR">Risk-to-Reward: 1 : 2.71 (₹38.00 Risk)</div>
+                </div>
+              </div>
+              <div class="committee-critiques" id="committeeCritiques">
+                <!-- Populated via API -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Discord Toast Notification -->
+  <div class="discord-toast" id="discordToast">
+    <!-- Message populated via JS -->
+  </div>
+
+  <!-- Embed Code Modal -->
+  <div class="modal-backdrop" id="embedModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title"><i data-lucide="code"></i> Widget Embed Code</h3>
+        <button class="modal-close-btn" id="closeEmbedModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Copy and paste this snippet into your HTML, LMS portal, or website CMS:</p>
+        <textarea class="embed-textarea" id="embedCodeSnippet" readonly></textarea>
+        <button class="btn btn-primary full-width" id="copyEmbedCodeBtn">
+          <i data-lucide="clipboard-check"></i>
+          <span>Copy Embed Code</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Obsidian Desktop App & Animated Graphical Canvas Modal -->
+  <div class="modal-backdrop obsidian-modal-backdrop" id="obsidianGraphModal">
+    <div class="obsidian-app-window">
+      
+      <!-- 1. Obsidian Titlebar (Mac/Desktop IDE Style) -->
+      <div class="obsidian-titlebar">
+        <div class="obsidian-window-controls">
+          <button class="win-dot dot-close" id="obsidianCloseWindowBtn" title="Close Obsidian"></button>
+          <button class="win-dot dot-min" title="Minimize"></button>
+          <button class="win-dot dot-max" id="obsidianMaxWindowBtn" title="Maximize"></button>
+        </div>
+        
+        <div class="obsidian-title-center">
+          <div class="obsidian-app-badge">
+            <svg class="obsidian-gem-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L3 9l3 11 6 2 6-2 3-11-9-7z" fill="rgba(168, 85, 247, 0.25)" stroke="#c084fc"/>
+              <path d="M12 2v20M3 9l9 4 9-4M6 20l6-7 6 7" stroke="#c084fc"/>
+            </svg>
+            <span class="vault-name">Obsidian Vault</span>
+          </div>
+          <div class="obsidian-breadcrumbs">
+            <span class="crumb-dim">📁 obsidian</span>
+            <span class="crumb-sep">/</span>
+            <span class="crumb-dim">01_Agents</span>
+            <span class="crumb-sep">/</span>
+            <span class="crumb-active"><i data-lucide="git-fork"></i> TradingAgents_Architecture.canvas</span>
+          </div>
+        </div>
+
+        <div class="obsidian-title-actions">
+          <button class="modal-close-btn" id="closeObsidianGraphModalBtn" title="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Obsidian Navigation & Controls Toolbar -->
+      <div class="obsidian-toolbar">
+        <div class="toolbar-left">
+          <div class="obsidian-view-pills">
+            <button class="v-pill active"><i data-lucide="share-2"></i> Graph View</button>
+            <button class="v-pill" id="obsidianCanvasFlowTab"><i data-lucide="layout"></i> Canvas Flow</button>
+            <button class="v-pill" id="obsidianNotesTab"><i data-lucide="file-text"></i> Notes (18)</button>
+          </div>
+          
+          <div class="toolbar-divider"></div>
+
+          <!-- Filter Group Dropdown -->
+          <div class="obsidian-filter-wrapper">
+            <i data-lucide="filter"></i>
+            <select id="obsidianGroupFilter" class="obsidian-select">
+              <option value="all">Show All Clusters (16 Nodes)</option>
+              <option value="data">Data Ingestion (NSE/BSE)</option>
+              <option value="specialist">Domain Specialists</option>
+              <option value="debate">Bull / Bear Duel</option>
+              <option value="order">Order Formulator</option>
+              <option value="risk">Risk Management</option>
+              <option value="execution">Execution & Memory</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <!-- Particle Speed Slider -->
+          <div class="speed-ctrl-wrapper" title="Particle Pulse Velocity">
+            <i data-lucide="zap"></i>
+            <span class="ctrl-lbl">Pulse:</span>
+            <input type="range" id="obsidianParticleSpeed" min="0.2" max="3.0" step="0.2" value="1.0" class="obsidian-slider">
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Canvas Camera Controls -->
+          <div class="canvas-btn-group">
+            <button class="obs-icon-btn" id="obsidianZoomInBtn" title="Zoom In"><i data-lucide="zoom-in"></i></button>
+            <button class="obs-icon-btn" id="obsidianZoomOutBtn" title="Zoom Out"><i data-lucide="zoom-out"></i></button>
+            <button class="obs-icon-btn" id="obsidianResetCamBtn" title="Center View"><i data-lucide="crosshair"></i></button>
+            <button class="obs-icon-btn active" id="obsidianPhysicsToggleBtn" title="Pause/Resume Physics"><i data-lucide="pause"></i><span>Freeze</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Main Workspace 3-Pane Body (Vault Files + Interactive Canvas + Markdown Inspector) -->
+      <div class="obsidian-workspace">
+        
+        <!-- Left Vault Sidebar -->
+        <aside class="obsidian-vault-sidebar">
+          <div class="vault-section-title">
+            <i data-lucide="folder-git-2"></i>
+            <span>VAULT EXPLORER</span>
+          </div>
+
+          <div class="vault-file-tree">
+            <div class="vault-folder-header">
+              <i data-lucide="chevron-down"></i>
+              <i data-lucide="folder" class="f-icon"></i>
+              <span>01_Agents (Multi-Agent State)</span>
+            </div>
+            <div class="vault-folder-children">
+              <div class="vault-file-item" data-node-id="fund_analyst">
+                <i data-lucide="file-code"></i>
+                <span>Fundamental_Analyst.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="tech_analyst">
+                <i data-lucide="file-code"></i>
+                <span>Technical_Momentum.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="sent_analyst">
+                <i data-lucide="file-code"></i>
+                <span>Sentiment_News.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="inst_analyst">
+                <i data-lucide="file-code"></i>
+                <span>FII_DII_Flow.md</span>
+              </div>
+              <div class="vault-file-item active" data-node-id="bull_researcher">
+                <i data-lucide="file-code"></i>
+                <span>Bull_Researcher_Aegis7.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="bear_researcher">
+                <i data-lucide="file-code"></i>
+                <span>Bear_Researcher_Nyx4.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="research_mgr">
+                <i data-lucide="file-code"></i>
+                <span>Research_Adjudicator.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="trader_agent">
+                <i data-lucide="file-code"></i>
+                <span>Trader_Order_Formulator.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="risk_agg">
+                <i data-lucide="file-code"></i>
+                <span>Risk_Aggressive.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="risk_neu">
+                <i data-lucide="file-code"></i>
+                <span>Risk_Neutral.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="risk_con">
+                <i data-lucide="file-code"></i>
+                <span>Risk_Conservative.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="pm_agent">
+                <i data-lucide="file-code"></i>
+                <span>Portfolio_Manager.md</span>
+              </div>
+              <div class="vault-file-item" data-node-id="memory_log">
+                <i data-lucide="file-code"></i>
+                <span>TradingMemoryLog_RAG.md</span>
+              </div>
+            </div>
+
+            <div class="vault-folder-header">
+              <i data-lucide="chevron-right"></i>
+              <i data-lucide="folder" class="f-icon"></i>
+              <span>04_Run_Reports</span>
+            </div>
+            
+            <div class="vault-file-item static">
+              <i data-lucide="sparkles"></i>
+              <span>TradingAgents_Architecture.canvas</span>
+            </div>
+            <div class="vault-file-item static">
+              <i data-lucide="file-text"></i>
+              <span>00_Dashboard.md</span>
+            </div>
+          </div>
+
+          <div class="vault-tags-section">
+            <div class="vault-section-title">
+              <i data-lucide="hash"></i>
+              <span>TAGS & STATE</span>
+            </div>
+            <div class="vault-tag-cloud">
+              <span class="v-tag">#langgraph</span>
+              <span class="v-tag">#nse-alpha</span>
+              <span class="v-tag">#adversarial-duel</span>
+              <span class="v-tag">#risk-arbiter</span>
+              <span class="v-tag">#mt5-bridge</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Center Interactive Force-Directed Canvas Viewport -->
+        <main class="obsidian-canvas-stage" id="obsidianCanvasContainer">
+          <canvas id="obsidianGraphCanvas"></canvas>
+          
+          <!-- Floating Canvas HUD Overlay -->
+          <div class="canvas-hud-top">
+            <div class="hud-cluster-legend">
+              <span class="legend-pill" style="--c: #38bdf8"><span class="dot"></span> Ingestion</span>
+              <span class="legend-pill" style="--c: #10b981"><span class="dot"></span> Specialists</span>
+              <span class="legend-pill" style="--c: #22c55e"><span class="dot"></span> Bull/Bear Duel</span>
+              <span class="legend-pill" style="--c: #c084fc"><span class="dot"></span> Risk Arbiter</span>
+              <span class="legend-pill" style="--c: #f59e0b"><span class="dot"></span> Execution</span>
+            </div>
+            <div class="hud-hint">
+              <i data-lucide="mouse-pointer-click"></i> Drag nodes • Scroll to zoom • Click to inspect
+            </div>
+          </div>
+
+          <!-- Dynamic Hover Tooltip -->
+          <div class="obsidian-graph-tooltip" id="obsidianGraphTooltip"></div>
+        </main>
+
+        <!-- Right Obsidian Note & Pydantic Inspector -->
+        <aside class="obsidian-inspector-panel" id="obsidianNodeInspector">
+          <!-- Injected dynamically by obsidian_graph.js -->
+        </aside>
+      </div>
+
+      <!-- 4. Obsidian Statusbar -->
+      <div class="obsidian-statusbar">
+        <div class="status-left">
+          <span class="status-indicator online"></span>
+          <span class="stat-text">LANGGRAPH STATE MACHINE: SYNCHRONIZED</span>
+          <span class="stat-sep">|</span>
+          <span class="stat-text">16 Nodes • 26 Synapses</span>
+          <span class="stat-sep">|</span>
+          <span class="stat-text">Physics: Velocity-Verlet</span>
+        </div>
+        <div class="status-right">
+          <span class="stat-fps" id="obsidianFpsDisplay">60 FPS</span>
+          <span class="stat-sep">|</span>
+          <span class="stat-text">Vault: <code>obsidian/</code> (Connected)</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/pipeline_sync.js?v=3.1"></script>
+  <script src="js/debate_arena.js?v=3.1"></script>
+  <script src="js/widgets.js?v=3.1"></script>
+  <script src="js/comparison.js?v=3.1"></script>
+  <script src="js/results.js?v=3.1"></script>
+  <script src="js/trading_waves.js?v=3.1"></script>
+  <script src="js/obsidian_graph.js?v=3.1"></script>
+  <script src="js/app.js?v=3.1"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

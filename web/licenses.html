@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRADE2OPTIONS — Institutional License Key & HWID Control Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: #0d111a;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gold: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-bottom: 80px;
+    }
+
+    /* Header */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 9, 14, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title span {
+      color: var(--accent-gold);
+    }
+
+    .badge-hub {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-action {
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: #334155;
+    }
+
+    .btn-action.primary {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color: #000;
+      border: none;
+      font-weight: 700;
+    }
+
+    /* Container */
+    .dashboard-wrap {
+      max-width: 1280px;
+      margin: 32px auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Hero / KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-gold);
+    }
+
+    .kpi-card.green::before { background: var(--accent-green); }
+    .kpi-card.cyan::before { background: var(--accent-cyan); }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .kpi-sub {
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    /* HWID Banner */
+    .hwid-banner {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(139, 92, 246, 0.08));
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      border-radius: 16px;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .hwid-info h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #38bdf8;
+    }
+
+    .hwid-info p {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .hwid-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 8px 16px;
+    }
+
+    .hwid-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.08em;
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-copy:hover {
+      background: #06b6d4;
+      color: #000;
+    }
+
+    /* Main Grid: Form + Validator */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 14px;
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input, .form-select {
+      background: #070a0f;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--accent-gold);
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color: #000000;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.92;
+    }
+
+    /* Table Card */
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .search-input {
+      background: #070a0f;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: #ffffff;
+      font-size: 0.82rem;
+      width: 260px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .data-table th {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 12px 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .data-table td {
+      padding: 14px 20px;
+      font-size: 0.84rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .key-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hwid-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #38bdf8;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-status {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .badge-status.active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-status.revoked {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Result Toast Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #0d111a;
+      border: 1px solid var(--accent-gold);
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .modal-key-box {
+      background: #000000;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fbbf24;
+      letter-spacing: 0.08em;
+      margin: 8px 0;
+    }
+
+    @media (max-width: 860px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top-bar">
+    <div class="brand">
+      <div class="brand-title">TRADE<span>2</span>OPTIONS</div>
+      <div class="badge-hub">License Key & HWID Manager</div>
+    </div>
+    <div class="nav-actions">
+      <a href="/" class="btn-action">
+        <i data-lucide="arrow-left"></i> Return to Terminal
+      </a>
+      <a href="/design_showcase.html" class="btn-action">
+        <i data-lucide="palette"></i> 10 UI Designs
+      </a>
+    </div>
+  </header>
+
+  <div class="dashboard-wrap">
+
+    <!-- KPI Metric Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">Total Licenses Issued</span>
+        <span class="kpi-value" id="kpiTotalLic">3</span>
+        <span class="kpi-sub">Registered across Dalal Street LMS</span>
+      </div>
+      <div class="kpi-card green">
+        <span class="kpi-label">Active HWID Locks</span>
+        <span class="kpi-value" id="kpiActiveLic" style="color: #34d399;">3</span>
+        <span class="kpi-sub">Cryptographically bound seats</span>
+      </div>
+      <div class="kpi-card cyan">
+        <span class="kpi-label">Machine Validation Status</span>
+        <span class="kpi-value" style="color: #38bdf8;">ONLINE</span>
+        <span class="kpi-sub">FastAPI Validator 0-Lag Daemon</span>
+      </div>
+    </div>
+
+    <!-- Detected Hardware ID (HWID / HUID) Banner -->
+    <div class="hwid-banner">
+      <div class="hwid-info">
+        <h3><i data-lucide="cpu"></i> Detected Machine Hardware ID (HWID / HUID)</h3>
+        <p>This is your current system's unique hardware fingerprint. Licenses locked to this HWID can only be executed on this machine.</p>
+      </div>
+      <div class="hwid-display">
+        <span class="hwid-code" id="myHwidCode">HWID-DETECTING...</span>
+        <button class="btn-copy" id="copyMyHwidBtn"><i data-lucide="copy"></i> Copy HWID</button>
+      </div>
+    </div>
+
+    <!-- Content Grid: License Generator + Live Validator -->
+    <div class="content-grid">
+
+      <!-- Panel 1: Generate & Issue New License Key -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title"><i data-lucide="key" style="color: #f59e0b;"></i> Issue New License Key</div>
+          <span class="badge-hub">PRO & ENTERPRISE</span>
+        </div>
+
+        <form id="generateLicenseForm" style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label">Client / Student Name</label>
+            <input type="text" id="genName" class="form-input" placeholder="e.g. Rahul Sharma" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Student Email Address</label>
+            <input type="email" id="genEmail" class="form-input" placeholder="e.g. rahul@dalalstreet.com" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">Plan / Membership Tier</label>
+              <select id="genTier" class="form-select">
+                <option value="7-Day Free Trial">7-Day Free Trial</option>
+                <option value="Trader Pro (Quarterly)" selected>Trader Pro (Quarterly)</option>
+                <option value="Mastery Annual">Mastery Annual (1 Year)</option>
+                <option value="Enterprise Lifetime">Enterprise Lifetime</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Duration (Days)</label>
+              <input type="number" id="genDuration" class="form-input" value="90" min="1" max="3650">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" style="display: flex; justify-content: space-between;">
+              <span>Target Hardware ID (HWID Lock)</span>
+              <a href="#" id="useDetectedHwidLink" style="color: #06b6d4; font-size: 0.72rem; text-decoration: none;">Use My Current HWID</a>
+            </label>
+            <input type="text" id="genHwid" class="form-input" placeholder="HWID-XXXX-XXXX-XXXX-XXXX (or leave blank for auto)">
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnSubmitGenerate">
+            <i data-lucide="shield-check"></i> Generate & Issue Cryptographic Key
+          </button>
+        </form>
+      </div>
+
+      <!-- Panel 2: Live License Key Validator Tester -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title"><i data-lucide="check-circle" style="color: #10b981;"></i> License Key Validator</div>
+          <span style="font-size: 0.75rem; color: #94a3b8;">Auth API Tester</span>
+        </div>
+
+        <p style="font-size: 0.84rem; color: #94a3b8;">
+          Simulate how the desktop terminal or MT5 Algo EA verifies student access before unlocking trading agents.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label">License Key to Test</label>
+            <input type="text" id="valKey" class="form-input" placeholder="T2O-PRO-XXXX-XXXX-XXXX" value="T2O-PRO-8F29-A4C1-7290">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Client Machine HWID</label>
+            <input type="text" id="valHwid" class="form-input" placeholder="HWID-XXXX-XXXX-XXXX-XXXX">
+          </div>
+
+          <button type="button" class="btn-action primary" id="btnValidateKey" style="justify-content: center; padding: 12px;">
+            <i data-lucide="zap"></i> Run Authentication Check
+          </button>
+
+          <!-- Validation Result Output Box -->
+          <div id="validationResultBox" style="display: none; background: #070a0f; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px;">
+            <div id="valResultStatus" style="font-weight: 700; font-size: 0.95rem;"></div>
+            <div id="valResultDetails" style="font-size: 0.8rem; color: #94a3b8; margin-top: 6px;"></div>
+          </div>
+
+          <!-- Student Quick HWID Grabber Command -->
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Student 1-Liner (To send HWID):</div>
+            <code style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #38bdf8; display: block; margin-top: 4px; word-break: break-all;">
+              python3 -c "import uuid,hashlib,platform;mac=uuid.getnode();h=hashlib.sha256(f'{platform.node()}-{platform.machine()}-{mac}'.encode()).hexdigest().upper();print(f'HWID-{h[:4]}-{h[4:8]}-{h[8:12]}-{h[12:16]}')"
+            </code>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Active Licenses Table Card -->
+    <div class="table-card">
+      <div class="table-header">
+        <div>
+          <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 800;">Issued Client Licenses</h2>
+          <p style="font-size: 0.8rem; color: #94a3b8;">Verifiable cryptographically bound licenses stored in <code>data_cache/licenses.json</code></p>
+        </div>
+        <input type="text" id="tableSearch" class="search-input" placeholder="Filter by client, email, or key...">
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>License Key</th>
+            <th>Client Name</th>
+            <th>Plan Tier</th>
+            <th>Bound HWID</th>
+            <th>Expires On</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="licensesTableBody">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Success Modal for Newly Created License -->
+  <div class="modal-overlay" id="newLicenseModal">
+    <div class="modal-card">
+      <div style="color: #10b981; font-size: 2.5rem;"><i data-lucide="check-circle-2"></i></div>
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800;">License Generated Successfully!</h3>
+      <p style="font-size: 0.85rem; color: #94a3b8;">Send this key to your student. It has been locked to their specified Hardware ID.</p>
+      
+      <div class="modal-key-box" id="modalGeneratedKey">T2O-PRO-XXXX-XXXX-XXXX</div>
+      
+      <div id="modalClientDetails" style="font-size: 0.8rem; color: #cbd5e1;"></div>
+
+      <div style="display: flex; gap: 12px; margin-top: 8px;">
+        <button class="btn-submit" id="modalCopyBtn" style="flex: 1;"><i data-lucide="copy"></i> Copy Key</button>
+        <button class="btn-action" id="modalCloseBtn" style="flex: 1;">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let detectedHwid = "";
+    let allLicenses = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      fetchMyHwid();
+      loadLicenses();
+      bindEvents();
+    });
+
+    async function fetchMyHwid() {
+      try {
+        const res = await fetch("/api/licenses/my-hwid");
+        const data = await res.json();
+        detectedHwid = data.hwid;
+        document.getElementById("myHwidCode").textContent = data.hwid;
+        document.getElementById("valHwid").value = data.hwid;
+      } catch (e) {
+        console.error("HWID fetch error:", e);
+      }
+    }
+
+    async function loadLicenses() {
+      try {
+        const res = await fetch("/api/licenses/list");
+        const data = await res.json();
+        allLicenses = data.licenses || [];
+        
+        document.getElementById("kpiTotalLic").textContent = data.total || allLicenses.length;
+        document.getElementById("kpiActiveLic").textContent = data.active || allLicenses.filter(l => l.status === 'ACTIVE').length;
+
+        renderTable(allLicenses);
+      } catch (e) {
+        console.error("Licenses fetch error:", e);
+      }
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById("licensesTableBody");
+      if (!tbody) return;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94a3b8; padding:24px;">No licenses found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(l => {
+        const isActive = l.status === "ACTIVE";
+        const expDate = new Date(l.expires_at).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' });
+
+        return `
+          <tr>
+            <td>
+              <div class="key-cell">
+                <span>${l.key}</span>
+                <button class="btn-copy" style="padding:2px 6px;" onclick="copyText('${l.key}')"><i data-lucide="copy"></i></button>
+              </div>
+            </td>
+            <td>
+              <strong>${l.client_name}</strong>
+              <div style="font-size:0.75rem; color:#94a3b8;">${l.email}</div>
+            </td>
+            <td><span style="font-weight:600; color:#cbd5e1;">${l.tier}</span></td>
+            <td><span class="hwid-pill">${l.hwid || 'ANY'}</span></td>
+            <td>${expDate}</td>
+            <td><span class="badge-status ${isActive ? 'active' : 'revoked'}">${l.status}</span></td>
+            <td>
+              <button class="btn-action" style="padding:4px 10px; font-size:0.75rem;" onclick="toggleRevoke('${l.key}')">
+                ${isActive ? 'Revoke' : 'Activate'}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function bindEvents() {
+      // 1. Copy My HWID button
+      document.getElementById("copyMyHwidBtn").addEventListener("click", () => {
+        if (detectedHwid) {
+          navigator.clipboard.writeText(detectedHwid);
+          document.getElementById("copyMyHwidBtn").innerHTML = '<i data-lucide="check"></i> Copied!';
+          if (window.lucide) lucide.createIcons();
+          setTimeout(() => {
+            document.getElementById("copyMyHwidBtn").innerHTML = '<i data-lucide="copy"></i> Copy HWID';
+            if (window.lucide) lucide.createIcons();
+          }, 2000);
+        }
+      });
+
+      // 2. Use detected HWID in form
+      document.getElementById("useDetectedHwidLink").addEventListener("click", (e) => {
+        e.preventDefault();
+        if (detectedHwid) {
+          document.getElementById("genHwid").value = detectedHwid;
+        }
+      });
+
+      // 3. Generate Form Submit
+      document.getElementById("generateLicenseForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          client_name: document.getElementById("genName").value,
+          email: document.getElementById("genEmail").value,
+          tier: document.getElementById("genTier").value,
+          duration_days: parseInt(document.getElementById("genDuration").value) || 90,
+          hwid: document.getElementById("genHwid").value || detectedHwid,
+          max_seats: 1
+        };
+
+        try {
+          const res = await fetch("/api/licenses/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            showModal(data.license);
+            loadLicenses();
+            document.getElementById("generateLicenseForm").reset();
+          }
+        } catch (err) {
+          alert("Error generating license: " + err);
+        }
+      });
+
+      // 4. Validate Key Button
+      document.getElementById("btnValidateKey").addEventListener("click", async () => {
+        const key = document.getElementById("valKey").value.trim();
+        const hwid = document.getElementById("valHwid").value.trim();
+
+        if (!key) {
+          alert("Please enter a license key to test.");
+          return;
+        }
+
+        try {
+          const res = await fetch("/api/licenses/validate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ license_key: key, hwid: hwid })
+          });
+          const data = await res.json();
+          
+          const box = document.getElementById("validationResultBox");
+          const statusEl = document.getElementById("valResultStatus");
+          const detailsEl = document.getElementById("valResultDetails");
+          
+          box.style.display = "block";
+          if (data.valid) {
+            statusEl.style.color = "#10b981";
+            statusEl.innerHTML = `✓ VALID ACCESS: ${data.client_name} (${data.tier})`;
+            detailsEl.innerHTML = `Modules: ${data.modules.join(', ')} • Expires: ${new Date(data.expires_at).toLocaleDateString()}`;
+          } else {
+            statusEl.style.color = "#ef4444";
+            statusEl.innerHTML = `✗ AUTHENTICATION FAILED: ${data.status}`;
+            detailsEl.innerHTML = data.message;
+          }
+        } catch (err) {
+          alert("Validation test error: " + err);
+        }
+      });
+
+      // 5. Table Search Filter
+      document.getElementById("tableSearch").addEventListener("input", (e) => {
+        const q = e.target.value.toLowerCase();
+        const filtered = allLicenses.filter(l => 
+          l.client_name.toLowerCase().includes(q) ||
+          l.email.toLowerCase().includes(q) ||
+          l.key.toLowerCase().includes(q) ||
+          (l.hwid && l.hwid.toLowerCase().includes(q))
+        );
+        renderTable(filtered);
+      });
+
+      // 6. Modal close
+      document.getElementById("modalCloseBtn").addEventListener("click", () => {
+        document.getElementById("newLicenseModal").classList.remove("show");
+      });
+      document.getElementById("modalCopyBtn").addEventListener("click", () => {
+        const key = document.getElementById("modalGeneratedKey").textContent;
+        copyText(key);
+        document.getElementById("modalCopyBtn").textContent = "Copied to Clipboard!";
+        setTimeout(() => {
+          document.getElementById("modalCopyBtn").textContent = "Copy Key";
+        }, 2000);
+      });
+    }
+
+    function showModal(lic) {
+      document.getElementById("modalGeneratedKey").textContent = lic.key;
+      document.getElementById("modalClientDetails").innerHTML = `
+        <strong>${lic.client_name}</strong> (${lic.email})<br>
+        Bound to HWID: <code>${lic.hwid}</code> | Tier: ${lic.tier}
+      `;
+      document.getElementById("newLicenseModal").classList.add("show");
+      if (window.lucide) lucide.createIcons();
+    }
+
+    window.copyText = function(text) {
+      navigator.clipboard.writeText(text);
+    };
+
+    window.toggleRevoke = async function(key) {
+      if (!confirm(`Toggle status for license ${key}?`)) return;
+      try {
+        const res = await fetch("/api/licenses/revoke", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ license_key: key })
+        });
+        const data = await res.json();
+        loadLicenses();
+      } catch (e) {
+        alert("Revoke error: " + e);
+      }
+    };
+  </script>
+</body>
+</html>

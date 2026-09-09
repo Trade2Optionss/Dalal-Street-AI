@@ -1,0 +1,372 @@
+{
+	"nodes": [
+		{
+			"id": "group_dash",
+			"type": "group",
+			"label": "🏠 Central Command & Storage Map",
+			"x": -1640,
+			"y": -460,
+			"width": 520,
+			"height": 1280,
+			"color": "6"
+		},
+		{
+			"id": "file_dashboard",
+			"type": "file",
+			"file": "obsidian/00_Dashboard.md",
+			"x": -1610,
+			"y": -400,
+			"width": 460,
+			"height": 560
+		},
+		{
+			"id": "file_storage_map",
+			"type": "file",
+			"file": "obsidian/03_Storage_Architecture/File_Storage_Map.md",
+			"x": -1610,
+			"y": 200,
+			"width": 460,
+			"height": 560
+		},
+
+		{
+			"id": "group_datasources",
+			"type": "group",
+			"label": "🌐 1. Live Data Feeds & APIs",
+			"x": -1080,
+			"y": -560,
+			"width": 460,
+			"height": 2680,
+			"color": "5"
+		},
+		{
+			"id": "file_yfinance",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/YFinance.md",
+			"x": -1050,
+			"y": -500,
+			"width": 400,
+			"height": 340
+		},
+		{
+			"id": "file_alphavantage",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/Alpha_Vantage.md",
+			"x": -1050,
+			"y": -120,
+			"width": 400,
+			"height": 340
+		},
+		{
+			"id": "file_stocktwits",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/StockTwits_Sentiment.md",
+			"x": -1050,
+			"y": 260,
+			"width": 400,
+			"height": 320
+		},
+		{
+			"id": "file_reddit",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/Reddit_Sentiment.md",
+			"x": -1050,
+			"y": 620,
+			"width": 400,
+			"height": 320
+		},
+		{
+			"id": "file_fred",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/FRED_Macro.md",
+			"x": -1050,
+			"y": 980,
+			"width": 400,
+			"height": 320
+		},
+		{
+			"id": "file_finnhub",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/Finnhub.md",
+			"x": -1050,
+			"y": 1340,
+			"width": 400,
+			"height": 320
+		},
+		{
+			"id": "file_polymarket",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/Polymarket.md",
+			"x": -1050,
+			"y": 1700,
+			"width": 400,
+			"height": 320
+		},
+
+		{
+			"id": "group_analysts",
+			"type": "group",
+			"label": "🤖 2. Specialized Analyst Team",
+			"x": -580,
+			"y": -360,
+			"width": 460,
+			"height": 2100,
+			"color": "4"
+		},
+		{
+			"id": "file_market_analyst",
+			"type": "file",
+			"file": "obsidian/01_Agents/Market_Analyst.md",
+			"x": -550,
+			"y": -300,
+			"width": 400,
+			"height": 450
+		},
+		{
+			"id": "file_sentiment_analyst",
+			"type": "file",
+			"file": "obsidian/01_Agents/Sentiment_Analyst.md",
+			"x": -550,
+			"y": 190,
+			"width": 400,
+			"height": 450
+		},
+		{
+			"id": "file_news_analyst",
+			"type": "file",
+			"file": "obsidian/01_Agents/News_Analyst.md",
+			"x": -550,
+			"y": 680,
+			"width": 400,
+			"height": 450
+		},
+		{
+			"id": "file_fundamentals_analyst",
+			"type": "file",
+			"file": "obsidian/01_Agents/Fundamentals_Analyst.md",
+			"x": -550,
+			"y": 1170,
+			"width": 400,
+			"height": 450
+		},
+
+		{
+			"id": "group_research",
+			"type": "group",
+			"label": "⚖️ 3. Structured Research Debate",
+			"x": -80,
+			"y": -60,
+			"width": 460,
+			"height": 1560,
+			"color": "3"
+		},
+		{
+			"id": "file_bull_researcher",
+			"type": "file",
+			"file": "obsidian/01_Agents/Bull_Researcher.md",
+			"x": -50,
+			"y": 0,
+			"width": 400,
+			"height": 440
+		},
+		{
+			"id": "file_bear_researcher",
+			"type": "file",
+			"file": "obsidian/01_Agents/Bear_Researcher.md",
+			"x": -50,
+			"y": 480,
+			"width": 400,
+			"height": 440
+		},
+		{
+			"id": "file_research_manager",
+			"type": "file",
+			"file": "obsidian/01_Agents/Research_Manager.md",
+			"x": -50,
+			"y": 960,
+			"width": 400,
+			"height": 440
+		},
+
+		{
+			"id": "group_execution",
+			"type": "group",
+			"label": "🎯 4. Trader, Risk & Portfolio Execution",
+			"x": 420,
+			"y": 40,
+			"width": 480,
+			"height": 1980,
+			"color": "2"
+		},
+		{
+			"id": "file_trader_agent",
+			"type": "file",
+			"file": "obsidian/01_Agents/Trader_Agent.md",
+			"x": 450,
+			"y": 100,
+			"width": 420,
+			"height": 430
+		},
+		{
+			"id": "file_risk_team",
+			"type": "file",
+			"file": "obsidian/01_Agents/Risk_Management_Team.md",
+			"x": 450,
+			"y": 570,
+			"width": 420,
+			"height": 430
+		},
+		{
+			"id": "file_portfolio_manager",
+			"type": "file",
+			"file": "obsidian/01_Agents/Portfolio_Manager.md",
+			"x": 450,
+			"y": 1040,
+			"width": 420,
+			"height": 450
+		},
+		{
+			"id": "file_memory_log",
+			"type": "file",
+			"file": "obsidian/02_Data_Sources/Trading_Memory_Log.md",
+			"x": 450,
+			"y": 1530,
+			"width": 420,
+			"height": 420
+		}
+	],
+	"edges": [
+		{
+			"id": "e_dash_mkt",
+			"fromNode": "file_dashboard",
+			"fromSide": "right",
+			"toNode": "file_market_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_yf_mkt",
+			"fromNode": "file_yfinance",
+			"fromSide": "right",
+			"toNode": "file_market_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_av_mkt",
+			"fromNode": "file_alphavantage",
+			"fromSide": "right",
+			"toNode": "file_market_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_st_sent",
+			"fromNode": "file_stocktwits",
+			"fromSide": "right",
+			"toNode": "file_sentiment_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_rd_sent",
+			"fromNode": "file_reddit",
+			"fromSide": "right",
+			"toNode": "file_sentiment_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_fred_news",
+			"fromNode": "file_fred",
+			"fromSide": "right",
+			"toNode": "file_news_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_poly_news",
+			"fromNode": "file_polymarket",
+			"fromSide": "right",
+			"toNode": "file_news_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_fh_fund",
+			"fromNode": "file_finnhub",
+			"fromSide": "right",
+			"toNode": "file_fundamentals_analyst",
+			"toSide": "left"
+		},
+		{
+			"id": "e_mkt_bull",
+			"fromNode": "file_market_analyst",
+			"fromSide": "right",
+			"toNode": "file_bull_researcher",
+			"toSide": "left"
+		},
+		{
+			"id": "e_sent_bull",
+			"fromNode": "file_sentiment_analyst",
+			"fromSide": "right",
+			"toNode": "file_bull_researcher",
+			"toSide": "left"
+		},
+		{
+			"id": "e_news_bear",
+			"fromNode": "file_news_analyst",
+			"fromSide": "right",
+			"toNode": "file_bear_researcher",
+			"toSide": "left"
+		},
+		{
+			"id": "e_fund_bear",
+			"fromNode": "file_fundamentals_analyst",
+			"fromSide": "right",
+			"toNode": "file_bear_researcher",
+			"toSide": "left"
+		},
+		{
+			"id": "e_bull_bear",
+			"fromNode": "file_bull_researcher",
+			"fromSide": "bottom",
+			"toNode": "file_bear_researcher",
+			"toSide": "top",
+			"label": "Debate Arguments"
+		},
+		{
+			"id": "e_bear_mgr",
+			"fromNode": "file_bear_researcher",
+			"fromSide": "bottom",
+			"toNode": "file_research_manager",
+			"toSide": "top",
+			"label": "Debate Review"
+		},
+		{
+			"id": "e_mgr_trader",
+			"fromNode": "file_research_manager",
+			"fromSide": "right",
+			"toNode": "file_trader_agent",
+			"toSide": "left",
+			"label": "Investment Thesis"
+		},
+		{
+			"id": "e_trader_risk",
+			"fromNode": "file_trader_agent",
+			"fromSide": "bottom",
+			"toNode": "file_risk_team",
+			"toSide": "top",
+			"label": "Proposed Order"
+		},
+		{
+			"id": "e_risk_pm",
+			"fromNode": "file_risk_team",
+			"fromSide": "bottom",
+			"toNode": "file_portfolio_manager",
+			"toSide": "top",
+			"label": "Risk Stress-Test"
+		},
+		{
+			"id": "e_pm_memory",
+			"fromNode": "file_portfolio_manager",
+			"fromSide": "bottom",
+			"toNode": "file_memory_log",
+			"toSide": "top",
+			"label": "Store Reflection"
+		}
+	]
+}

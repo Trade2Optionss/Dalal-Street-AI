@@ -1,36 +1,111 @@
-services:
-  tradingagents:
-    build: .
-    env_file:
-      - .env
-    volumes:
-      - tradingagents_data:/home/appuser/.tradingagents
-    tty: true
-    stdin_open: true
+version: "3.9"
 
+services:
+  # 1. TradingAgents Web Platform & Real-Time Sync Daemon
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tradingagents-web
+    command: ["web"]
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./data_cache:/home/appuser/app/data_cache
+      - ./generated_pdfs:/home/appuser/app/generated_pdfs
+      - ./generated_reports:/home/appuser/app/generated_reports
+      - ./obsidian:/home/appuser/app/obsidian
+      - tradingagents_config:/home/appuser/.tradingagents
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/session/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # 2. Interactive CLI Container
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tradingagents-cli
+    command: ["cli", "run"]
+    stdin_open: true
+    tty: true
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./data_cache:/home/appuser/app/data_cache
+      - ./generated_pdfs:/home/appuser/app/generated_pdfs
+      - ./generated_reports:/home/appuser/app/generated_reports
+      - ./obsidian:/home/appuser/app/obsidian
+      - tradingagents_config:/home/appuser/.tradingagents
+    profiles:
+      - cli
+
+  # 3. Dedicated Background Market Data Pipeline Daemon
+  daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tradingagents-daemon
+    command: ["daemon"]
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./data_cache:/home/appuser/app/data_cache
+    profiles:
+      - daemon
+
+  # 4. Optional Local Ollama LLM Engine
   ollama:
     image: ollama/ollama:latest
+    container_name: tradingagents-ollama-engine
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
     profiles:
       - ollama
+      - local-ai
 
-  tradingagents-ollama:
-    build: .
+  # 5. TradingAgents connected to Local Ollama
+  web-ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tradingagents-web-ollama
+    command: ["web"]
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
       - TRADINGAGENTS_LLM_PROVIDER=ollama
       - OLLAMA_BASE_URL=http://ollama:11434/v1
     volumes:
-      - tradingagents_data:/home/appuser/.tradingagents
+      - ./data_cache:/home/appuser/app/data_cache
+      - ./generated_pdfs:/home/appuser/app/generated_pdfs
+      - ./generated_reports:/home/appuser/app/generated_reports
+      - ./obsidian:/home/appuser/app/obsidian
+      - tradingagents_config:/home/appuser/.tradingagents
     depends_on:
       - ollama
-    tty: true
-    stdin_open: true
     profiles:
-      - ollama
+      - local-ai
 
 volumes:
-  tradingagents_data:
+  tradingagents_config:
   ollama_data:

@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRADE2OPTIONS — 10 Visual UI Redesign Concepts & Interactive Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: #0e121a;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gold: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+      padding-bottom: 80px;
+    }
+
+    /* Header Bar */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 9, 14, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title span {
+      color: var(--accent-gold);
+    }
+
+    .badge-hub {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-action {
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: #334155;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-action.primary {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color: #000;
+      border: none;
+      font-weight: 700;
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 40px auto 30px;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #38bdf8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Quick Filter Chips */
+    .filter-bar {
+      max-width: 1200px;
+      margin: 20px auto 40px;
+      padding: 0 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .filter-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+      background: #f59e0b;
+      color: #000;
+      border-color: #f59e0b;
+    }
+
+    /* Gallery Grid */
+    .gallery-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    .concept-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .concept-card:hover {
+      border-color: rgba(245, 158, 11, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .card-meta {
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .concept-number {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #f59e0b;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .concept-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .concept-tagline {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      margin-top: 4px;
+      max-width: 640px;
+    }
+
+    .specs-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .spec-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 6px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-label {
+      font-size: 0.65rem;
+      color: #64748b;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .spec-val {
+      font-size: 0.78rem;
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    /* Picture / Mockup Canvas */
+    .mockup-frame {
+      width: 100%;
+      background: #000000;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .mockup-svg-wrap {
+      width: 100%;
+      max-width: 1180px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mockup-svg-wrap svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Rationale & Key Features Footer */
+    .card-footer {
+      padding: 20px 32px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      background: rgba(14, 18, 26, 0.7);
+    }
+
+    .features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .features-list li {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .features-list li i {
+      color: #10b981;
+      width: 16px;
+      height: 16px;
+    }
+
+    .palette-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .palette-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    @media (max-width: 900px) {
+      .card-meta {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .card-footer {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top-bar">
+    <div class="brand">
+      <div class="brand-title">TRADE<span>2</span>OPTIONS</div>
+      <div class="badge-hub">UI Design Lab</div>
+    </div>
+    <div class="nav-actions">
+      <a href="/" class="btn-action">
+        <i data-lucide="arrow-left"></i> Return to Live Dashboard
+      </a>
+      <a href="#concept-1" class="btn-action primary">
+        <i data-lucide="sparkles"></i> Explore 10 Designs
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-pill"><i data-lucide="palette"></i> 10 Visual Production Designs</div>
+    <h1>Visual UI Concepts & Architectural Styles</h1>
+    <p>Explore high-fidelity visual mockups of 10 distinct design directions for the TRADE2OPTIONS Indian Market Multi-Agent Terminal. Each concept features custom typography, layout ergonomics, color harmony, and multi-agent debate visualizations.</p>
+  </section>
+
+  <!-- Jump Filter Chips -->
+  <div class="filter-bar">
+    <a class="filter-chip" href="#concept-1">1. Bloomberg Terminal</a>
+    <a class="filter-chip" href="#concept-2">2. Neomorphic Glass</a>
+    <a class="filter-chip" href="#concept-3">3. Swiss Minimalist</a>
+    <a class="filter-chip" href="#concept-4">4. Cyberpunk HUD</a>
+    <a class="filter-chip" href="#concept-5">5. Nordic Deep Slate</a>
+    <a class="filter-chip" href="#concept-6">6. Wall Street Bridge</a>
+    <a class="filter-chip" href="#concept-7">7. Gamified Duel</a>
+    <a class="filter-chip" href="#concept-8">8. Luxury Editorial</a>
+    <a class="filter-chip" href="#concept-9">9. Bento Grid Glass</a>
+    <a class="filter-chip" href="#concept-10">10. Options Scalper</a>
+  </div>
+
+  <!-- Gallery of 10 Visual Concepts -->
+  <main class="gallery-container">
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 1: BLOOMBERG DARK TERMINAL                      -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-1">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 01 • Institutional Pro</div>
+          <h2 class="concept-title">Bloomberg Dark Terminal (Obsidian & Amber)</h2>
+          <p class="concept-tagline">Dense, zero-distraction high-contrast dark layout modeled after Bloomberg Professional & Reuters Eikon terminals with high-speed monospace telemetry.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Obsidian #0B0E14</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Amber Gold #F59E0B</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">JetBrains Mono + Inter</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Institutional Hedge Fund</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background -->
+            <rect width="1200" height="675" fill="#0B0E14"/>
+            <!-- Top Command Ribbon -->
+            <rect width="1200" height="42" fill="#07090D" stroke="#1E2638" stroke-width="1"/>
+            <text x="24" y="26" fill="#F59E0B" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="700">TRADE2OPTIONS TERMINAL [DALAL STREET v4.0]</text>
+            <text x="360" y="26" fill="#10B981" font-family="'JetBrains Mono', monospace" font-size="12">● LIVE FEED (280ms) NSE/BSE SCANNER</text>
+            <text x="750" y="26" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="12">SESSION: 02:58 PM IST | MON 07 SEP</text>
+            <rect x="1060" y="8" width="116" height="26" rx="4" fill="#F59E0B" fill-opacity="0.15" stroke="#F59E0B"/>
+            <text x="1075" y="25" fill="#F59E0B" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">DISCORD LIVE</text>
+
+            <!-- Ticker Ribbon -->
+            <rect y="42" width="1200" height="28" fill="#101522"/>
+            <text x="24" y="60" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="11">NIFTY 50: <tspan fill="#EF4444">23,754.60 (-0.60%)</tspan></text>
+            <text x="240" y="60" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="11">BANKNIFTY: <tspan fill="#EF4444">57,056.80 (-0.55%)</tspan></text>
+            <text x="470" y="60" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="11">SENSEX: <tspan fill="#EF4444">76,100.94 (-0.54%)</tspan></text>
+            <text x="700" y="60" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="11">INDIA VIX: <tspan fill="#F59E0B">11.24 (+5.2%)</tspan></text>
+            <text x="910" y="60" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="11">TCS: <tspan fill="#10B981">₹2,264.90 (+1.2%)</tspan></text>
+
+            <!-- Left Rail: Monitored Universe -->
+            <rect x="16" y="84" width="220" height="575" rx="6" fill="#0D111A" stroke="#1E2638" stroke-width="1"/>
+            <rect x="16" y="84" width="220" height="34" rx="6" fill="#141B2A"/>
+            <text x="28" y="106" fill="#F59E0B" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">STOCK SCANNER (53)</text>
+            
+            <!-- Stock List Rows -->
+            <g font-family="'JetBrains Mono', monospace" font-size="11">
+              <text x="28" y="140" fill="#FFFFFF" font-weight="700">RELIANCE</text><text x="140" y="140" fill="#EF4444">₹1,305 -1.2%</text>
+              <text x="28" y="172" fill="#FFFFFF" font-weight="700">TCS</text><text x="140" y="172" fill="#10B981">₹2,264 +1.2%</text>
+              <text x="28" y="204" fill="#FFFFFF" font-weight="700">HDFCBANK</text><text x="140" y="204" fill="#EF4444">₹1,642 -0.8%</text>
+              <text x="28" y="236" fill="#FFFFFF" font-weight="700">INFY</text><text x="140" y="236" fill="#EF4444">₹1,087 -3.7%</text>
+              <text x="28" y="268" fill="#FFFFFF" font-weight="700">ZOMATO</text><text x="140" y="268" fill="#10B981">₹264.5 +0.0%</text>
+              <text x="28" y="300" fill="#FFFFFF" font-weight="700">BEL</text><text x="140" y="300" fill="#10B981">₹412.0 +0.3%</text>
+              <text x="28" y="332" fill="#FFFFFF" font-weight="700">GROWW</text><text x="140" y="332" fill="#EF4444">₹194.6 -0.3%</text>
+              <text x="28" y="364" fill="#FFFFFF" font-weight="700">TRENT</text><text x="140" y="364" fill="#10B981">₹2,898 +0.7%</text>
+            </g>
+
+            <!-- Center Panel: Live Chart + Multi-Agent Duel -->
+            <rect x="250" y="84" width="620" height="340" rx="6" fill="#0D111A" stroke="#1E2638" stroke-width="1"/>
+            <rect x="250" y="84" width="620" height="34" rx="6" fill="#141B2A"/>
+            <text x="264" y="106" fill="#06B6D4" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">CHART: NSE:RELIANCE 15M • LIVE TICK FEED</text>
+            
+            <!-- Simulated Candlesticks -->
+            <line x1="280" y1="180" x2="280" y2="280" stroke="#10B981" stroke-width="2"/>
+            <rect x="274" y="200" width="12" height="60" fill="#10B981"/>
+            <line x1="310" y1="160" x2="310" y2="250" stroke="#EF4444" stroke-width="2"/>
+            <rect x="304" y="190" width="12" height="40" fill="#EF4444"/>
+            <line x1="340" y1="210" x2="340" y2="300" stroke="#10B981" stroke-width="2"/>
+            <rect x="334" y="220" width="12" height="70" fill="#10B981"/>
+            <line x1="370" y1="190" x2="370" y2="280" stroke="#10B981" stroke-width="2"/>
+            <rect x="364" y="210" width="12" height="50" fill="#10B981"/>
+            <line x1="400" y1="150" x2="400" y2="240" stroke="#EF4444" stroke-width="2"/>
+            <rect x="394" y="170" width="12" height="55" fill="#EF4444"/>
+            <line x1="430" y1="140" x2="430" y2="220" stroke="#10B981" stroke-width="2"/>
+            <rect x="424" y="150" width="12" height="60" fill="#10B981"/>
+
+            <!-- Trend Line overlay -->
+            <path d="M 270 290 Q 350 240 450 180 T 600 210 T 800 160" stroke="#F59E0B" stroke-width="2" fill="none" stroke-dasharray="4 2"/>
+
+            <!-- Agent Duel Bottom Strip -->
+            <rect x="250" y="440" width="620" height="219" rx="6" fill="#0D111A" stroke="#1E2638" stroke-width="1"/>
+            <rect x="250" y="440" width="620" height="30" rx="6" fill="#141B2A"/>
+            <text x="264" y="460" fill="#F59E0B" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">MULTI-AGENT COMMITTEE CONSENSUS ENGINE</text>
+            
+            <!-- Bull vs Bear Cards -->
+            <rect x="264" y="482" width="288" height="162" rx="4" fill="#071E15" stroke="#10B981" stroke-width="1"/>
+            <text x="278" y="506" fill="#10B981" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">BULL RESEARCHER [CONVICTION: 78%]</text>
+            <text x="278" y="528" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="10">Aggressive accumulation above ₹1,290 support.</text>
+            <text x="278" y="546" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="10">Target 1: ₹1,345 | Target 2: ₹1,380</text>
+            <text x="278" y="564" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="10">Catalyst: DII net cash absorption +₹2,890 Cr.</text>
+
+            <rect x="568" y="482" width="288" height="162" rx="4" fill="#220B0E" stroke="#EF4444" stroke-width="1"/>
+            <text x="582" y="506" fill="#EF4444" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">BEAR CHALLENGER [DEFENSIVE]</text>
+            <text x="582" y="528" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="10">Overhead supply resistance near ₹1,320 ceiling.</text>
+            <text x="582" y="546" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="10">Trailing stop loss strictly at ₹1,274.</text>
+            <text x="582" y="564" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="10">Risk Committee: Limit position size to 2% max.</text>
+
+            <!-- Right Rail: Option Chain PCR + Ledger Execution -->
+            <rect x="884" y="84" width="300" height="575" rx="6" fill="#0D111A" stroke="#1E2638" stroke-width="1"/>
+            <rect x="884" y="84" width="300" height="34" rx="6" fill="#141B2A"/>
+            <text x="898" y="106" fill="#06B6D4" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">OPTION CHAIN PCR & ORDER FLOW</text>
+            
+            <g font-family="'JetBrains Mono', monospace" font-size="11">
+              <text x="898" y="145" fill="#94A3B8">NIFTY ATM STRIKE</text><text x="1080" y="145" fill="#FFFFFF">23,750 PE</text>
+              <text x="898" y="175" fill="#94A3B8">PUT-CALL RATIO</text><text x="1080" y="175" fill="#10B981">0.91 (BULL)</text>
+              <text x="898" y="205" fill="#94A3B8">MAX PAIN LEVEL</text><text x="1080" y="205" fill="#F59E0B">23,750</text>
+              <text x="898" y="235" fill="#94A3B8">BANKNIFTY PCR</text><text x="1080" y="235" fill="#10B981">0.93</text>
+              <text x="898" y="265" fill="#94A3B8">INDIA VIX REGIME</text><text x="1080" y="265" fill="#10B981">LOW VOL (11.2)</text>
+            </g>
+
+            <!-- Trade Grade Box -->
+            <rect x="898" y="300" width="272" height="140" rx="4" fill="#141B2A" stroke="#2A364F"/>
+            <text x="912" y="324" fill="#F59E0B" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">VERIFIED PERFORMANCE LEDGER</text>
+            <text x="912" y="350" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="10">WIN RATE: <tspan fill="#10B981">86.4%</tspan> (19 W / 3 L)</text>
+            <text x="912" y="374" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="10">ALPHA GENERATED: <tspan fill="#10B981">+342.8 pts</tspan></text>
+            <text x="912" y="398" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="10">BEST TRADE: <tspan fill="#10B981">BSE (+₹160.00)</tspan></text>
+            <text x="912" y="422" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="9">AUDITED EOD DISPATCH READY</text>
+
+            <!-- Discord Dispatch Button -->
+            <rect x="898" y="460" width="272" height="42" rx="4" fill="#5865F2"/>
+            <text x="940" y="486" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="12" font-weight="700">⚡ BROADCAST SIGNAL TO DISCORD</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> High-density data grid with monospace tabular numbers for rapid multi-stock scanning</li>
+          <li><i data-lucide="check-circle-2"></i> Dual-pane AI debate visualizer comparing Bull Thesis vs Bear Risk guardrails in real time</li>
+          <li><i data-lucide="check-circle-2"></i> Zero-latency tick flash telemetry synchronized with live Dalal Street scanner</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#0B0E14;" title="Obsidian Base #0B0E14"></div>
+            <div class="swatch" style="background:#F59E0B;" title="Amber Gold #F59E0B"></div>
+            <div class="swatch" style="background:#06B6D4;" title="Cyan Telemetry #06B6D4"></div>
+            <div class="swatch" style="background:#10B981;" title="Terminal Green #10B981"></div>
+            <div class="swatch" style="background:#EF4444;" title="Bear Crimson #EF4444"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 2: NEOMORPHIC GLASSMORPHISM                      -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-2">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 02 • Modern Web3 & FinTech</div>
+          <h2 class="concept-title">Neomorphic Glassmorphism & Aurora Glow</h2>
+          <p class="concept-tagline">Translucent acrylic glass cards with backdrop blurs, luminous ambient lighting, and subtle neon purple-cyan edge gradients for high visual impact.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Midnight Navy #030712</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Violet #8B5CF6 & Cyan #06B6D4</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">Outfit + Inter</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Sleek Web3 / Next-Gen Pro</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#030712"/>
+            <!-- Ambient Aurora Glows -->
+            <circle cx="200" cy="150" r="180" fill="#8B5CF6" fill-opacity="0.18" filter="blur(80px)"/>
+            <circle cx="1000" cy="200" r="220" fill="#06B6D4" fill-opacity="0.15" filter="blur(90px)"/>
+            <circle cx="600" cy="500" r="200" fill="#10B981" fill-opacity="0.12" filter="blur(80px)"/>
+
+            <!-- Floating Glass Header -->
+            <rect x="24" y="20" width="1152" height="60" rx="16" fill="rgba(17, 24, 39, 0.6)" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1"/>
+            <text x="48" y="56" fill="#FFFFFF" font-family="'Outfit', sans-serif" font-size="18" font-weight="800">TRADE<tspan fill="#8B5CF6">2</tspan>OPTIONS</text>
+            <rect x="230" y="36" width="130" height="28" rx="14" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6"/>
+            <text x="246" y="55" fill="#C4B5FD" font-family="'Inter', sans-serif" font-size="11" font-weight="700">✦ AI DALAL STREET</text>
+            
+            <rect x="860" y="34" width="160" height="32" rx="16" fill="rgba(255, 255, 255, 0.06)" stroke="rgba(255, 255, 255, 0.1)"/>
+            <text x="880" y="55" fill="#38BDF8" font-family="'JetBrains Mono', monospace" font-size="12">● LIVE 0-LAG SYNC</text>
+            <rect x="1036" y="34" width="120" height="32" rx="16" fill="linear-gradient(135deg, #8B5CF6, #06B6D4)"/>
+            <text x="1058" y="55" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="12" font-weight="700">RUN AUDIT</text>
+
+            <!-- Hero Bento Cards -->
+            <!-- Bento 1: Stock Spotlight -->
+            <rect x="24" y="100" width="480" height="260" rx="20" fill="rgba(17, 24, 39, 0.5)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+            <text x="52" y="140" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="12" font-weight="600">MARKET FOCUS • NSE</text>
+            <text x="52" y="180" fill="#FFFFFF" font-family="'Outfit', sans-serif" font-size="32" font-weight="900">RELIANCE IND.</text>
+            <text x="52" y="215" fill="#38BDF8" font-family="'Outfit', sans-serif" font-size="26" font-weight="800">₹1,305.30 <tspan fill="#EF4444" font-size="16">-1.26%</tspan></text>
+            <text x="52" y="245" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="12">RSI 38.4 (Oversold) • Volume: 387.4K • P/E: 22.2</text>
+            <rect x="52" y="270" width="140" height="36" rx="10" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981"/>
+            <text x="74" y="293" fill="#34D399" font-family="'Inter', sans-serif" font-size="12" font-weight="700">ACCUMULATE DIP</text>
+
+            <!-- Bento 2: AI Radar Conviction Dial -->
+            <rect x="520" y="100" width="360" height="260" rx="20" fill="rgba(17, 24, 39, 0.5)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+            <text x="548" y="140" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="12" font-weight="600">AGENT RADAR CONVICTION</text>
+            <!-- Gauge Circle -->
+            <circle cx="700" cy="220" r="65" stroke="rgba(255, 255, 255, 0.08)" stroke-width="14" fill="none"/>
+            <circle cx="700" cy="220" r="65" stroke="url(#cyanViolet)" stroke-width="14" fill="none" stroke-dasharray="408" stroke-dashoffset="110" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="cyanViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#06B6D4"/>
+                <stop offset="100%" stop-color="#8B5CF6"/>
+              </linearGradient>
+            </defs>
+            <text x="682" y="222" fill="#FFFFFF" font-family="'Outfit', sans-serif" font-size="28" font-weight="900">78%</text>
+            <text x="670" y="244" fill="#A7F3D0" font-family="'Inter', sans-serif" font-size="11" font-weight="700">BULL ADVANCE</text>
+
+            <!-- Bento 3: Verified Performance Ledger -->
+            <rect x="896" y="100" width="280" height="260" rx="20" fill="rgba(17, 24, 39, 0.5)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+            <text x="920" y="140" fill="#FBBF24" font-family="'Inter', sans-serif" font-size="12" font-weight="700">★ TRACK RECORD LEDGER</text>
+            <text x="920" y="180" fill="#FFFFFF" font-family="'Outfit', sans-serif" font-size="34" font-weight="900">86.4%</text>
+            <text x="920" y="202" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="12">Verified Session Win Rate</text>
+            <line x1="920" y1="220" x2="1140" y2="220" stroke="rgba(255, 255, 255, 0.08)"/>
+            <text x="920" y="248" fill="#34D399" font-family="'Inter', sans-serif" font-size="14" font-weight="700">+₹342.80 pts Alpha</text>
+            <text x="920" y="272" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">Today: 4 Active Setups Trading</text>
+
+            <!-- Bottom Multi-Agent Dueling Flow -->
+            <rect x="24" y="380" width="1152" height="270" rx="20" fill="rgba(17, 24, 39, 0.5)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+            <text x="52" y="420" fill="#FFFFFF" font-family="'Outfit', sans-serif" font-size="18" font-weight="800">Multi-Agent Duel: Bull Thesis vs Bear Challenger</text>
+            
+            <rect x="52" y="440" width="510" height="180" rx="14" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.3)"/>
+            <text x="76" y="475" fill="#34D399" font-family="'Outfit', sans-serif" font-size="15" font-weight="700">Bull Researcher: Target ₹1,345</text>
+            <text x="76" y="505" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">1. Dalal Street retail sentiment 78% bullish.</text>
+            <text x="76" y="530" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">2. Domestic DII cash inflows anchor downside support.</text>
+            <text x="76" y="555" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">3. Recommended R:R ratio is 1:2.85.</text>
+
+            <rect x="586" y="440" width="560" height="180" rx="14" fill="rgba(239, 68, 68, 0.08)" stroke="rgba(239, 68, 68, 0.3)"/>
+            <text x="610" y="475" fill="#F87171" font-family="'Outfit', sans-serif" font-size="15" font-weight="700">Bear Researcher: Risk Stop ₹1,274</text>
+            <text x="610" y="505" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">1. Watch overhead resistance ceiling at ₹1,320.</text>
+            <text x="610" y="530" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">2. Suggest booking 50% profits at 1:1.5 R:R.</text>
+            <text x="610" y="555" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">3. Risk Management Committee limits allocation to 2-3%.</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Glassmorphic frosted cards (`backdrop-filter: blur(16px)`) with glowing aura depth</li>
+          <li><i data-lucide="check-circle-2"></i> Circular SVG gauge conviction dial visually mapping Bull vs Bear probability</li>
+          <li><i data-lucide="check-circle-2"></i> Bento modular cards with clean hierarchy and premium typography</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#030712;" title="Midnight Navy #030712"></div>
+            <div class="swatch" style="background:#8B5CF6;" title="Electric Violet #8B5CF6"></div>
+            <div class="swatch" style="background:#06B6D4;" title="Cyan #06B6D4"></div>
+            <div class="swatch" style="background:#34D399;" title="Emerald #34D399"></div>
+            <div class="swatch" style="background:#F43F5E;" title="Coral Red #F43F5E"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 3: SWISS MINIMALIST HFT                         -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-3">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 03 • Architectural Precision</div>
+          <h2 class="concept-title">Swiss Minimalist High-Frequency (Linear / Vercel Vibe)</h2>
+          <p class="concept-tagline">Stark black and white geometry with razor-sharp 1px hairline borders, micro-typography, and high-frequency execution clarity.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Pitch Black #000000</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Laser Green #00FF66</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">Geist / Neue Haas Grotesk</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Vercel / Linear Precision</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#000000"/>
+            <!-- Grid Lines -->
+            <line x1="0" y1="56" x2="1200" y2="56" stroke="#1A1A1A" stroke-width="1"/>
+            <line x1="280" y1="56" x2="280" y2="675" stroke="#1A1A1A" stroke-width="1"/>
+            <line x1="900" y1="56" x2="900" y2="675" stroke="#1A1A1A" stroke-width="1"/>
+            <line x1="280" y1="380" x2="900" y2="380" stroke="#1A1A1A" stroke-width="1"/>
+
+            <!-- Header -->
+            <text x="32" y="36" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="14" font-weight="700" letter-spacing="0.05em">TRADE2OPTIONS / SYSTEM_4.0</text>
+            <text x="312" y="36" fill="#666666" font-family="'JetBrains Mono', monospace" font-size="11">NSE:NIFTY 23,754.60 [-0.60%]  |  BSE:SENSEX 76,100.94 [-0.54%]</text>
+            <text x="1000" y="36" fill="#00FF66" font-family="'JetBrains Mono', monospace" font-size="11">● 0-LAG SYNC: 280ms</text>
+
+            <!-- Column 1: Monitored Universe -->
+            <text x="32" y="90" fill="#666666" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="0.1em">WATCHLIST // NSE_EQ</text>
+            <g font-family="'JetBrains Mono', monospace" font-size="11">
+              <text x="32" y="130" fill="#FFFFFF">RELIANCE</text><text x="180" y="130" fill="#FFFFFF">1,305.30</text><text x="240" y="130" fill="#FF3333">-1.2%</text>
+              <text x="32" y="165" fill="#FFFFFF">TCS</text><text x="180" y="165" fill="#FFFFFF">2,264.90</text><text x="240" y="165" fill="#00FF66">+1.2%</text>
+              <text x="32" y="200" fill="#FFFFFF">HDFCBANK</text><text x="180" y="200" fill="#FFFFFF">1,642.00</text><text x="240" y="200" fill="#FF3333">-0.8%</text>
+              <text x="32" y="235" fill="#FFFFFF">INFY</text><text x="180" y="235" fill="#FFFFFF">1,087.90</text><text x="240" y="235" fill="#FF3333">-3.7%</text>
+              <text x="32" y="270" fill="#FFFFFF">ZOMATO</text><text x="180" y="270" fill="#FFFFFF">264.50</text><text x="240" y="270" fill="#888888">0.0%</text>
+              <text x="32" y="305" fill="#FFFFFF">BEL</text><text x="180" y="305" fill="#FFFFFF">412.00</text><text x="240" y="305" fill="#00FF66">+0.3%</text>
+            </g>
+
+            <!-- Center Top: Diff View Agent Debate -->
+            <text x="312" y="90" fill="#666666" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="0.1em">AI_COMMITTEE // LIVE_DIFF_VIEW</text>
+            
+            <rect x="312" y="110" width="270" height="240" fill="#050505" stroke="#1A1A1A"/>
+            <text x="330" y="136" fill="#00FF66" font-family="'JetBrains Mono', monospace" font-size="11">+ BULL THESIS [CONVICTION: HIGH]</text>
+            <text x="330" y="165" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">+ Entry CMP: ₹1,305.30</text>
+            <text x="330" y="190" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">+ Target 1: ₹1,345.00 (+3.0%)</text>
+            <text x="330" y="215" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">+ DII Inflow: +₹2,890 Cr support</text>
+            <text x="330" y="240" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">+ Risk/Reward: 1 : 2.85</text>
+
+            <rect x="598" y="110" width="270" height="240" fill="#050505" stroke="#1A1A1A"/>
+            <text x="616" y="136" fill="#FF3333" font-family="'JetBrains Mono', monospace" font-size="11">- BEAR CHALLENGER [GUARDRAILS]</text>
+            <text x="616" y="165" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">- Stop Loss: ₹1,274.00 (strict)</text>
+            <text x="616" y="190" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">- Resistance: ₹1,320.00</text>
+            <text x="616" y="215" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">- Max Portfolio Allocation: 2.5%</text>
+            <text x="616" y="240" fill="#CCCCCC" font-family="'Inter', sans-serif" font-size="11">- Audit Trail Verified: TRUE</text>
+
+            <!-- Center Bottom: High Speed Execution Table -->
+            <text x="312" y="415" fill="#666666" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="0.1em">TODAY_SETUPS // VERIFIED_EXECUTION_LEDGER</text>
+            <g font-family="'JetBrains Mono', monospace" font-size="11">
+              <text x="312" y="450" fill="#888888">DATE</text><text x="440" y="450" fill="#888888">SYMBOL</text><text x="540" y="450" fill="#888888">TRIGGER</text><text x="640" y="450" fill="#888888">CMP</text><text x="740" y="450" fill="#888888">MOVE</text><text x="820" y="450" fill="#888888">STATUS</text>
+              <line x1="312" y1="465" x2="880" y2="465" stroke="#1A1A1A"/>
+              <text x="312" y="495" fill="#FFFFFF">07 SEP</text><text x="440" y="495" fill="#FFFFFF">TCS</text><text x="540" y="495" fill="#FFFFFF">2,264.9</text><text x="640" y="495" fill="#FFFFFF">2,264.9</text><text x="740" y="495" fill="#00FF66">+1.2%</text><text x="820" y="495" fill="#00FF66">ACTIVE</text>
+              <text x="312" y="530" fill="#FFFFFF">07 SEP</text><text x="440" y="530" fill="#FFFFFF">INFY</text><text x="540" y="530" fill="#FFFFFF">1,087.9</text><text x="640" y="530" fill="#FFFFFF">1,087.9</text><text x="740" y="530" fill="#FF3333">-3.7%</text><text x="820" y="530" fill="#00FF66">ACTIVE</text>
+              <text x="312" y="565" fill="#FFFFFF">07 SEP</text><text x="440" y="565" fill="#FFFFFF">GROWW</text><text x="540" y="565" fill="#FFFFFF">194.6</text><text x="640" y="565" fill="#FFFFFF">194.6</text><text x="740" y="565" fill="#00FF66">+0.3%S</text><text x="820" y="530" fill="#00FF66">ACTIVE</text>
+            </g>
+
+            <!-- Right Column: Option PCR & Metrics -->
+            <text x="932" y="90" fill="#666666" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="0.1em">OPTIONS_PCR // TELEMETRY</text>
+            <rect x="932" y="110" width="236" height="70" fill="#080808" stroke="#1A1A1A"/>
+            <text x="950" y="136" fill="#888888" font-family="'JetBrains Mono', monospace" font-size="10">NIFTY PCR</text>
+            <text x="950" y="162" fill="#00FF66" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="700">0.91</text>
+
+            <rect x="932" y="195" width="236" height="70" fill="#080808" stroke="#1A1A1A"/>
+            <text x="950" y="221" fill="#888888" font-family="'JetBrains Mono', monospace" font-size="10">WIN RATE SCORE</text>
+            <text x="950" y="247" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="700">86.4% [19W / 3L]</text>
+
+            <rect x="932" y="280" width="236" height="46" fill="#FFFFFF"/>
+            <text x="965" y="309" fill="#000000" font-family="'Inter', sans-serif" font-size="12" font-weight="800">EXECUTE / DISPATCH</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Hairline architectural grid lines with zero unnecessary ornamentation</li>
+          <li><i data-lucide="check-circle-2"></i> Code diff style agent visualizer (+ Green for Bull thesis, - Red for Bear counter-argument)</li>
+          <li><i data-lucide="check-circle-2"></i> Highest information density with instant readability on OLED monitors</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#000000;" title="Pitch Black #000000"></div>
+            <div class="swatch" style="background:#FFFFFF;" title="Pure White #FFFFFF"></div>
+            <div class="swatch" style="background:#00FF66;" title="Laser Green #00FF66"></div>
+            <div class="swatch" style="background:#FF3333;" title="Laser Red #FF3333"></div>
+            <div class="swatch" style="background:#1A1A1A;" title="Hairline Border #1A1A1A"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 4: CYBERPUNK DALAL HUD                          -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-4">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 04 • Sci-Fi Cockpit</div>
+          <h2 class="concept-title">Cyberpunk Dalal Street HUD (Matrix Neon & Reticle)</h2>
+          <p class="concept-tagline">Futuristic tactical cockpit HUD with radar reticles, glowing neon emerald and cyber magenta accents, angled corners, and tactical telemetry.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Carbon #090A0F</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Neon Emerald #00FF88 & Magenta #FF0055</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">Share Tech Mono</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Tactical Sci-Fi Cockpit</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#090A0F"/>
+            <!-- Subtle Scanlines -->
+            <pattern id="scanlines" width="1200" height="4" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="2" x2="1200" y2="2" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+            </pattern>
+            <rect width="1200" height="675" fill="url(#scanlines)"/>
+
+            <!-- HUD Corner Brackets -->
+            <path d="M 20 50 L 20 20 L 50 20" stroke="#00FF88" stroke-width="2" fill="none"/>
+            <path d="M 1180 50 L 1180 20 L 1150 20" stroke="#00FF88" stroke-width="2" fill="none"/>
+            <path d="M 20 625 L 20 655 L 50 655" stroke="#00FF88" stroke-width="2" fill="none"/>
+            <path d="M 1180 625 L 1180 655 L 1150 655" stroke="#00FF88" stroke-width="2" fill="none"/>
+
+            <!-- Top HUD Bar -->
+            <text x="60" y="38" fill="#00FF88" font-family="'Share Tech Mono', monospace" font-size="16" letter-spacing="0.1em">DALAL_HUD // MULTI_AGENT_MATRIX_ONLINE</text>
+            <text x="600" y="38" fill="#FF0055" font-family="'Share Tech Mono', monospace" font-size="14">TARGET: RELIANCE.NS [ACTIVE RECON]</text>
+            <text x="1000" y="38" fill="#00E5FF" font-family="'Share Tech Mono', monospace" font-size="14">LATENCY: 280 MS</text>
+
+            <!-- Radar Reticle Center -->
+            <circle cx="600" cy="240" r="140" stroke="rgba(0, 255, 136, 0.25)" stroke-width="1" fill="none"/>
+            <circle cx="600" cy="240" r="90" stroke="rgba(0, 255, 136, 0.4)" stroke-width="1" fill="none"/>
+            <line x1="450" y1="240" x2="750" y2="240" stroke="rgba(0, 255, 136, 0.3)" stroke-width="1"/>
+            <line x1="600" y1="90" x2="600" y2="390" stroke="rgba(0, 255, 136, 0.3)" stroke-width="1"/>
+            <path d="M 600 240 L 720 180" stroke="#00FF88" stroke-width="2"/>
+            <circle cx="720" cy="180" r="6" fill="#00FF88"/>
+            <text x="735" y="185" fill="#00FF88" font-family="'Share Tech Mono', monospace" font-size="12">BULL LOCK: ₹1,345</text>
+
+            <!-- Left HUD Console -->
+            <rect x="50" y="80" width="340" height="260" fill="rgba(0, 255, 136, 0.03)" stroke="#00FF88" stroke-width="1"/>
+            <text x="70" y="110" fill="#00FF88" font-family="'Share Tech Mono', monospace" font-size="14">[ LIVE SCANNED INDICES ]</text>
+            <text x="70" y="145" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">NIFTY 50: 23,754.60 [-0.60%]</text>
+            <text x="70" y="175" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">BANKNIFTY: 57,056.80 [-0.55%]</text>
+            <text x="70" y="205" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">SENSEX: 76,100.94 [-0.54%]</text>
+            <text x="70" y="235" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">INDIA VIX: 11.24 [LOW_RISK]</text>
+            <text x="70" y="265" fill="#00E5FF" font-family="'Share Tech Mono', monospace" font-size="13">PCR: 0.91 [PUT SUPPORT]</text>
+
+            <!-- Right HUD Console -->
+            <rect x="810" y="80" width="340" height="260" fill="rgba(255, 0, 85, 0.03)" stroke="#FF0055" stroke-width="1"/>
+            <text x="830" y="110" fill="#FF0055" font-family="'Share Tech Mono', monospace" font-size="14">[ THREAT & RISK RADAR ]</text>
+            <text x="830" y="145" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">RESISTANCE CEILING: ₹1,320</text>
+            <text x="830" y="175" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">PROTECTIVE STOP: ₹1,274</text>
+            <text x="830" y="205" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">MAX DRAWDOWN: 2.5% ACC</text>
+            <text x="830" y="235" fill="#FFFFFF" font-family="'Share Tech Mono', monospace" font-size="13">ORDER TYPE: BRACKET_SL</text>
+
+            <!-- Bottom Tactical Feed -->
+            <rect x="50" y="380" width="1100" height="240" fill="rgba(0, 0, 0, 0.6)" stroke="#1A2B3C" stroke-width="1"/>
+            <text x="70" y="415" fill="#00E5FF" font-family="'Share Tech Mono', monospace" font-size="14">AI_AGENT_DUEL_STREAM // DISCORD_DISPATCH</text>
+            
+            <text x="70" y="455" fill="#00FF88" font-family="'Share Tech Mono', monospace" font-size="13">&gt;&gt; [BULL_AGENT]: Accumulate inside ₹1,295 - ₹1,308 zone. R:R 1:2.85 confirmed.</text>
+            <text x="70" y="490" fill="#FF0055" font-family="'Share Tech Mono', monospace" font-size="13">&gt;&gt; [BEAR_AGENT]: Warning: Profit booking anticipated near ₹1,318. Trail stop loss.</text>
+            <text x="70" y="525" fill="#00E5FF" font-family="'Share Tech Mono', monospace" font-size="13">&gt;&gt; [RISK_OFFICER]: Trade approved with 4.5% portfolio equity weighting.</text>
+            <text x="70" y="560" fill="#F59E0B" font-family="'Share Tech Mono', monospace" font-size="13">&gt;&gt; [DISCORD_BROADCAST]: Signal formatted and transmitted to 15,000+ traders.</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Tactical cockpit aesthetic with reticle radar targeting and scanlines</li>
+          <li><i data-lucide="check-circle-2"></i> High-contrast Neon Green & Cyber Magenta warning badges for instant threat visibility</li>
+          <li><i data-lucide="check-circle-2"></i> Monospace terminal stream showing real-time agent arguments and dispatch status</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#090A0F;" title="Carbon #090A0F"></div>
+            <div class="swatch" style="background:#00FF88;" title="Neon Emerald #00FF88"></div>
+            <div class="swatch" style="background:#FF0055;" title="Cyber Magenta #FF0055"></div>
+            <div class="swatch" style="background:#00E5FF;" title="Holo Cyan #00E5FF"></div>
+            <div class="swatch" style="background:#F59E0B;" title="Amber Warning #F59E0B"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 5: NORDIC MINIMALIST TRADING SUITE               -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-5">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 05 • Low Eye-Strain Ergonomics</div>
+          <h2 class="concept-title">Nordic Deep Slate (Scandinavian Wealth Suite)</h2>
+          <p class="concept-tagline">Calm, soothing deep navy and frosted ice palette designed for 8+ hour trading sessions without visual fatigue, featuring rounded soft cards.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Nordic Sea #0F172A</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Mint Teal #2DD4BF & Soft Coral #F43F5E</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">DM Sans / Outfit</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Scandinavian Wealth Desk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#0F172A"/>
+            
+            <!-- Soothing Top Header -->
+            <rect width="1200" height="64" fill="#1E293B"/>
+            <text x="36" y="38" fill="#F8FAFC" font-family="'Outfit', sans-serif" font-size="20" font-weight="700">TRADE2OPTIONS <tspan fill="#2DD4BF" font-size="14">| NORDIC</tspan></text>
+            <rect x="420" y="16" width="360" height="32" rx="16" fill="#0F172A"/>
+            <text x="440" y="37" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="12">🔍 Search any of 5,000+ NSE/BSE stocks...</text>
+            <rect x="1040" y="16" width="120" height="32" rx="8" fill="#2DD4BF"/>
+            <text x="1062" y="37" fill="#0F172A" font-family="'Inter', sans-serif" font-size="12" font-weight="700">EXPORT PDF</text>
+
+            <!-- Left Calm Pill Cards -->
+            <rect x="36" y="90" width="340" height="540" rx="16" fill="#1E293B"/>
+            <text x="60" y="126" fill="#F8FAFC" font-family="'Outfit', sans-serif" font-size="16" font-weight="700">Market Overview</text>
+            
+            <rect x="60" y="150" width="292" height="70" rx="12" fill="#0F172A"/>
+            <text x="80" y="180" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">NIFTY 50 INDEX</text>
+            <text x="80" y="204" fill="#F8FAFC" font-family="'Inter', sans-serif" font-size="16" font-weight="700">23,754.60 <tspan fill="#F43F5E" font-size="12">-0.60%</tspan></text>
+
+            <rect x="60" y="235" width="292" height="70" rx="12" fill="#0F172A"/>
+            <text x="80" y="265" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">BANK NIFTY</text>
+            <text x="80" y="289" fill="#F8FAFC" font-family="'Inter', sans-serif" font-size="16" font-weight="700">57,056.80 <tspan fill="#F43F5E" font-size="12">-0.55%</tspan></text>
+
+            <rect x="60" y="320" width="292" height="70" rx="12" fill="#0F172A"/>
+            <text x="80" y="350" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">INDIA VIX</text>
+            <text x="80" y="374" fill="#F8FAFC" font-family="'Inter', sans-serif" font-size="16" font-weight="700">11.24 <tspan fill="#2DD4BF" font-size="12">Calm Regime</tspan></text>
+
+            <rect x="60" y="405" width="292" height="195" rx="12" fill="#0F172A"/>
+            <text x="80" y="435" fill="#2DD4BF" font-family="'Inter', sans-serif" font-size="12" font-weight="700">INSTITUTIONAL FLOWS</text>
+            <text x="80" y="470" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">DII Net Cash: +₹2,890 Cr</text>
+            <text x="80" y="500" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">FII Net Cash: +₹1,450 Cr</text>
+            <text x="80" y="530" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">Monthly SIP: ₹24,500+ Cr</text>
+            <text x="80" y="560" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">High domestic liquidity cushion</text>
+
+            <!-- Right Main Work Area -->
+            <rect x="400" y="90" width="764" height="540" rx="16" fill="#1E293B"/>
+            <text x="430" y="130" fill="#F8FAFC" font-family="'Outfit', sans-serif" font-size="20" font-weight="700">Institutional Dossier: Tata Consultancy Services (TCS)</text>
+            
+            <rect x="430" y="160" width="704" height="180" rx="12" fill="#0F172A"/>
+            <text x="460" y="195" fill="#2DD4BF" font-family="'Inter', sans-serif" font-size="14" font-weight="700">Tactical Executive Summary</text>
+            <text x="460" y="225" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="13">• Current Market Price: ₹2,264.90 with strong delivery accumulation.</text>
+            <text x="460" y="255" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="13">• Primary Resistance: ₹2,345 | Trailing Stop Loss: ₹2,215</text>
+            <text x="460" y="285" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="13">• Risk Committee Verdict: APPROVED FOR ACCUMULATION (Target R:R 1:2.85)</text>
+
+            <!-- Agent Pill Boxes -->
+            <rect x="430" y="360" width="340" height="240" rx="12" fill="#0F172A"/>
+            <text x="455" y="395" fill="#2DD4BF" font-family="'Inter', sans-serif" font-size="13" font-weight="700">Bull Researcher Thesis</text>
+            <text x="455" y="425" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="12">Heavy block deals detected in pre-market. Margin expansion expected from BFSI client transformation deals.</text>
+
+            <rect x="794" y="360" width="340" height="240" rx="12" fill="#0F172A"/>
+            <text x="819" y="395" fill="#F43F5E" font-family="'Inter', sans-serif" font-size="13" font-weight="700">Bear Researcher Guardrails</text>
+            <text x="819" y="425" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="12">IT sector discretionary spending headwinds. Keep trailing stop tight below previous day low.</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Low eye-strain deep slate navy with soothing rounded card containers</li>
+          <li><i data-lucide="check-circle-2"></i> Breathable spacing with clear institutional executive summaries</li>
+          <li><i data-lucide="check-circle-2"></i> Ideal for prolonged intraday monitoring and wealth management advisory</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#0F172A;" title="Nordic Sea #0F172A"></div>
+            <div class="swatch" style="background:#1E293B;" title="Card Slate #1E293B"></div>
+            <div class="swatch" style="background:#2DD4BF;" title="Mint Teal #2DD4BF"></div>
+            <div class="swatch" style="background:#F43F5E;" title="Soft Coral #F43F5E"></div>
+            <div class="swatch" style="background:#E2E8F0;" title="Ice White #E2E8F0"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 6: WALL STREET MULTI-MONITOR COMMAND BRIDGE      -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-6">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 06 • Pro Widescreen Control</div>
+          <h2 class="concept-title">Wall Street Command Bridge (4-Column Multi-Monitor)</h2>
+          <p class="concept-tagline">Designed for widescreen displays and multi-monitor trading desks with simultaneous views of Sector Heatmap, AI Duel, Options PCR, and Discord Dispatch.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Charcoal #121316</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Electric Blue #3B82F6 & Lime #84CC16</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">Space Grotesk + Inter</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Prop Trading Firm Command</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#121316"/>
+            <!-- 4 Distinct Vertical Columns -->
+            <rect x="16" y="16" width="280" height="643" rx="8" fill="#181A1F" stroke="#262930"/>
+            <rect x="306" y="16" width="310" height="643" rx="8" fill="#181A1F" stroke="#262930"/>
+            <rect x="626" y="16" width="280" height="643" rx="8" fill="#181A1F" stroke="#262930"/>
+            <rect x="916" y="16" width="268" height="643" rx="8" fill="#181A1F" stroke="#262930"/>
+
+            <!-- Column 1: Heatmap & Sectors -->
+            <rect x="16" y="16" width="280" height="36" rx="8" fill="#20232A"/>
+            <text x="32" y="40" fill="#3B82F6" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700">COL 1: SECTOR HEATMAP</text>
+            <rect x="32" y="68" width="118" height="70" rx="4" fill="#064E3B"/><text x="44" y="105" fill="#A7F3D0" font-family="'Inter', sans-serif" font-size="11" font-weight="700">IT (+1.4%)</text>
+            <rect x="162" y="68" width="118" height="70" rx="4" fill="#7F1D1D"/><text x="174" y="105" fill="#FECACA" font-family="'Inter', sans-serif" font-size="11" font-weight="700">BANK (-0.8%)</text>
+            <rect x="32" y="148" width="118" height="70" rx="4" fill="#064E3B"/><text x="44" y="185" fill="#A7F3D0" font-family="'Inter', sans-serif" font-size="11" font-weight="700">AUTO (+2.1%)</text>
+            <rect x="162" y="148" width="118" height="70" rx="4" fill="#064E3B"/><text x="174" y="185" fill="#A7F3D0" font-family="'Inter', sans-serif" font-size="11" font-weight="700">DEFENSE (+3.2%)</text>
+
+            <!-- Column 2: Active AI Dossier -->
+            <rect x="306" y="16" width="310" height="36" rx="8" fill="#20232A"/>
+            <text x="322" y="40" fill="#84CC16" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700">COL 2: AI DOSSIER (TCS)</text>
+            <text x="322" y="80" fill="#FFFFFF" font-family="'Space Grotesk', sans-serif" font-size="20" font-weight="700">₹2,264.90 <tspan fill="#84CC16" font-size="14">+1.2%</tspan></text>
+            <text x="322" y="110" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">RSI 54 • MACD Positive Bull Bias</text>
+            <rect x="322" y="130" width="278" height="150" rx="6" fill="#121316" stroke="#262930"/>
+            <text x="336" y="160" fill="#84CC16" font-family="'Inter', sans-serif" font-size="12" font-weight="700">Tactical Strategy</text>
+            <text x="336" y="185" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="11">Entry: ₹2,264</text>
+            <text x="336" y="210" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="11">Target: ₹2,345 | SL: ₹2,215</text>
+            <text x="336" y="235" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="11">Grade: A (Institutional Quality)</text>
+
+            <!-- Column 3: Options Chain & PCR -->
+            <rect x="626" y="16" width="280" height="36" rx="8" fill="#20232A"/>
+            <text x="642" y="40" fill="#38BDF8" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700">COL 3: STRIKE LADDER</text>
+            <g font-family="'JetBrains Mono', monospace" font-size="11">
+              <text x="642" y="80" fill="#888888">STRIKE</text><text x="730" y="80" fill="#888888">CALL OI</text><text x="820" y="80" fill="#888888">PUT OI</text>
+              <text x="642" y="115" fill="#FFFFFF">23,900</text><text x="730" y="115" fill="#EF4444">4.2M</text><text x="820" y="115" fill="#10B981">1.8M</text>
+              <text x="642" y="150" fill="#FFFFFF">23,800</text><text x="730" y="150" fill="#EF4444">3.8M</text><text x="820" y="150" fill="#10B981">2.4M</text>
+              <text x="642" y="185" fill="#FBBF24">23,750 (ATM)</text><text x="730" y="185" fill="#EF4444">2.1M</text><text x="820" y="185" fill="#10B981">3.9M</text>
+              <text x="642" y="220" fill="#FFFFFF">23,700</text><text x="730" y="185" fill="#EF4444">1.2M</text><text x="820" y="220" fill="#10B981">4.5M</text>
+            </g>
+
+            <!-- Column 4: Ledger & Discord Dispatch -->
+            <rect x="916" y="16" width="268" height="36" rx="8" fill="#20232A"/>
+            <text x="932" y="40" fill="#FBBF24" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700">COL 4: DISPATCH & LEDGER</text>
+            <rect x="932" y="70" width="236" height="120" rx="6" fill="#121316" stroke="#262930"/>
+            <text x="946" y="98" fill="#FBBF24" font-family="'Inter', sans-serif" font-size="11" font-weight="700">RECORD SCOREBOARD</text>
+            <text x="946" y="125" fill="#FFFFFF" font-family="'Space Grotesk', sans-serif" font-size="24" font-weight="700">86.4% <tspan fill="#10B981" font-size="12">WIN</tspan></text>
+            <text x="946" y="155" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">Total Alpha: +342.8 pts</text>
+
+            <rect x="932" y="210" width="236" height="42" rx="6" fill="#5865F2"/>
+            <text x="960" y="236" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="11" font-weight="700">DISCORD BROADCAST</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> 4 parallel columns displaying heatmap, dossier, options chain, and Discord dispatcher simultaneously</li>
+          <li><i data-lucide="check-circle-2"></i> Ideal for multi-monitor setups and professional proprietary desk operators</li>
+          <li><i data-lucide="check-circle-2"></i> Strike ladder with call/put OI and ATM max pain indicators updated every 3 seconds</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#121316;" title="Charcoal Base #121316"></div>
+            <div class="swatch" style="background:#3B82F6;" title="Electric Blue #3B82F6"></div>
+            <div class="swatch" style="background:#84CC16;" title="Lime Green #84CC16"></div>
+            <div class="swatch" style="background:#38BDF8;" title="Sky Cyan #38BDF8"></div>
+            <div class="swatch" style="background:#FBBF24;" title="Ledger Gold #FBBF24"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 7: GAMIFIED TRADING ARENA                       -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-7">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 07 • High Engagement Battle</div>
+          <h2 class="concept-title">Gamified Trading Arena (Bull vs. Bear Showdown)</h2>
+          <p class="concept-tagline">High-energy versus battle interface where the Bull Researcher and Bear Challenger duel with dynamic conviction health bars that fluctuate with live data.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Gunmetal #18181B</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Gold #FACC15 & Violet #A855F7</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">Clash Display / Outfit</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Competitive AI Battle Arena</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#18181B"/>
+            
+            <!-- Center VS Emblem -->
+            <circle cx="600" cy="200" r="48" fill="#FACC15" stroke="#000000" stroke-width="4"/>
+            <text x="584" y="212" fill="#000000" font-family="'Outfit', sans-serif" font-size="28" font-weight="900">VS</text>
+
+            <!-- Bull Fighter Card (Left) -->
+            <rect x="80" y="80" width="460" height="280" rx="16" fill="#064E3B" stroke="#10B981" stroke-width="2"/>
+            <text x="110" y="125" fill="#A7F3D0" font-family="'Outfit', sans-serif" font-size="24" font-weight="900">BULL RESEARCHER</text>
+            <text x="110" y="155" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="13">HP / CONVICTION LEVEL: 78%</text>
+            
+            <!-- Health Bar -->
+            <rect x="110" y="170" width="400" height="18" rx="9" fill="rgba(0,0,0,0.4)"/>
+            <rect x="110" y="170" width="312" height="18" rx="9" fill="#10B981"/>
+            
+            <text x="110" y="225" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">✦ Thesis: Massive ₹2,890 Cr DII liquidity cushion</text>
+            <text x="110" y="250" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">✦ Dalal Street retail sentiment 78% optimistic</text>
+            <text x="110" y="275" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">✦ Target Price: ₹1,345 (R:R 1:2.85)</text>
+
+            <!-- Bear Fighter Card (Right) -->
+            <rect x="660" y="80" width="460" height="280" rx="16" fill="#450A0A" stroke="#EF4444" stroke-width="2"/>
+            <text x="690" y="125" fill="#FECACA" font-family="'Outfit', sans-serif" font-size="24" font-weight="900">BEAR CHALLENGER</text>
+            <text x="690" y="155" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="13">HP / CONVICTION LEVEL: 54%</text>
+            
+            <!-- Health Bar -->
+            <rect x="690" y="170" width="400" height="18" rx="9" fill="rgba(0,0,0,0.4)"/>
+            <rect x="690" y="170" width="216" height="18" rx="9" fill="#EF4444"/>
+            
+            <text x="690" y="225" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">⚠ Warning: Overhead supply resistance at ₹1,320</text>
+            <text x="690" y="250" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">⚠ Stop Loss strictly at ₹1,274</text>
+            <text x="690" y="275" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="12">⚠ Book 50% profits early on initial bounce</text>
+
+            <!-- Bottom Referee Verdict Box -->
+            <rect x="80" y="390" width="1040" height="240" rx="16" fill="#27272A" stroke="#3F3F46"/>
+            <text x="120" y="435" fill="#FACC15" font-family="'Outfit', sans-serif" font-size="18" font-weight="800">PORTFOLIO MANAGER & RISK COMMITTEE VERDICT</text>
+            <text x="120" y="475" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="14">WINNER: <tspan fill="#10B981" font-weight="700">BULL RESEARCHER (ACCUMULATE ON PULLBACKS)</tspan></text>
+            <text x="120" y="510" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="13">Synthesis: Multi-agent analysis confirms an institutional BUY for RELIANCE at live CMP ₹1,305.30 with positive momentum bias.</text>
+            <text x="120" y="540" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="13">Risk Assessment: Approved with fixed stop-loss guardrail at ₹1,274. Max account drawdown exposure limited to 2.5%.</text>
+            
+            <rect x="120" y="570" width="220" height="38" rx="8" fill="#10B981"/>
+            <text x="155" y="594" fill="#000000" font-family="'Inter', sans-serif" font-size="12" font-weight="800">EXECUTE TRADE IN KITE</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Fighter HP bars representing real-time Bull vs Bear conviction points dynamically</li>
+          <li><i data-lucide="check-circle-2"></i> Engaging versus match framing ideal for LMS students and retail community learning</li>
+          <li><i data-lucide="check-circle-2"></i> Portfolio Manager referee verdict summarizing risk-adjusted execution actions</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#18181B;" title="Dark Gunmetal #18181B"></div>
+            <div class="swatch" style="background:#FACC15;" title="Electric Gold #FACC15"></div>
+            <div class="swatch" style="background:#10B981;" title="Bull Emerald #10B981"></div>
+            <div class="swatch" style="background:#EF4444;" title="Bear Crimson #EF4444"></div>
+            <div class="swatch" style="background:#A855F7;" title="Challenger Violet #A855F7"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 8: LUXURY EDITORIAL (FINANCIAL TIMES STYLE)      -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-8">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 08 • High-Society Editorial</div>
+          <h2 class="concept-title">Luxury Editorial (Dalal Street Financial Times)</h2>
+          <p class="concept-tagline">Gold-bordered advisory aesthetic inspired by the Financial Times, Goldman Sachs, and McKinsey Private Wealth reports with formal executive stamps.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Obsidian #101216</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Champagne Gold #D4AF37</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">Playfair Display + Inter</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Private Wealth Intelligence</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#101216"/>
+            <!-- Outer Gold Border -->
+            <rect x="20" y="20" width="1160" height="635" fill="none" stroke="#D4AF37" stroke-width="1.5"/>
+            <rect x="26" y="26" width="1148" height="623" fill="none" stroke="#D4AF37" stroke-width="0.5" stroke-dasharray="6 3"/>
+
+            <!-- Editorial Masthead -->
+            <text x="600" y="70" fill="#D4AF37" font-family="'Playfair Display', serif" font-size="28" font-weight="700" text-anchor="middle">TRADE2OPTIONS INTELLIGENCE DOSSIER</text>
+            <text x="600" y="95" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11" text-anchor="middle" letter-spacing="0.15em">INSTITUTIONAL DALAL STREET RESEARCH • ISSUE NO. 142 • STRICTLY CONFIDENTIAL</text>
+            <line x1="60" y1="110" x2="1140" y2="110" stroke="#D4AF37" stroke-width="1"/>
+
+            <!-- Left Editorial Column -->
+            <text x="60" y="150" fill="#FFFFFF" font-family="'Playfair Display', serif" font-size="22" font-weight="700">Market Executive Summary: RELIANCE (NSE)</text>
+            <text x="60" y="180" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">Live CMP: ₹1,305.30 | Market Capitalization: ₹18.4 Lakh Cr | Consensus: INSTITUTIONAL BUY</text>
+            
+            <text x="60" y="215" fill="#E2E8F0" font-family="'Playfair Display', serif" font-size="14" font-weight="700">1. Capital Efficiency & Structural Moats</text>
+            <text x="60" y="240" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">Operating leverage across retail and digital telecommunications continues to expand return on capital.</text>
+            <text x="60" y="260" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">DII mutual fund SIP absorption provides substantial floor against volatile foreign portfolio outflows.</text>
+
+            <text x="60" y="300" fill="#E2E8F0" font-family="'Playfair Display', serif" font-size="14" font-weight="700">2. Quantitative Valuation & Target Trajectory</text>
+            <text x="60" y="325" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">Price-to-Earnings ratio trades at 22.2x trailing twelve months, reflecting fair historical discount.</text>
+            <text x="60" y="345" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">Twelve-month institutional price target consensus is ₹1,480.00 (+13.4% upside potential).</text>
+
+            <!-- Formal Seal Badge Right -->
+            <rect x="800" y="140" width="340" height="240" rx="8" fill="#181B22" stroke="#D4AF37" stroke-width="1"/>
+            <!-- Circular Seal -->
+            <circle cx="970" cy="230" r="60" stroke="#D4AF37" stroke-width="2" fill="none" stroke-dasharray="4 2"/>
+            <circle cx="970" cy="230" r="50" stroke="#D4AF37" stroke-width="1" fill="none"/>
+            <text x="970" y="225" fill="#D4AF37" font-family="'Playfair Display', serif" font-size="14" font-weight="700" text-anchor="middle">GRADE A</text>
+            <text x="970" y="245" fill="#D4AF37" font-family="'Inter', sans-serif" font-size="8" font-weight="700" text-anchor="middle" letter-spacing="0.1em">RISK COMMITTEE</text>
+            <text x="970" y="258" fill="#D4AF37" font-family="'Inter', sans-serif" font-size="8" text-anchor="middle">APPROVED</text>
+            <text x="970" y="320" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="10" text-anchor="middle">Audited by Multi-Agent Graph Engine</text>
+
+            <!-- Bottom Performance Proof Bar -->
+            <line x1="60" y1="410" x2="1140" y2="410" stroke="#D4AF37" stroke-width="1"/>
+            <text x="60" y="445" fill="#D4AF37" font-family="'Playfair Display', serif" font-size="16" font-weight="700">Verified Past Session Alpha Ledger</text>
+            
+            <g font-family="'Inter', sans-serif" font-size="11" fill="#E2E8F0">
+              <text x="60" y="480">BSE Ltd: Trigger ₹3,680 → Close ₹3,840 (+4.35% Gain) [TARGET HIT]</text>
+              <text x="60" y="510">Tata Motors: Trigger ₹961 → Close ₹988.75 (+2.89% Gain) [TARGET HIT]</text>
+              <text x="60" y="540">Bharat Electronics: Trigger ₹298.50 → Close ₹308 (+3.18% Gain) [TARGET HIT]</text>
+              <text x="60" y="570">Bandhan Bank: Trigger ₹198.80 → Close ₹194 (+2.41% Short Gain) [ACCURATE SHORT]</text>
+            </g>
+
+            <rect x="800" y="440" width="340" height="150" rx="8" fill="#181B22" stroke="#262A34"/>
+            <text x="824" y="475" fill="#D4AF37" font-family="'Playfair Display', serif" font-size="14" font-weight="700">Official Report Dispatch</text>
+            <text x="824" y="505" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">Generate high-resolution vector PDF with embossed letterhead and compliance sign-off.</text>
+            <rect x="824" y="530" width="200" height="36" rx="4" fill="#D4AF37"/>
+            <text x="848" y="553" fill="#000000" font-family="'Inter', sans-serif" font-size="11" font-weight="800">DOWNLOAD PDF REPORT</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Champagne gold borders and serif editorial typography inspired by Financial Times</li>
+          <li><i data-lucide="check-circle-2"></i> Formal circular compliance stamp and executive PDF report generator</li>
+          <li><i data-lucide="check-circle-2"></i> Verified alpha track record ledger presented in formal white paper format</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#101216;" title="Obsidian Base #101216"></div>
+            <div class="swatch" style="background:#D4AF37;" title="Champagne Gold #D4AF37"></div>
+            <div class="swatch" style="background:#F8F9FA;" title="Cream White #F8F9FA"></div>
+            <div class="swatch" style="background:#34D399;" title="Olive Green #34D399"></div>
+            <div class="swatch" style="background:#181B22;" title="Secondary #181B22"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 9: BENTO GRID GLASS ECOSYSTEM                   -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-9">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 09 • Apple-Inspired Fintech</div>
+          <h2 class="concept-title">Bento Grid Glass Ecosystem (Smooth Rounded Snapping)</h2>
+          <p class="concept-tagline">Harmonious asymmetric Bento box architecture with 24px rounded corners, micro sparklines, and seamless responsive widget snapping.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Stealth Black #0D0D11</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Electric Indigo #6366F1</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">SF Pro Display / Inter</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Apple / Linear Fintech</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#0D0D11"/>
+            
+            <!-- Bento Box 1: Giant CMP Hero -->
+            <rect x="24" y="24" width="480" height="300" rx="24" fill="#16161E" stroke="#252532"/>
+            <text x="56" y="70" fill="#6366F1" font-family="'Inter', sans-serif" font-size="13" font-weight="700">✦ LIVE SPOTLIGHT</text>
+            <text x="56" y="125" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="42" font-weight="900">TCS</text>
+            <text x="56" y="170" fill="#38BDF8" font-family="'Inter', sans-serif" font-size="32" font-weight="800">₹2,264.90 <tspan fill="#10B981" font-size="20">+1.20%</tspan></text>
+            <!-- Waveform sparkline -->
+            <path d="M 56 260 C 120 220, 180 270, 240 230 C 300 190, 360 210, 440 180" stroke="#10B981" stroke-width="3" fill="none"/>
+
+            <!-- Bento Box 2: Win Rate Scoreboard -->
+            <rect x="528" y="24" width="320" height="300" rx="24" fill="#16161E" stroke="#252532"/>
+            <text x="560" y="70" fill="#FBBF24" font-family="'Inter', sans-serif" font-size="13" font-weight="700">VERIFIED ACCURACY</text>
+            <text x="560" y="145" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="54" font-weight="900">86.4%</text>
+            <text x="560" y="180" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="13">19 Wins / 3 Losses (Audited)</text>
+            <rect x="560" y="210" width="250" height="12" rx="6" fill="#252532"/>
+            <rect x="560" y="210" width="216" height="12" rx="6" fill="#FBBF24"/>
+            <text x="560" y="255" fill="#34D399" font-family="'Inter', sans-serif" font-size="14" font-weight="700">+342.80 pts Total Alpha</text>
+
+            <!-- Bento Box 3: Market Telemetry -->
+            <rect x="872" y="24" width="304" height="300" rx="24" fill="#16161E" stroke="#252532"/>
+            <text x="900" y="70" fill="#38BDF8" font-family="'Inter', sans-serif" font-size="13" font-weight="700">MARKET PULSE</text>
+            <text x="900" y="115" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">NIFTY 50</text>
+            <text x="900" y="140" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="18" font-weight="700">23,754.60 <tspan fill="#EF4444" font-size="12">-0.60%</tspan></text>
+            <text x="900" y="185" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">INDIA VIX</text>
+            <text x="900" y="210" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="18" font-weight="700">11.24 <tspan fill="#10B981" font-size="12">Low Vol</tspan></text>
+            <text x="900" y="255" fill="#94A3B8" font-family="'Inter', sans-serif" font-size="11">NIFTY PCR</text>
+            <text x="900" y="280" fill="#34D399" font-family="'Inter', sans-serif" font-size="18" font-weight="700">0.91 (Support)</text>
+
+            <!-- Bento Box 4: Multi-Agent Consensus Wide Card -->
+            <rect x="24" y="348" width="1152" height="300" rx="24" fill="#16161E" stroke="#252532"/>
+            <text x="56" y="392" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="20" font-weight="800">Multi-Agent Strategic Consensus</text>
+            
+            <rect x="56" y="420" width="340" height="190" rx="16" fill="#0D0D11"/>
+            <text x="80" y="455" fill="#10B981" font-family="'Inter', sans-serif" font-size="14" font-weight="700">Bull Researcher (78%)</text>
+            <text x="80" y="485" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">Accumulation zone between ₹2,250 - ₹2,275 with aggressive swing target at ₹2,345.</text>
+
+            <rect x="420" y="420" width="340" height="190" rx="16" fill="#0D0D11"/>
+            <text x="444" y="455" fill="#EF4444" font-family="'Inter', sans-serif" font-size="14" font-weight="700">Bear Researcher (54%)</text>
+            <text x="444" y="485" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">Resistance ceiling at ₹2,320. Trailing stop loss strictly pegged at ₹2,215.</text>
+
+            <rect x="784" y="420" width="360" height="190" rx="16" fill="#0D0D11"/>
+            <text x="808" y="455" fill="#6366F1" font-family="'Inter', sans-serif" font-size="14" font-weight="700">Portfolio Manager Verdict</text>
+            <text x="808" y="485" fill="#CBD5E1" font-family="'Inter', sans-serif" font-size="12">Order execution authorized. Allocation: 4.5% equity weight. Discord signal dispatched.</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Asymmetric Bento modular grid with smooth 24px corner radii</li>
+          <li><i data-lucide="check-circle-2"></i> Clean SVG sparkline trajectory integrated inside the primary hero card</li>
+          <li><i data-lucide="check-circle-2"></i> Modern Apple-inspired fintech visual hierarchy with high aesthetic appeal</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#0D0D11;" title="Stealth Black #0D0D11"></div>
+            <div class="swatch" style="background:#16161E;" title="Card Fill #16161E"></div>
+            <div class="swatch" style="background:#6366F1;" title="Indigo #6366F1"></div>
+            <div class="swatch" style="background:#10B981;" title="Emerald #10B981"></div>
+            <div class="swatch" style="background:#FBBF24;" title="Gold #FBBF24"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ======================================================== -->
+    <!-- CONCEPT 10: OPTIONS SCALPER ULTRA-FAST TAPE             -->
+    <!-- ======================================================== -->
+    <article class="concept-card" id="concept-10">
+      <div class="card-meta">
+        <div>
+          <div class="concept-number">Concept 10 • High-Speed F&O Execution</div>
+          <h2 class="concept-title">Options Scalper Ultra-Fast Tape (Zerodha Kite & TV Pro)</h2>
+          <p class="concept-tagline">Built specifically for Dalal Street F&O scalpers with instant keyboard shortcuts, strike ladders, and zero-latency tick execution.</p>
+        </div>
+        <div class="specs-grid">
+          <div class="spec-pill">
+            <span class="spec-label">Primary Color</span>
+            <span class="spec-val">Matte Pitch #0A0A0A</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Accent</span>
+            <span class="spec-val">Kite Orange #FF5722 & Vivid Green #00C853</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Typography</span>
+            <span class="spec-val">Fira Code / Roboto Mono</span>
+          </div>
+          <div class="spec-pill">
+            <span class="spec-label">Vibe</span>
+            <span class="spec-val">Zerodha Kite / TV Scalper</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-svg-wrap">
+          <svg viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="675" fill="#0A0A0A"/>
+            <!-- Top Shortcut Banner -->
+            <rect width="1200" height="36" fill="#141414" stroke="#222222" stroke-width="1"/>
+            <text x="24" y="23" fill="#FF5722" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">KITE HYBRID SCALPER</text>
+            <text x="220" y="23" fill="#888888" font-family="'JetBrains Mono', monospace" font-size="11">[B] BUY SETUP  |  [S] SHORT FADE  |  [D] DISCORD ALERT  |  [/] SEARCH</text>
+            <text x="960" y="23" fill="#00C853" font-family="'JetBrains Mono', monospace" font-size="11">● LIVE STREAMING (280ms)</text>
+
+            <!-- Split View: Left Scalper Chart Canvas -->
+            <rect x="16" y="52" width="760" height="606" fill="#111111" stroke="#222222"/>
+            <rect x="16" y="52" width="760" height="34" fill="#181818"/>
+            <text x="32" y="74" fill="#FFFFFF" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">NIFTY 23,754.60 [-0.60%] • 1-MIN SCALPER CANDLESTICK</text>
+            
+            <!-- Candlestick Scalp Bars -->
+            <line x1="100" y1="180" x2="100" y2="280" stroke="#00C853" stroke-width="2"/>
+            <rect x="94" y="200" width="12" height="60" fill="#00C853"/>
+            <line x1="150" y1="160" x2="150" y2="270" stroke="#D50000" stroke-width="2"/>
+            <rect x="144" y="190" width="12" height="50" fill="#D50000"/>
+            <line x1="200" y1="170" x2="200" y2="290" stroke="#00C853" stroke-width="2"/>
+            <rect x="194" y="210" width="12" height="65" fill="#00C853"/>
+            <line x1="250" y1="210" x2="250" y2="330" stroke="#00C853" stroke-width="2"/>
+            <rect x="244" y="230" width="12" height="80" fill="#00C853"/>
+            <line x1="300" y1="180" x2="300" y2="260" stroke="#D50000" stroke-width="2"/>
+            <rect x="294" y="200" width="12" height="45" fill="#D50000"/>
+
+            <!-- Scalper Triggers Overlay -->
+            <rect x="400" y="180" width="220" height="30" rx="4" fill="#00C853" fill-opacity="0.2" stroke="#00C853"/>
+            <text x="415" y="200" fill="#00C853" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">AI CALL TRIGGER: 23,750 CE</text>
+
+            <!-- Right: ATM Strike Ladder Matrix -->
+            <rect x="792" y="52" width="392" height="606" fill="#111111" stroke="#222222"/>
+            <rect x="792" y="52" width="392" height="34" fill="#181818"/>
+            <text x="808" y="74" fill="#FF5722" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">OPTIONS STRIKE LADDER (NIFTY)</text>
+
+            <g font-family="'JetBrains Mono', monospace" font-size="11">
+              <rect x="808" y="100" width="360" height="42" fill="#1A1A1A" stroke="#2A2A2A"/>
+              <text x="824" y="126" fill="#FFFFFF">23,850 CE</text><text x="960" y="126" fill="#00C853">₹82.40</text><text x="1080" y="126" fill="#FF5722">BUY [B]</text>
+
+              <rect x="808" y="152" width="360" height="42" fill="#1A1A1A" stroke="#2A2A2A"/>
+              <text x="824" y="178" fill="#FFFFFF">23,800 CE</text><text x="960" y="178" fill="#00C853">₹114.20</text><text x="1080" y="178" fill="#FF5722">BUY [B]</text>
+
+              <rect x="808" y="204" width="360" height="42" fill="#2E1C0C" stroke="#FF5722" stroke-width="1.5"/>
+              <text x="824" y="230" fill="#FF5722" font-weight="700">23,750 CE (ATM)</text><text x="960" y="230" fill="#00C853" font-weight="700">₹148.60</text><text x="1080" y="230" fill="#FF5722" font-weight="700">BUY [B]</text>
+
+              <rect x="808" y="256" width="360" height="42" fill="#1A1A1A" stroke="#2A2A2A"/>
+              <text x="824" y="282" fill="#FFFFFF">23,750 PE (ATM)</text><text x="960" y="282" fill="#D50000">₹132.10</text><text x="1080" y="282" fill="#FF5722">BUY [B]</text>
+
+              <rect x="808" y="308" width="360" height="42" fill="#1A1A1A" stroke="#2A2A2A"/>
+              <text x="824" y="334" fill="#FFFFFF">23,700 PE</text><text x="960" y="334" fill="#D50000">₹98.50</text><text x="1080" y="334" fill="#FF5722">BUY [B]</text>
+            </g>
+
+            <!-- Bottom Quick Alert Dispatch -->
+            <rect x="808" y="480" width="360" height="150" rx="6" fill="#181818" stroke="#333333"/>
+            <text x="824" y="510" fill="#FF5722" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">INSTANT DISCORD SIGNAL DISPATCH</text>
+            <text x="824" y="536" fill="#AAAAAA" font-family="'Inter', sans-serif" font-size="11">Broadcast active scalper strike to private channels with 1 click.</text>
+            <rect x="824" y="560" width="328" height="44" rx="4" fill="#FF5722"/>
+            <text x="875" y="588" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="12" font-weight="800">BROADCAST 23,750 CE ALERT</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ul class="features-list">
+          <li><i data-lucide="check-circle-2"></i> Designed for Zerodha Kite intraday options scalpers with instant keyboard shortcuts</li>
+          <li><i data-lucide="check-circle-2"></i> Full-bleed split view: Left side chart canvas, right side ATM ±5 strike options ladder</li>
+          <li><i data-lucide="check-circle-2"></i> Instant Discord webhook dispatch for high-speed strike execution alerts</li>
+        </ul>
+        <div class="palette-box">
+          <div class="palette-title">Color Hierarchy</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#0A0A0A;" title="Matte Pitch #0A0A0A"></div>
+            <div class="swatch" style="background:#FF5722;" title="Kite Orange #FF5722"></div>
+            <div class="swatch" style="background:#00C853;" title="Vivid Green #00C853"></div>
+            <div class="swatch" style="background:#D50000;" title="Down Red #D50000"></div>
+            <div class="swatch" style="background:#181818;" title="Surface #181818"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <script>
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

@@ -98,4 +98,13 @@ def write_report_tree(final_state: dict, ticker: str, save_path) -> Path:
     # Write consolidated report
     header = f"# Trading Analysis Report: {ticker}\n\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
     (save_path / "complete_report.md").write_text(header + "\n\n".join(sections), encoding="utf-8")
+
+    # Export to Obsidian Vault if available
+    try:
+        from tradingagents.obsidian_exporter import export_run_to_obsidian
+        export_run_to_obsidian(final_state, ticker)
+    except Exception:
+        pass
+
     return save_path / "complete_report.md"
+

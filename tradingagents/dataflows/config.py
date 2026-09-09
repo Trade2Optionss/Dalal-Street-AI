@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 from copy import deepcopy
 
 import tradingagents.default_config as default_config
 
 # Use default config but allow it to be overridden
 _config: dict | None = None
+
 
 
 def initialize_config():
