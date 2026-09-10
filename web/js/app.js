@@ -12,12 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function switchView(targetId) {
     pageViews.forEach(view => {
-      view.classList.remove("active");
-      if (view.id === targetId) {
-        view.classList.add("active");
-        if (window.Motion && typeof Motion.animate === "function") {
-          Motion.animate(view, { opacity: [0, 1], y: [10, 0] }, { duration: 0.32, ease: "easeOut" });
-        }
+      const isMatch = view.id === targetId;
+      view.classList.toggle("active", isMatch);
+      view.style.display = isMatch ? "block" : "none";
+      if (isMatch && window.Motion && typeof Motion.animate === "function") {
+        Motion.animate(view, { opacity: [0, 1], y: [10, 0] }, { duration: 0.32, ease: "easeOut" });
       }
     });
 
@@ -27,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  window.switchTerminalView = switchView;
 
   navTabs.forEach(tab => {
     tab.addEventListener("click", () => {

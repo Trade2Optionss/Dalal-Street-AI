@@ -244,15 +244,16 @@
       }
     }
 
-    // Toggle Admin Navigation Tab visibility
+    // Toggle Admin Navigation Tab & Launchpad Card visibility
     const adminNavTab = document.getElementById("adminKeysNavTab");
+    const adminLaunchpadCard = document.getElementById("adminLaunchpadCard");
     const isAdmin = Boolean(session && (session.is_admin || session.role === "ADMIN"));
+    
     if (adminNavTab) {
-      if (isAdmin) {
-        adminNavTab.style.display = "inline-flex";
-      } else {
-        adminNavTab.style.display = "none";
-      }
+      adminNavTab.style.display = isAdmin ? "inline-flex" : "none";
+    }
+    if (adminLaunchpadCard) {
+      adminLaunchpadCard.style.display = isAdmin ? "flex" : "none";
     }
 
     // Inject active session pill in navbar
@@ -273,18 +274,26 @@
     const pill = document.getElementById("userSessionPill");
     if (pill) pill.remove();
 
-    // Hide admin tab on lock
+    // Hide admin elements on lock
     const adminNavTab = document.getElementById("adminKeysNavTab");
     if (adminNavTab) {
       adminNavTab.style.display = "none";
+    }
+    const adminLaunchpadCard = document.getElementById("adminLaunchpadCard");
+    if (adminLaunchpadCard) {
+      adminLaunchpadCard.style.display = "none";
     }
 
     // Reset view to launchpad
     const adminView = document.getElementById("view-admin-keys");
     if (adminView && adminView.classList.contains("active")) {
       adminView.classList.remove("active");
+      adminView.style.display = "none";
       const launchpad = document.getElementById("view-launchpad");
-      if (launchpad) launchpad.classList.add("active");
+      if (launchpad) {
+        launchpad.classList.add("active");
+        launchpad.style.display = "block";
+      }
     }
 
     if (gateWrapper) {
@@ -313,13 +322,35 @@
       : '';
 
     pill.innerHTML = `
-      <i data-lucide="${isAdmin ? 'shield-alert' : 'shield-check'}" style="width:16px;height:16px;color:${isAdmin ? '#f59e0b' : '#10b981'};"></i>
+      <i data-lucide="${isAdmin ? 'shield-alert' : 'shield-check'}" style="width:16px;height:16px;color:${isAdmin ? '#f59e0b' : '#10b981'};flex-shrink:0;"></i>
       <span style="font-weight:700;">${session.client_name || "Trader"}</span>
       <span class="user-tier" style="${tierBadgeStyle}">${shortTier}</span>
+      ${isAdmin ? `
+        <button class="btn-admin-header-shortcut" id="adminHeaderKeyBtn" title="Launch Key Generation Console">
+          <i data-lucide="key" style="width:13px;height:13px;"></i>
+          <span>Keys</span>
+        </button>
+      ` : ''}
       <button class="btn-logout" id="authLogoutBtn" title="Lock & Disconnect License">
         <i data-lucide="log-out" style="width:14px;height:14px;"></i>
       </button>
     `;
+
+    if (isAdmin) {
+      const quickBtn = pill.querySelector("#adminHeaderKeyBtn");
+      if (quickBtn) {
+        quickBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window.switchTerminalView === "function") {
+            window.switchTerminalView("view-admin-keys");
+          }
+          if (typeof window.loadAdminLicenses === "function") {
+            window.loadAdminLicenses();
+          }
+        });
+      }
+    }
     if (window.lucide) lucide.createIcons();
   }
 

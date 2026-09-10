@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=3.4">
-  <link rel="stylesheet" href="css/auth_gate.css?v=1.0">
+  <link rel="stylesheet" href="css/style.css?v=3.5">
+  <link rel="stylesheet" href="css/auth_gate.css?v=1.1">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Motion (WAAPI & Spring Physics Engine) -->
@@ -248,15 +248,15 @@
           <i data-lucide="swords"></i>
           <span class="tab-label">Debate Arena</span>
         </button>
-        <button class="nav-tab obsidian-graph-tab" id="openObsidianGraphBtn" aria-label="Obsidian Agent Graph">
-          <i data-lucide="git-fork"></i>
-          <span class="tab-label">Obsidian Graph</span>
-        </button>
         <!-- Admin-Only Key Generation Option (Hidden for regular users) -->
         <button class="nav-tab admin-key-tab" id="adminKeysNavTab" data-target="view-admin-keys" aria-label="Key Generation" style="display: none;">
           <i data-lucide="key" style="color: #f59e0b;"></i>
-          <span class="tab-label">Key Generation</span>
+          <span class="tab-label">Key Gen</span>
           <span class="admin-chip-badge">ADMIN</span>
+        </button>
+        <button class="nav-tab obsidian-graph-tab" id="openObsidianGraphBtn" aria-label="Obsidian Agent Graph">
+          <i data-lucide="git-fork"></i>
+          <span class="tab-label">Obsidian Graph</span>
         </button>
       </nav>
 
@@ -529,6 +529,41 @@
             <div class="card-action-row">
               <span class="closify-action-btn">
                 <span>Enter Arena & Widgets</span>
+                <i data-lucide="arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal Card 06: Admin-Only Key Generation (Hidden for regular users) -->
+        <div class="portal-card closify-card admin-portal-card" id="adminLaunchpadCard" data-launch="view-admin-keys" style="display: none; border-color: rgba(245, 158, 11, 0.45); background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);">
+          <div class="card-glow-reflection" style="background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 70%);"></div>
+          
+          <div class="card-visual-stage">
+            <div class="closify-arena-wrapper" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25);">
+              <div class="arena-clash-icons">
+                <div style="font-size: 2.2rem; filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.8));">🔑</div>
+                <div class="clash-spark-badge" style="background: #f59e0b; color: #000; font-weight: 900;">ADMIN</div>
+                <div style="font-size: 2.2rem; filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.8));">🛡️</div>
+              </div>
+              <div class="closify-floating-input" style="border-color: rgba(245, 158, 11, 0.4); color: #fbbf24;">
+                <i data-lucide="shield-check" style="color: #f59e0b;"></i>
+                <span>Zero-DB HMAC-SHA256 Engine</span>
+                <i data-lucide="arrow-up-right" class="mini-arr"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-content-area">
+            <div class="card-meta-row">
+              <span class="closify-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: #f59e0b;">SYSTEM ADMIN • EXCLUSIVE</span>
+            </div>
+            <h2 class="card-title" style="color: #ffffff;">Key Generation & License Access Manager</h2>
+            <p class="card-desc">Issue cryptographically signed offline/online client licenses, configure seat limits, test token integrity, and manage subscriptions.</p>
+            
+            <div class="card-action-row">
+              <span class="closify-action-btn" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000000; font-weight: 800;">
+                <span>Open Key Console</span>
                 <i data-lucide="arrow-right"></i>
               </span>
             </div>
@@ -1521,7 +1556,7 @@
     <!-- ================================================================= -->
     <!-- VIEW: ADMIN KEY GENERATION & CLIENT ACCESS CONTROL               -->
     <!-- ================================================================= -->
-    <section id="view-admin-keys" class="page-view" style="display: none;">
+    <section id="view-admin-keys" class="page-view">
       <div class="admin-view-wrap">
         
         <!-- Header -->
@@ -1945,9 +1980,9 @@
   <script src="js/results.js?v=3.1"></script>
   <script src="js/trading_waves.js?v=3.1"></script>
   <script src="js/obsidian_graph.js?v=3.1"></script>
-  <script src="js/auth_gate.js?v=2.0"></script>
-  <script src="js/admin_keys.js?v=1.0"></script>
-  <script src="js/app.js?v=3.1"></script>
+  <script src="js/auth_gate.js?v=2.2"></script>
+  <script src="js/admin_keys.js?v=2.2"></script>
+  <script src="js/app.js?v=3.2"></script>
   <script>
     lucide.createIcons();
   </script>

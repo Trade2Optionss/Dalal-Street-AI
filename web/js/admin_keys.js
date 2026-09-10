@@ -14,8 +14,22 @@
     const copyResultBtn = document.getElementById("adminCopyNewKeyBtn");
 
     if (adminNavTab) {
-      adminNavTab.addEventListener("click", () => {
+      adminNavTab.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (typeof window.switchTerminalView === "function") {
+          window.switchTerminalView("view-admin-keys");
+        } else {
+          document.querySelectorAll(".page-view").forEach(v => {
+            const isMatch = v.id === "view-admin-keys";
+            v.classList.toggle("active", isMatch);
+            v.style.display = isMatch ? "block" : "none";
+          });
+          document.querySelectorAll(".nav-tab").forEach(t => {
+            t.classList.toggle("active", t === adminNavTab);
+          });
+        }
         loadAdminLicenses();
+        if (window.lucide) lucide.createIcons();
       });
     }
 
@@ -235,6 +249,7 @@
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  window.loadAdminLicenses = loadAdminLicenses;
   window.AdminKeyManager = {
     loadAdminLicenses
   };

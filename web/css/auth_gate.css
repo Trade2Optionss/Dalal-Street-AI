@@ -560,24 +560,62 @@
 
 /* Admin Key Generation Navigation Tab */
 .nav-tab.admin-key-tab {
-  border-color: rgba(245, 158, 11, 0.4) !important;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(20, 26, 40, 0.5)) !important;
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(20, 26, 40, 0.6)) !important;
+  color: #fbbf24 !important;
 }
 
 .nav-tab.admin-key-tab:hover {
   border-color: #f59e0b !important;
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.25) !important;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(20, 26, 40, 0.8)) !important;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.nav-tab.admin-key-tab.active {
+  border-color: #f59e0b !important;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.2)) !important;
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+}
+
+.nav-tab.admin-key-tab.active i {
+  color: #f59e0b !important;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9));
 }
 
 .admin-chip-badge {
   background: #f59e0b;
   color: #000000;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 900;
-  padding: 1px 5px;
-  border-radius: 4px;
-  letter-spacing: 0.06em;
-  margin-left: 4px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+  margin-left: 3px;
+}
+
+.btn-admin-header-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid #f59e0b;
+  color: #fbbf24;
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-admin-header-shortcut:hover {
+  background: #f59e0b;
+  color: #000000;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.55);
+  transform: translateY(-1px);
 }
 
 /* Admin Keys View Panel */
