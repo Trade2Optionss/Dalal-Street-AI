@@ -252,6 +252,12 @@
           <i data-lucide="git-fork"></i>
           <span class="tab-label">Obsidian Graph</span>
         </button>
+        <!-- Admin-Only Key Generation Option (Hidden for regular users) -->
+        <button class="nav-tab admin-key-tab" id="adminKeysNavTab" data-target="view-admin-keys" aria-label="Key Generation" style="display: none;">
+          <i data-lucide="key" style="color: #f59e0b;"></i>
+          <span class="tab-label">Key Generation</span>
+          <span class="admin-chip-badge">ADMIN</span>
+        </button>
       </nav>
 
       <!-- Right Floating Action Pod -->
@@ -1511,6 +1517,168 @@
 
       </div>
     </section>
+ 
+    <!-- ================================================================= -->
+    <!-- VIEW: ADMIN KEY GENERATION & CLIENT ACCESS CONTROL               -->
+    <!-- ================================================================= -->
+    <section id="view-admin-keys" class="page-view" style="display: none;">
+      <div class="admin-view-wrap">
+        
+        <!-- Header -->
+        <div class="admin-header-box">
+          <div>
+            <h1 class="admin-header-title">
+              <i data-lucide="key" style="color: #f59e0b;"></i>
+              Institutional License Key & Client Access Control
+            </h1>
+            <p class="admin-header-sub">
+              Admin Gateway: Issue tamper-proof HMAC-SHA256 cryptographically signed keys, configure machine locks, and revoke client access in real time.
+            </p>
+          </div>
+          <button class="back-to-hub-btn" data-target="view-launchpad">
+            <i data-lucide="arrow-left"></i> Return to Terminal
+          </button>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="admin-kpis-grid">
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon"><i data-lucide="shield-check"></i></div>
+            <div class="admin-kpi-info">
+              <span class="admin-kpi-num" id="adminKpiTotal">0</span>
+              <span class="admin-kpi-lbl">Total Licenses Issued</span>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981; border-color: rgba(16, 185, 129, 0.3);"><i data-lucide="activity"></i></div>
+            <div class="admin-kpi-info">
+              <span class="admin-kpi-num" id="adminKpiActive" style="color: #10b981;">0</span>
+              <span class="admin-kpi-lbl">Active Live Clients</span>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-icon" style="background: rgba(6, 182, 212, 0.12); color:#06b6d4; border-color: rgba(6, 182, 212, 0.3);"><i data-lucide="cpu"></i></div>
+            <div class="admin-kpi-info">
+              <span class="admin-kpi-num" style="font-size: 1.1rem; color: #38bdf8;">HMAC-SHA256</span>
+              <span class="admin-kpi-lbl">Cryptographic Security</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Columns: Issue Form + Key Tester -->
+        <div class="admin-main-grid">
+          
+          <!-- Column 1: Issue New Key -->
+          <div class="admin-panel-card gold-accent">
+            <div class="admin-panel-title">
+              <i data-lucide="sparkles" style="color: #f59e0b;"></i>
+              Issue New Client License Key
+            </div>
+            <form id="adminIssueKeyForm" class="admin-form">
+              <div class="admin-form-row">
+                <div>
+                  <label class="admin-field-lbl">Client Full Name *</label>
+                  <input type="text" id="adminClientName" class="admin-input-txt" placeholder="e.g. Rahul Sharma" required />
+                </div>
+                <div>
+                  <label class="admin-field-lbl">Email Address (Optional)</label>
+                  <input type="email" id="adminClientEmail" class="admin-input-txt" placeholder="e.g. rahul@dalalstreet.com" />
+                </div>
+              </div>
+
+              <div class="admin-form-row">
+                <div>
+                  <label class="admin-field-lbl">Subscription Tier</label>
+                  <select id="adminClientTier" class="admin-select">
+                    <option value="Enterprise Lifetime">Enterprise Lifetime (All Modules + Unlimited)</option>
+                    <option value="Mastery Annual">Mastery Annual (Debate + Terminal + Discord)</option>
+                    <option value="Trader Pro (Quarterly)">Trader Pro (Quarterly - 90 Days)</option>
+                    <option value="7-Day Free Trial">7-Day Free Trial</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="admin-field-lbl">Duration (Days)</label>
+                  <input type="number" id="adminClientDays" class="admin-input-txt" value="3650" min="1" max="7300" />
+                </div>
+              </div>
+
+              <div>
+                <label class="admin-field-lbl">Device Lock (HWID) — Leave as 'ANY' for cloud / web users</label>
+                <input type="text" id="adminClientHwid" class="admin-input-txt" value="ANY" placeholder="ANY (Works on all devices) or paste specific HWID" />
+              </div>
+
+              <button type="submit" class="admin-btn-issue" id="adminSubmitIssueBtn">
+                <i data-lucide="sparkles" style="width:16px;height:16px;"></i> Issue Cryptographic License Key
+              </button>
+            </form>
+
+            <!-- Success Box Displaying Generated Key -->
+            <div class="admin-result-box" id="adminNewKeyBox">
+              <div style="font-weight:800; color:#10b981; display:flex; align-items:center; gap:6px;">
+                <i data-lucide="check-circle" style="width:16px;height:16px;"></i> License Key Generated & Signed!
+              </div>
+              <div id="adminGeneratedKeyMeta" style="font-size:0.8rem; color:#94a3b8;"></div>
+              <div class="admin-key-display" id="adminGeneratedKeyDisplay"></div>
+              <button type="button" class="admin-btn-issue" id="adminCopyNewKeyBtn" style="background:#1e293b; color:#fff; border:1px solid rgba(255,255,255,0.2);">
+                <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Key to Clipboard
+              </button>
+            </div>
+          </div>
+
+          <!-- Column 2: Key Validator Tester -->
+          <div class="admin-panel-card">
+            <div class="admin-panel-title">
+              <i data-lucide="check-circle" style="color: #10b981;"></i>
+              Cryptographic License Key Validator
+            </div>
+            <p style="font-size:0.82rem; color:#94a3b8;">
+              Test any key to verify HMAC-SHA256 signature authenticity, expiration date, and assigned multi-agent tier permissions.
+            </p>
+            <form id="adminTestKeyForm" class="admin-form">
+              <div>
+                <label class="admin-field-lbl">License Key to Test</label>
+                <input type="text" id="adminTestKeyInput" class="admin-input-txt" placeholder="Paste T2O-SIG... or legacy key" required />
+              </div>
+              <button type="submit" class="admin-btn-issue" style="background:rgba(255,255,255,0.08); color:#f8fafc; border-color:rgba(255,255,255,0.15);">
+                <i data-lucide="search" style="width:16px;height:16px;"></i> Test Key Validity
+              </button>
+            </form>
+            <div id="adminTestResultBox" style="display:none; padding:14px; border-radius:10px; border:1px solid transparent;"></div>
+          </div>
+
+        </div>
+
+        <!-- Issued Licenses Table -->
+        <div class="admin-table-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h2 style="font-family:'Outfit',sans-serif; font-size:1.2rem; font-weight:800; color:#fff;">Issued Client Licenses</h2>
+              <p style="font-size:0.8rem; color:#94a3b8;">Database and cryptographically signed license records.</p>
+            </div>
+            <button onclick="window.AdminKeyManager.loadAdminLicenses()" class="auth-copy-btn" title="Refresh Table">
+              <i data-lucide="refresh-cw" style="width:13px;height:13px;"></i> Refresh Table
+            </button>
+          </div>
+
+          <table class="admin-lic-table">
+            <thead>
+              <tr>
+                <th>Client Name / Email</th>
+                <th>License Key</th>
+                <th>Tier</th>
+                <th>Expires</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminLicensesTbody">
+              <tr><td colspan="6" style="text-align:center; padding:20px; color:#64748b;">Loading licenses...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
 
   </main>
 
@@ -1778,6 +1946,7 @@
   <script src="js/trading_waves.js?v=3.1"></script>
   <script src="js/obsidian_graph.js?v=3.1"></script>
   <script src="js/auth_gate.js?v=2.0"></script>
+  <script src="js/admin_keys.js?v=1.0"></script>
   <script src="js/app.js?v=3.1"></script>
   <script>
     lucide.createIcons();

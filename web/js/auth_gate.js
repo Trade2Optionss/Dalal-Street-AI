@@ -171,10 +171,13 @@
       const data = await res.json();
 
       if (data.valid) {
+        const isAdmin = Boolean(data.is_admin || data.role === "ADMIN");
         const sessionPayload = {
           license_key: licenseKey,
           client_name: data.client_name,
           tier: data.tier,
+          role: data.role || (isAdmin ? "ADMIN" : "USER"),
+          is_admin: isAdmin,
           expires_at: data.expires_at,
           modules: data.modules || [],
           hwid: detectedHwid,
@@ -217,7 +220,7 @@
     if (unlockedCard) {
       unlockedCard.classList.add("show");
       document.getElementById("authClientName").textContent = session.client_name || "Authorized Trader";
-      document.getElementById("authClientTier").textContent = session.tier || "Institutional Access";
+      document.getElementById("authClientTier").textContent = session.is_admin ? "System Administrator (Key Manager)" : (session.tier || "Institutional Access");
     }
 
     if (window.lucide) lucide.createIcons();
@@ -241,6 +244,17 @@
       }
     }
 
+    // Toggle Admin Navigation Tab visibility
+    const adminNavTab = document.getElementById("adminKeysNavTab");
+    const isAdmin = Boolean(session && (session.is_admin || session.role === "ADMIN"));
+    if (adminNavTab) {
+      if (isAdmin) {
+        adminNavTab.style.display = "inline-flex";
+      } else {
+        adminNavTab.style.display = "none";
+      }
+    }
+
     // Inject active session pill in navbar
     renderNavSessionPill(session);
   }
@@ -258,6 +272,20 @@
 
     const pill = document.getElementById("userSessionPill");
     if (pill) pill.remove();
+
+    // Hide admin tab on lock
+    const adminNavTab = document.getElementById("adminKeysNavTab");
+    if (adminNavTab) {
+      adminNavTab.style.display = "none";
+    }
+
+    // Reset view to launchpad
+    const adminView = document.getElementById("view-admin-keys");
+    if (adminView && adminView.classList.contains("active")) {
+      adminView.classList.remove("active");
+      const launchpad = document.getElementById("view-launchpad");
+      if (launchpad) launchpad.classList.add("active");
+    }
 
     if (gateWrapper) {
       gateWrapper.style.display = "flex";
@@ -278,11 +306,16 @@
       headerActions.prepend(pill);
     }
 
-    const shortTier = (session.tier || "PRO").split(" ")[0].toUpperCase();
+    const isAdmin = Boolean(session && (session.is_admin || session.role === "ADMIN"));
+    const shortTier = isAdmin ? "ADMIN" : (session.tier || "PRO").split(" ")[0].toUpperCase();
+    const tierBadgeStyle = isAdmin 
+      ? 'background:rgba(245,158,11,0.25); color:#fbbf24; border:1px solid #f59e0b; font-weight:900;'
+      : '';
+
     pill.innerHTML = `
-      <i data-lucide="shield-check" style="width:16px;height:16px;color:#10b981;"></i>
+      <i data-lucide="${isAdmin ? 'shield-alert' : 'shield-check'}" style="width:16px;height:16px;color:${isAdmin ? '#f59e0b' : '#10b981'};"></i>
       <span style="font-weight:700;">${session.client_name || "Trader"}</span>
-      <span class="user-tier">${shortTier}</span>
+      <span class="user-tier" style="${tierBadgeStyle}">${shortTier}</span>
       <button class="btn-logout" id="authLogoutBtn" title="Lock & Disconnect License">
         <i data-lucide="log-out" style="width:14px;height:14px;"></i>
       </button>

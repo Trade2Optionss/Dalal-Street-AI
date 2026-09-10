@@ -1,6 +1,40 @@
 {
   "licenses": [
     {
+      "key": "T2O-SIG.eyJlbSI6IiIsImV4cCI6IjIwMjYtMTItMDlUMTQ6NTE6NTYuNDQ5MTU3IiwiaHciOiJBTlkiLCJpYXQiOiIyMDI2LTA5LTEwIiwicm5kIjoiRTZDNDNGMzAiLCJzdWIiOiJUZXN0IFVzZXIiLCJ0YyI6IlBSTyIsInRyIjoiVHJhZGVyIFBybyAoUXVhcnRlcmx5KSJ9.4C6AA45849FF5A26",
+      "client_name": "Test User",
+      "email": "",
+      "tier": "Trader Pro (Quarterly)",
+      "hwid": "ANY",
+      "status": "ACTIVE",
+      "created_at": "2026-09-10T14:51:56.449157",
+      "expires_at": "2026-12-09T14:51:56.449157",
+      "max_seats": 1,
+      "active_seats": 1,
+      "modules": [
+        "NSE/BSE Indian Live Terminal",
+        "Multi-Agent AI Debate Arena",
+        "Discord Webhook Broadcast"
+      ]
+    },
+    {
+      "key": "T2O-SIG.eyJlbSI6InJhY2hpdEBnbWFpbC5jb20iLCJleHAiOiIyMDI2LTEyLTA4VDE5OjM4OjQ0Ljc5MTYzNiIsImh3IjoiSFdJRC0xQzA3LUQ2QjctNkQxMS0yNkY4IiwiaWF0IjoiMjAyNi0wOS0wOSIsInJuZCI6IkFBMkJEMDdFIiwic3ViIjoicmFjaGl0IiwidGMiOiJQUk8iLCJ0ciI6IlRyYWRlciBQcm8gKFF1YXJ0ZXJseSkifQ.6DED74D2CD480620",
+      "client_name": "rachit",
+      "email": "rachit@gmail.com",
+      "tier": "Trader Pro (Quarterly)",
+      "hwid": "HWID-1C07-D6B7-6D11-26F8",
+      "status": "ACTIVE",
+      "created_at": "2026-09-09T19:38:44.791636",
+      "expires_at": "2026-12-08T19:38:44.791636",
+      "max_seats": 1,
+      "active_seats": 1,
+      "modules": [
+        "NSE/BSE Indian Live Terminal",
+        "Multi-Agent AI Debate Arena",
+        "Discord Webhook Broadcast"
+      ]
+    },
+    {
       "key": "T2O-ENT-DCC9-75C6-2E46",
       "client_name": "Ankit",
       "email": "mohanan3kit77@gmail.com",

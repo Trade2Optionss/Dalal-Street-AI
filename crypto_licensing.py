@@ -212,12 +212,31 @@ def verify_signed_license(
 
     modules = DEFAULT_MODULES_BY_TIER.get(tier, DEFAULT_MODULES_BY_TIER["Trader Pro (Quarterly)"])
 
+    # 5. Admin Role Authorization Check
+    admin_keys_env = [k.strip() for k in os.getenv("ADMIN_LICENSE_KEYS", "").split(",") if k.strip()]
+    known_admin_keys = {
+        "T2O-SIG.eyJlbSI6IiIsImV4cCI6IjIwMjctMDktMDlUMTk6MzE6MDEuMDExMjc3IiwiaHciOiJBTlkiLCJpYXQiOiIyMDI2LTA5LTA5Iiwicm5kIjoiNDkwNzQ4NzQiLCJzdWIiOiJWaWtyYW0gU2luZ2giLCJ0YyI6Ik1TVCIsInRyIjoiTWFzdGVyeSBBbm51YWwifQ.60D0D369A45C6B9F",
+        "T2O-ENT-DCC9-75C6-2E46",
+        "T2O-PRO-8F29-A4C1-7290"
+    }
+    known_admin_keys.update(admin_keys_env)
+
+    is_admin = bool(
+        payload.get("adm") == 1 or 
+        payload.get("role") == "ADMIN" or 
+        key_clean in known_admin_keys or 
+        client_name.strip().lower() in ["vikram singh", "ankit", "admin", "administrator"] or
+        "admin" in tier.lower()
+    )
+
     return True, {
         "status": "ACTIVE",
         "client_name": client_name,
         "tier": tier,
+        "role": "ADMIN" if is_admin else "USER",
+        "is_admin": is_admin,
         "expires_at": expires_at,
         "modules": modules,
         "hwid": lic_hwid,
-        "message": f"Welcome, {client_name}! Access authorized for {tier}."
+        "message": f"Welcome, {client_name}! Access authorized as {'ADMIN' if is_admin else tier}."
     }

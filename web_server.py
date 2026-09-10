@@ -1775,6 +1775,8 @@ async def validate_client_license(req: ValidateLicenseRequest):
                     "status": "ACTIVE",
                     "client_name": info["client_name"],
                     "tier": info["tier"],
+                    "role": info.get("role", "USER"),
+                    "is_admin": info.get("is_admin", False),
                     "expires_at": info["expires_at"],
                     "modules": info["modules"],
                     "message": info["message"]
@@ -1834,15 +1836,100 @@ async def validate_client_license(req: ValidateLicenseRequest):
                 "request_hwid": req_hwid_clean
             }
 
+    # Admin check for seeded keys
+    is_admin = bool(
+        match["key"].upper() in ["T2O-ENT-DCC9-75C6-2E46", "T2O-PRO-8F29-A4C1-7290"] or
+        match["client_name"].strip().lower() in ["vikram singh", "ankit", "admin"] or
+        "admin" in match.get("tier", "").lower()
+    )
+
     return {
         "valid": True,
         "status": "ACTIVE",
         "client_name": match["client_name"],
         "tier": match["tier"],
+        "role": "ADMIN" if is_admin else "USER",
+        "is_admin": is_admin,
         "expires_at": match["expires_at"],
         "modules": match.get("modules", []),
-        "message": f"Welcome, {match['client_name']}! Access authorized for {match['tier']}."
+        "message": f"Welcome, {match['client_name']}! Access authorized as {'ADMIN' if is_admin else match['tier']}."
     }
+
+class GenerateLicenseRequest(BaseModel):
+    client_name: str
+    email: Optional[str] = ""
+    tier: str = "Trader Pro (Quarterly)"
+    hwid: Optional[str] = "ANY"
+    max_seats: int = 1
+    duration_days: int = 90
+    modules: Optional[List[str]] = None
+
+@app.post("/api/licenses/generate")
+async def api_generate_license(req: GenerateLicenseRequest):
+    """Admin endpoint to generate and issue cryptographically signed keys."""
+    from crypto_licensing import generate_signed_license
+    signed_data = generate_signed_license(
+        client_name=req.client_name,
+        tier=req.tier,
+        duration_days=req.duration_days,
+        email=req.email or "",
+        hwid=req.hwid or "ANY",
+        custom_modules=req.modules
+    )
+
+    licenses = load_licenses_db()
+    new_record = {
+        "key": signed_data["license_key"],
+        "client_name": signed_data["client_name"],
+        "email": (req.email or "").strip().lower(),
+        "tier": signed_data["tier"],
+        "hwid": signed_data["hwid"],
+        "status": "ACTIVE",
+        "created_at": signed_data["created_at"],
+        "expires_at": signed_data["expires_at"],
+        "max_seats": req.max_seats,
+        "active_seats": 1,
+        "modules": signed_data["modules"]
+    }
+    licenses.insert(0, new_record)
+    try:
+        with open(LICENSES_FILE, "w", encoding="utf-8") as f:
+            json.dump({"licenses": licenses}, f, indent=2)
+    except Exception:
+        pass
+
+    return {
+        "success": True,
+        "license": new_record,
+        "message": f"Cryptographic license key issued for {new_record['client_name']}."
+    }
+
+@app.get("/api/licenses/list")
+async def api_list_licenses():
+    """Admin endpoint to list all issued licenses."""
+    licenses = load_licenses_db()
+    return {
+        "total": len(licenses),
+        "active": sum(1 for l in licenses if l.get("status") == "ACTIVE"),
+        "licenses": licenses
+    }
+
+@app.post("/api/licenses/revoke")
+async def api_revoke_license(req: dict):
+    """Admin endpoint to toggle active / revoked status."""
+    key = req.get("license_key", "").strip()
+    licenses = load_licenses_db()
+    match = next((l for l in licenses if l["key"] == key or l["key"].upper() == key.upper()), None)
+    if not match:
+        raise HTTPException(status_code=404, detail="License not found")
+    new_status = "REVOKED" if match.get("status") == "ACTIVE" else "ACTIVE"
+    match["status"] = new_status
+    try:
+        with open(LICENSES_FILE, "w", encoding="utf-8") as f:
+            json.dump({"licenses": licenses}, f, indent=2)
+    except Exception:
+        pass
+    return {"success": True, "new_status": new_status, "license_key": key}
 
 # ---------------------------------------------------------------------------
 @app.get("/api/open_obsidian")
